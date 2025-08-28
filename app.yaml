@@ -1,0 +1,18 @@
+runtime: python310
+
+entrypoint: gunicorn -b :$PORT main:server --timeout 120 --workers 1
+
+instance_class: F1
+
+env_variables:
+  FLASK_ENV: production
+  DASH_DEBUG: "False"
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 0
+  max_instances: 2
+
+handlers:
+- url: /.*
+  script: auto

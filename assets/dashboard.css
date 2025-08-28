@@ -1,0 +1,749 @@
+/* assets/dashboard.css - COMPLETE FILE */
+/* Enhanced Admin Dashboard Styles - Swaccha Andhra */
+/* Navigation tabs, logout button, user info, and responsive design */
+
+/* ============================================
+   ADMIN HEADER SECTION
+   ============================================ */
+
+/* Admin header - uses same hero-section as public landing */
+.hero-section {
+    /* Let the main style.css handle the hero section */
+    /* This ensures consistency with public landing */
+}
+
+/* Remove admin-specific header styling since we use public hero */
+
+/* ============================================
+   LOGOUT BUTTON
+   ============================================ */
+
+#logout-btn {
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+#logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+#logout-btn:hover::before {
+    left: 100%;
+}
+
+#logout-btn:hover {
+    background: linear-gradient(135deg, #C53030 0%, #9B2C2C 100%) !important;
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 0 8px 25px rgba(197, 48, 48, 0.6) !important;
+}
+
+#logout-btn:active {
+    transform: translateY(-1px) scale(1.02) !important;
+    box-shadow: 0 4px 12px rgba(197, 48, 48, 0.4) !important;
+}
+
+/* ============================================
+   NAVIGATION TABS
+   ============================================ */
+
+.navigation-tabs {
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+    backdrop-filter: blur(15px);
+    margin: 1rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Navigation layout - tabs on left, user info on right */
+.navigation-tabs > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Tab buttons container */
+.navigation-tabs > div > div:first-child {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* User info container */
+.navigation-tabs > div > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Tab buttons */
+.navigation-tabs button[id^="tab-"] {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.navigation-tabs button[id^="tab-"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.3s ease;
+}
+
+.navigation-tabs button[id^="tab-"]:hover::before {
+    left: 100%;
+}
+
+.navigation-tabs button[id^="tab-"]:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+.navigation-tabs button[id^="tab-"]:active {
+    transform: translateY(-1px) scale(1.01) !important;
+}
+
+/* Active tab special styling */
+.navigation-tabs button[id^="tab-"][style*="rgb(49, 130, 206)"] {
+    box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
+    position: relative;
+}
+
+.navigation-tabs button[id^="tab-"][style*="rgb(49, 130, 206)"]::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+}
+
+/* User info styling */
+.navigation-tabs img[alt*="Avatar"] {
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.navigation-tabs img[alt*="Avatar"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   TAB CONTENT
+   ============================================ */
+
+#tab-content {
+    animation: fadeInContent 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 400px;
+    position: relative;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tab loading state */
+.tab-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    font-size: 1.2rem;
+    color: var(--text-secondary, #A0AEC0);
+    font-weight: 600;
+}
+
+.tab-loading::after {
+    content: '';
+    width: 28px;
+    height: 28px;
+    margin-left: 1rem;
+    border: 3px solid rgba(49, 130, 206, 0.3);
+    border-top: 3px solid #3182CE;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ENHANCED CARDS & COMPONENTS
+   ============================================ */
+
+/* KPI Cards enhancements */
+.kpi-section .stat-card,
+.kpi-section .trend-stat-card,
+.kpi-section .metric-card {
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.kpi-section .stat-card::before,
+.kpi-section .trend-stat-card::before,
+.kpi-section .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.kpi-section .stat-card:hover::before,
+.kpi-section .trend-stat-card:hover::before,
+.kpi-section .metric-card:hover::before {
+    left: 100%;
+}
+
+/* Review cards styling */
+.review-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(49, 130, 206, 0.05) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.review-card:hover::before {
+    opacity: 1;
+}
+
+/* Upload area styling */
+.upload-area {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(49, 130, 206, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: var(--brand-primary, #3182CE) !important;
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(49, 130, 206, 0.2);
+}
+
+.upload-area:hover::before {
+    opacity: 1;
+}
+
+/* Report cards hover effects */
+.report-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.report-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(49, 130, 206, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.report-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+    border-color: var(--brand-primary, #3182CE) !important;
+}
+
+.report-card:hover::before {
+    left: 100%;
+}
+
+/* Quick actions enhanced hover */
+.quick-actions-section .action-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-actions-section .action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(49, 130, 206, 0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quick-actions-section .action-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.quick-actions-section .action-card:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   CHARTS AND DATA SECTIONS
+   ============================================ */
+
+/* Charts section enhancements */
+.charts-section > div > div {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.charts-section > div > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Data table enhancements */
+.data-table-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.data-table-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3182CE, #38A169, #DD6B20, #9F7AEA);
+    opacity: 0.8;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Mobile responsiveness (320px - 768px) */
+@media (max-width: 768px) {
+    /* Use standard hero-section mobile styles from main CSS */
+    
+    .navigation-tabs {
+        position: static;
+        margin: 0.5rem 0;
+        padding: 0.75rem !important;
+    }
+    
+    /* Stack navigation elements vertically on mobile */
+    .navigation-tabs > div {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        align-items: stretch !important;
+    }
+    
+    /* Tab buttons take full width */
+    .navigation-tabs > div > div:first-child {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+    }
+    
+    .navigation-tabs button[id^="tab-"] {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+        min-width: auto !important;
+    }
+    
+    /* User info section on mobile */
+    .navigation-tabs > div > div:last-child {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+        align-items: center !important;
+    }
+    
+    /* User info card on mobile */
+    .navigation-tabs > div > div:last-child > div:first-child {
+        justify-content: center !important;
+        width: 100% !important;
+        padding: 0.75rem !important;
+    }
+    
+    /* Mobile logout button */
+    #logout-btn {
+        width: 100% !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+        justify-content: center !important;
+    }
+    
+    /* Mobile charts */
+    .charts-section {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    /* Mobile KPI section */
+    .kpi-section {
+        padding: 1rem !important;
+        margin: 1rem 0 !important;
+    }
+    
+    .kpi-section > div:last-child {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    /* Mobile tab content */
+    #tab-content {
+        padding: 0.5rem;
+        min-height: 300px;
+    }
+    
+    /* Mobile alerts and actions */
+    .alerts-section,
+    .quick-actions-section {
+        margin: 1rem 0 !important;
+    }
+    
+    .quick-actions-section > div:last-child {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+    }
+}
+
+/* Tablet responsiveness (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Use standard hero-section tablet styles from main CSS */
+    
+    .navigation-tabs > div > div:first-child {
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        gap: 0.75rem !important;
+    }
+    
+    .navigation-tabs button[id^="tab-"] {
+        min-width: 140px !important;
+        padding: 0.75rem 1.25rem !important;
+    }
+    
+    .charts-section {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    .kpi-section > div:last-child {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Large desktop optimizations (1920px+) */
+@media (min-width: 1920px) {
+    /* Use standard hero-section large desktop styles from main CSS */
+    
+    .navigation-tabs {
+        padding: 2rem !important;
+        margin: 2rem 0 !important;
+    }
+    
+    .navigation-tabs button[id^="tab-"] {
+        padding: 1.25rem 2.5rem !important;
+        font-size: 1.2rem !important;
+        min-width: 180px !important;
+    }
+    
+    #logout-btn {
+        padding: 1rem 2rem !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .navigation-tabs img[alt*="Avatar"] {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    /* Enhanced shadows for large screens */
+    .navigation-tabs button[id^="tab-"]:hover {
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .stat-card:hover,
+    .metric-card:hover,
+    .trend-stat-card:hover {
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
+        transform: translateY(-8px) scale(1.02) !important;
+    }
+    
+    #logout-btn:hover {
+        box-shadow: 0 12px 35px rgba(197, 48, 48, 0.6) !important;
+    }
+}
+
+/* ============================================
+   THEME VARIATIONS
+   ============================================ */
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    .navigation-tabs {
+        backdrop-filter: blur(20px);
+        background: rgba(13, 27, 42, 0.9);
+        border: 1px solid rgba(49, 130, 206, 0.2);
+    }
+    
+    /* Let main CSS handle hero-section dark mode */
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .navigation-tabs button[id^="tab-"] {
+        border-width: 3px !important;
+        font-weight: 900 !important;
+    }
+    
+    #logout-btn {
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        font-weight: 900 !important;
+    }
+    
+    /* Let main CSS handle hero-section high contrast */
+}
+
+/* ============================================
+   ACCESSIBILITY & USABILITY
+   ============================================ */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    #tab-content,
+    .navigation-tabs button[id^="tab-"],
+    #logout-btn,
+    .review-card,
+    .upload-area,
+    .report-card,
+    .quick-actions-section .action-card,
+    .kpi-section .stat-card,
+    .kpi-section .trend-stat-card,
+    .kpi-section .metric-card,
+    .navigation-tabs img[alt*="Avatar"] {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .navigation-tabs button[id^="tab-"]:hover,
+    #logout-btn:hover,
+    .review-card:hover,
+    .upload-area:hover,
+    .report-card:hover,
+    .quick-actions-section .action-card:hover,
+    .kpi-section .stat-card:hover,
+    .kpi-section .trend-stat-card:hover,
+    .kpi-section .metric-card:hover,
+    .navigation-tabs img[alt*="Avatar"]:hover {
+        transform: none !important;
+    }
+    
+    .navigation-tabs button[id^="tab-"]::before,
+    #logout-btn::before,
+    .review-card::before,
+    .upload-area::before,
+    .report-card::before,
+    .quick-actions-section .action-card::before,
+    .kpi-section .stat-card::before,
+    .kpi-section .trend-stat-card::before,
+    .kpi-section .metric-card::before {
+        display: none !important;
+    }
+}
+
+/* Focus states for accessibility */
+.navigation-tabs button[id^="tab-"]:focus,
+#logout-btn:focus {
+    outline: 3px solid var(--brand-primary, #3182CE);
+    outline-offset: 3px;
+    z-index: 10;
+    position: relative;
+}
+
+/* Let main CSS handle responsive-logo focus states */
+
+/* Keyboard navigation enhancements */
+.navigation-tabs button[id^="tab-"]:focus:not(:hover) {
+    background-color: var(--brand-primary, #3182CE) !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .navigation-tabs,
+    #logout-btn,
+    .hover-overlay-banner {
+        display: none !important;
+    }
+    
+    /* Let main CSS handle hero-section print styles */
+    
+    #tab-content {
+        page-break-inside: avoid;
+        animation: none !important;
+    }
+    
+    .stat-card,
+    .metric-card,
+    .trend-stat-card,
+    .review-card,
+    .report-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 2px solid #333 !important;
+        margin-bottom: 1rem;
+        background: white !important;
+        color: black !important;
+    }
+    
+    .charts-section {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .kpi-section > div:last-child {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Smooth transitions for all interactive elements */
+.navigation-tabs button[id^="tab-"],
+#logout-btn,
+.stat-card,
+.metric-card,
+.trend-stat-card,
+.review-card,
+.report-card,
+.upload-area,
+.quick-actions-section .action-card,
+.navigation-tabs img[alt*="Avatar"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow, opacity;
+}
+
+/* GPU acceleration for better performance */
+.navigation-tabs button[id^="tab-"]:hover,
+#logout-btn:hover,
+.stat-card:hover,
+.metric-card:hover,
+.trend-stat-card:hover,
+.review-card:hover,
+.report-card:hover,
+.upload-area:hover,
+.quick-actions-section .action-card:hover {
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Optimize backdrop filters */
+.navigation-tabs,
+#logout-btn,
+.kpi-section .stat-card,
+.kpi-section .trend-stat-card,
+.kpi-section .metric-card {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.dashboard-hidden {
+    display: none !important;
+}
+
+.dashboard-visible {
+    display: block !important;
+}
+
+.dashboard-fade-in {
+    animation: fadeInContent 0.5s ease-out;
+}
+
+.dashboard-scale-hover:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
+.dashboard-shadow-hover:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease;
+}

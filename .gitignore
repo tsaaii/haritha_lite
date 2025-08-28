@@ -1,0 +1,10 @@
+env/
+
+__pycache__/
+
+.vscode/
+
+client_secrets.json
+
+user_credentials.json
+

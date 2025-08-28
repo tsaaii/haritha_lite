@@ -1,0 +1,94 @@
+Agency,Sub/contractor,Cluster,Site,Machine,Daily_Capacity,start_date,planned_end_date,expected_end_date,days_to_sept30,Quantity to be remediated in MT,Cumulative Quantity remediated till date in MT,Active_site,net_to_be_remediated_mt,days_required,Quantity remediated today
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,29/04/2025,30/06/2025,,,67308,67308,Yes,0,,0
+Saurashtra,Saurashtra,Kurnool,Dhone,M2,1200,18/06/2025,30/07/2025,,,50000,2077,No,47923,,
+Saurashtra,Saurashtra,Kurnool,Yemmiganur,M3,600,2/6/25,30/07/2025,,,41357,20459,Yes,20898,,0
+Saurashtra,Saurashtra,Kurnool,Adoni,M2_MC,1200,8/10/25,20/08/2025,,,10000,0,No,10000,,
+Saurashtra,Saurashtra,Kurnool,Gudur(K),M1_S,1800,15/06/2025,20/06/2025,,,2666,0,No,2666,,
+Saurashtra,Saurashtra,Nandyal,Nandyala,M4,1800,28/04/2025,30/06/2025,,,80083,65807,Yes,14276,,1098
+Saurashtra,Saurashtra,Nandyala,Bethamcherla,M5,1200,15/06/2025,15/07/2025,,,24189,24189,Yes,0,,1028
+Saurashtra,Saurashtra,Nandyala,Nandikotkur,M5_MC,1200,25/07/2025,15/08/2025,,,19700,0,No,19700,,
+Saurashtra,Saurashtra,Nandyala,Atmakur(K),M5_S,1200,7/6/25,7/10/25,,,3596,0,No,3596,,
+Saurashtra,Saurashtra,Nandyala,Giddalur,M6,700,30/06/2025,20/07/2025,,,9773,0,No,9773,,
+Saurashtra,Saurashtra,Nandyala,Allagadda,M6_MC,800,30/07/2025,15/08/2025,,,6153,0,No,6153,,
+Zigma,Zigma,Nellore Municipal Corporation,allipuram,M2,800,19/4/25,25/6/25,,,34037,34037,No,0,,
+Zigma,Zigma,Nellore Municipal Corporation,donthalli,M4_M15,1600,25/5/25,9/11/25,,,290442,57077,Yes,233365,,529
+Zigma,Zigma,GVMC,visag,M1,1300,3/10/25,8/11/25,,,201400,190536,Yes,10864,,955
+Zigma,Zigma,Chittoor,Chittoor,M9_M7_MC,0,19/6/25,15/9/25,,,146232,31652,Yes,114580,,742
+Zigma,Zigma,Chittoor,madanapalle,M3,500,21/5/25,15/7/25,,,27532,27532,Yes,0,,685
+Zigma,Zigma,Chittoor,B.Kothakota,M4_S,0,16/7/25,9/5/25,,,25772,0,No,25772,,
+Zigma,Zigma,Chittoor,Punganur,M8,500,6/8/25,18/7/25,,,22945,22945,Yes,0,,776
+Zigma,Zigma,Chittoor,kuppam,M16,500,31/5/25,7/10/25,,,20000,20000,Yes,0,,667
+Zigma,Zigma,Chittoor,palamaner,M7,500,31/5/25,15/7/25,,,13177,13177,Yes,0,,585
+Zigma,Zigma,Tirupati,tpty,"M6,M18A,M18B",1800,31/5/25,24/8/25,,,221473,82793,Yes,138680,,1740
+Zigma,Zigma,Tirupati,Srikalahasti,M10,800,13/6/25,8/11/25,,,50307,27821,Yes,22486,,738
+Zigma,Zigma,Tirupati,Sullurpet,M11,800,15/6/25,27/7/25,,,38261,22479,Yes,15782,,551
+Zigma,Zigma,Tirupati,Puttur,M4_S_MC,0,30/7/25,18/9/25,,,20034,11765,Yes,8269,,
+Zigma,Zigma,Tirupati,Nagari,M12,400,16/6/25,30/7/25,,,21977,0,No,21977,,573
+Zigma,Zigma,Tirupati,Venkatagiri,M13,500,16/6/25,7/10/25,,,15093,14454,Yes,639,,487
+Zigma,Zigma,Nellore,Kavali,M16,0,20/6/25,15/8/25,,,18536,1985,No,16551,,
+Zigma,Zigma,Nellore,Gudur(N),M19,0,30/6/25,9/4/25,,,26563,0,No,26563,,
+Zigma,Zigma,Nellore,Atmakur(N),M14,0,15/6/25,7/10/25,,,12784,729,No,12055,,
+Zigma,Zigma,Nellore,Buchireddypalem,M4_S,0,22/6/25,7/7/25,,,6030,6030,Yes,0,,
+Zigma,Zigma,Nellore,Naidupet,M19_S,0,9/4/25,14/9/25,,,4186,0,No,4186,,
+Zigma,Zigma,Nellore,Alluru,M4_S,0,7/6/25,7/8/25,,,908,908,Yes,0,,
+Zigma,Zigma,Anantapur,Anantapur,"M17,M20",1000,18/6/25,19/9/25,,,168285,7534,Yes,160751,,
+Zigma,Zigma,Anantapur,Tadipatri,M8_MC,0,7/10/25,24/8/25,,,22735,0,No,22735,,
+Zigma,Zigma,Anantapur,Guntakal,M9_MC,0,18/7/25,27/8/25,,,20000,0,No,20000,,
+Zigma,Zigma,Anantapur,Kalyanadurgam,M21,0,27/7/25,13/8/25,,,7184,0,No,7184,,
+Zigma,Zigma,Anantapur,Rayadurgam,M21_MC,0,28/8/25,15/9/25,,,6919,0,No,6919,,
+Zigma,Zigma,Anantapur,Gooty,M9_S,0,18/7/25,27/8/25,,,4563,0,No,4563,,
+Tharuni,Tharuni,Kadapa Municipal Corporation,Kadapa,"M1,M2,M3",4200,6/5/25,,,,400000,202584,Yes,197416,,3073
+Tharuni,Tharuni,Rajahmundry,Srikakulam,"M4,M5A,M5B",1500,,,,,80978,40552,Yes,40426,,
+Tharuni,Tharuni,Rajahmundry,Vizianagaram,M6,800,,,,,30604,29261,Yes,1343,,
+Tharuni,Tharuni,Rajahmundry,Rajahmundry,M7,1200,,,,,76735,16041,Yes,60694,,224
+Tharuni,Tharuni,Kakinada,Kakinada,"M9,M10",2000,,,,,300000,61074,Yes,238926,,606
+Tharuni,V.Raju,Kakinada,Palacole,X1,600,,,,,30000,11722,Yes,18278,,
+Tharuni,Tharuni,Kakinada,Amalapuram,M12,600,,,,,27543,6951,Yes,20592,,71
+Tharuni,Tharuni,Chilakaluripet,Chilakaluripet,M14,800,,,,,166278,44404,Yes,121874,,626
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,,,,,43811,42492,Yes,1319,,150
+Tharuni,Tharuni,Chilakaluripet,Narsaraopet,M26,800,,,,,30609,15765,Yes,14844,,
+Tharuni,Tharuni,Chilakaluripet,Bapatla,M15,1400,,,,,46264,6162,Yes,40102,,
+Tharuni,Tharuni,Chilakaluripet,Macherla,M16,600,,,,,30894,12287,Yes,18607,,299
+Tharuni,Tharuni,Chilakaluripet,Piduguralla,X1,,,,,,10793,0,No,10793,,
+Tharuni,Tharuni,Chilakaluripet,Vinukonda,X1,,,,,,11195,0,No,11195,,
+Tharuni,Tharuni,Chilakaluripet,Dachepalli,X1,,,,,,6194,0,No,6194,,
+Tharuni,Tharuni,Chilakaluripet,Ponnuru,X1,,,,,,8376,3426,No,4950,,
+Tharuni,Tharuni,Chilakaluripet,Repalle,X1,,,,,,7203,0,No,7203,,
+Tharuni,Tharuni,Chilakaluripet,Gurazala,X1,,,,,,1675,1484,No,191,,
+Tharuni,Tharuni,Chilakaluripet,Sattenapalle,X1,,,,,,0,0,No,0,,
+Tharuni,Tharuni,Chilakaluripet,Mangalagiri Tadepalli,X1,,,,,,0,0,No,0,,
+Tharuni,Coastline,Eluru,Eluru,M1,960,,,,,53348,14362,Yes,38986,,
+Tharuni,Coastline,Eluru,Gudivada,X1,480,,,,,42953,2705,No,40248,,
+Tharuni,Coastline,Eluru,Machilipatnam,M2,480,,,,,41861,11504,Yes,30357,,
+Tharuni,V.Raju,Eluru,Bhimavaram,X1,500,,,,,32358,6809,Yes,25549,,
+Tharuni,V.Raju,Eluru,Tadepalligudem,X1,,,,,,30258,0,No,30258,,
+Tharuni,Coastline,Eluru,Vijayawada,X1,,,,,,,0,No,0,,
+Tharuni,Coastline,Eluru,Jaggaiahpet,X1,,,,,,12987,0,No,12987,,
+Tharuni,Coastline,Eluru,Kondapalli,X1,,,,,,5000,0,No,5000,,
+Tharuni,Coastline,Eluru,Nandigama,X1,,,,,,1398,0,No,1398,,
+Tharuni,V.Raju,Eluru,Nuzvid,,400,M4,,,,18458,3332,Yes,15126,,
+Tharuni,Coastline,Eluru,Kovvur,X1,,,,,,915,0,No,915,,
+Tharuni,Tharuni,Kadapa,Proddatur,X1,1400,,,,,70730,19419,No,51311,,
+Tharuni,Tharuni,Kadapa,Rayachoti,X1,1200,,,,,94604,13916,No,80688,,
+Tharuni,Tharuni,Kadapa,Badvel,X1,500,,,,,11926,2649,No,9277,,
+Tharuni,Tharuni,Kadapa,Rajampet,X1,500,,,,,11800,0,No,11800,,
+Tharuni,Tharuni,Kadapa,Mydukur,X1,,,,,,11244,0,No,11244,,
+Tharuni,Tharuni,Kadapa,Pulivendula,X1,,,,,,10000,0,No,10000,,
+Tharuni,Tharuni,Kadapa,Jammalamadugu,X1,,,,,,4916,0,No,4916,,
+Tharuni,Tharuni,Kadapa,Yerraguntla,X1,,,,,,2021,0,No,2021,,
+Tharuni,Tharuni,Kadapa,Kamalapuram,X1,,,,,,1763,0,No,1763,,
+Tharuni,Srinivas,Hindupur,Hindupur,X1,,,,,,49020,465,No,48555,,
+Tharuni,Srinivas,Hindupur,Dharmavaram,M5,700,,,,,23000,10923,Yes,12077,,133
+Tharuni,Srinivas,Hindupur,Madakasira,M6,X1,,,,,664,664,Yes,0,,
+Tharuni,Srinivas,Hindupur,Puttaparthy,X1,,,,,,10299,0,No,10299,,
+Tharuni,Srinivas,Hindupur,Kadiri,X1,,,,,,20000,0,No,20000,,
+Tharuni,Srinivas,Hindupur,Penukonda,M7,700,,,,,13578,13578,Yes,0,,549
+Tharuni,Srinivas Shetty,Addanki,Ongole,M8,900,,,,,61929,28469,Yes,33460,,
+Tharuni,Srinivas Shetty,Addanki,Addanki,M9,700,,,,,58754,13824,Yes,44930,,789
+Tharuni,Srinivas Shetty,Addanki,Markapuram,M10,700,,,,,33877,10313,Yes,23564,,728
+Tharuni,Srinivas Shetty,Addanki,Chirala,X1,,,,,,28392,579,No,27813,,
+Tharuni,Srinivas Shetty,Addanki,Kandukuru,X1,,,,,,26160,0,No,26160,,
+Tharuni,Srinivas Shetty,Addanki,Chimakurthy,X1,,,,,,14459,0,No,14459,,
+Tharuni,Srinivas Shetty,Addanki,Kanigiri,X1,,,,,,11662,0,No,11662,,
+Tharuni,Srinivas Shetty,Addanki,Darsi,X1,,,,,,1602,0,No,1602,,
+Tharuni,Srinivas Shetty,Addanki,Podili,X1,,,,,,1075,0,No,1075,,

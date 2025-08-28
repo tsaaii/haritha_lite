@@ -1,0 +1,161 @@
+/* ============================================
+   TARGETED ZOOM FIX - ONLY FOR SPECIFIC CONTAINERS
+   ============================================ */
+
+/* Fix for project-overview-container */
+#project-overview-container {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#project-overview-container .agency-header {
+    /* Override all conflicting styles with consistent values */
+    box-sizing: border-box !important;
+    text-align: center !important;
+    padding: 1.25rem !important;
+    margin: 1.25rem auto !important;
+    
+    /* Consistent border and radius */
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 16px !important;
+    
+    /* Consistent background */
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.02) 100%) !important;
+    
+    /* Consistent shadow and effects */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    
+    /* Fixed width to prevent zoom issues */
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+#project-overview-container .agency-title {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    margin: 0 0 0.5rem 0 !important;
+    background: linear-gradient(135deg, var(--brand-primary), var(--info)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
+    line-height: 1.2 !important;
+}
+
+/* Fix for agency-header-container */
+#agency-header-container {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#agency-header-container .agency-header {
+    /* Override all conflicting styles with consistent values */
+    box-sizing: border-box !important;
+    text-align: center !important;
+    padding: 1.25rem !important;
+    margin: 1.5rem auto !important;
+    
+    /* Consistent border and radius */
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 16px !important;
+    
+    /* Consistent background */
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.02) 100%) !important;
+    
+    /* Consistent shadow and effects */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    
+    /* Fixed width to prevent zoom issues */
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+#agency-header-container .agency-title {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    margin: 0 0 0.5rem 0 !important;
+    background: linear-gradient(135deg, var(--brand-primary), var(--info)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
+    line-height: 1.2 !important;
+}
+
+/* Remove the problematic zoom media query ONLY for these containers */
+@media screen and (min-resolution: 0.75dppx) and (max-resolution: 0.9dppx) {
+    #project-overview-container .agency-header,
+    #agency-header-container .agency-header {
+        /* Reset any zoom-specific changes */
+        padding: 1.25rem !important;
+        margin: 1.25rem auto !important;
+        border-radius: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    #project-overview-container .agency-title,
+    #agency-header-container .agency-title {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Responsive adjustments for these containers only */
+@media (max-width: 1024px) {
+    #project-overview-container .agency-header,
+    #agency-header-container .agency-header {
+        padding: 1rem !important;
+        margin: 1rem auto !important;
+        border-radius: 14px !important;
+    }
+    
+    #project-overview-container .agency-title,
+    #agency-header-container .agency-title {
+        font-size: 1.3rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #project-overview-container .agency-header,
+    #agency-header-container .agency-header {
+        padding: 0.875rem !important;
+        margin: 0.875rem auto !important;
+        border-radius: 12px !important;
+        border-width: 1.5px !important;
+    }
+    
+    #project-overview-container .agency-title,
+    #agency-header-container .agency-title {
+        font-size: 1.2rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #project-overview-container .agency-header,
+    #agency-header-container .agency-header {
+        padding: 0.75rem !important;
+        margin: 0.75rem auto !important;
+        border-radius: 10px !important;
+    }
+    
+    #project-overview-container .agency-title,
+    #agency-header-container .agency-title {
+        font-size: 1.1rem !important;
+    }
+}

@@ -1,0 +1,156 @@
+/* Dashboard Filter Container Styles */
+.dashboard-filter-container {
+    transition: all 0.3s ease;
+}
+
+.dashboard-filter-container:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+    .dashboard-filter-container {
+        padding: 1rem !important;
+        margin: 1rem 0 !important;
+    }
+    
+    .dashboard-filter-container > div:nth-child(2) {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    .dashboard-filter-container .filter-item {
+        margin-bottom: 1rem !important;
+    }
+    
+    .dashboard-filter-container > div:nth-child(3) {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        position: sticky !important;
+        bottom: 0 !important;
+        background-color: var(--card-bg) !important;
+        padding: 1rem !important;
+        margin: 0 -1rem -1.5rem -1rem !important;
+        border-radius: 0 0 12px 12px !important;
+    }
+    
+    .dashboard-btn {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard-filter-container > div:nth-child(2) {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Dashboard Dropdown Styling */
+.dashboard-dropdown .Select-control {
+    background-color: var(--card-bg) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 8px !important;
+    min-height: 44px !important;
+    color: var(--text-primary) !important;
+}
+
+.dashboard-dropdown .Select-value-label {
+    color: var(--text-primary) !important;
+}
+
+.dashboard-dropdown .Select-placeholder {
+    color: var(--text-secondary) !important;
+}
+
+.dashboard-dropdown .Select-menu {
+    background-color: var(--card-bg) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dashboard-dropdown .Select-option {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    padding: 10px 12px !important;
+}
+
+.dashboard-dropdown .Select-option:hover,
+.dashboard-dropdown .Select-option.is-focused {
+    background-color: var(--accent-bg) !important;
+}
+
+.dashboard-dropdown .Select-option.is-selected {
+    background-color: var(--brand-primary) !important;
+    color: white !important;
+}
+
+/* Date Picker Styling */
+.dashboard-date-picker .DateInput {
+    background-color: var(--card-bg) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 8px !important;
+}
+
+.dashboard-date-picker .DateInput_input {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    padding: 12px !important;
+    font-size: 0.9rem !important;
+}
+
+.dashboard-date-picker .DateRangePickerInput {
+    background-color: var(--card-bg) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 8px !important;
+}
+
+.dashboard-date-picker .DateRangePickerInput_arrow {
+    color: var(--text-primary) !important;
+}
+
+/* Button Hover Effects */
+.dashboard-btn {
+    transition: all 0.2s ease !important;
+}
+
+.dashboard-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dashboard-btn:active {
+    transform: translateY(0) !important;
+}
+
+/* Focus States for Accessibility */
+.dashboard-dropdown .Select-control:focus,
+.dashboard-date-picker .DateInput_input:focus {
+    outline: 2px solid var(--brand-primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* Loading States */
+.dashboard-filter-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.dashboard-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Metric Cards Hover Effect */
+.dashboard-filter-container + div .metric-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-filter-container + div .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}

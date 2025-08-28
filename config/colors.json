@@ -1,0 +1,217 @@
+{
+  "themes": {
+    "dark": {
+      "name": "Dark Mode",
+      "icon": "🌙",
+      "colors": {
+        "primary-bg": "#0A0E1A",
+        "secondary-bg": "#0D1B2A", 
+        "accent-bg": "#1A1F2E",
+        "card-bg": "#2D3748",
+        "surface-bg": "#374151",
+        
+        "text-primary": "#FFFFFF",
+        "text-secondary": "#A0AEC0",
+        "text-muted": "#68748D",
+        "text-inverse": "#000000",
+        
+        "border-light": "#2D3748",
+        "border-medium": "#4A5568",
+        "border-dark": "#1A202C",
+        
+        "brand-primary": "#eb9534",
+        "brand-secondary": "#2D7D32",
+        "brand-accent": "#E65100",
+        
+        "success": "#38A169",
+        "warning": "#DD6B20",
+        "error": "#E53E3E",
+        "info": "#eb9534",
+        
+        "chart-1": "#eb9534",
+        "chart-2": "#38A169",
+        "chart-3": "#DD6B20",
+        "chart-4": "#9F7AEA",
+        "chart-5": "#E53E3E",
+        "chart-6": "#319795",
+        "chart-7": "#D69E2E",
+        "chart-8": "#E53E3E"
+      }
+    },
+    
+    "light": {
+      "name": "Light Mode",
+      "icon": "☀️", 
+      "colors": {
+        "primary-bg": "#FFFFFF",
+        "secondary-bg": "#F7FAFC",
+        "accent-bg": "#EDF2F7",
+        "card-bg": "#FFFFFF",
+        "surface-bg": "#E2E8F0",
+        
+        "text-primary": "#1A202C",
+        "text-secondary": "#4A5568",
+        "text-muted": "#718096",
+        "text-inverse": "#FFFFFF",
+        
+        "border-light": "#E2E8F0",
+        "border-medium": "#CBD5E0",
+        "border-dark": "#A0AEC0",
+        
+        "brand-primary": "#eb9534",
+        "brand-secondary": "#2D7D32",
+        "brand-accent": "#E65100",
+        
+        "success": "#38A169",
+        "warning": "#D69E2E",
+        "error": "#E53E3E",
+        "info": "#eb9534",
+        
+        "chart-1": "#eb9534",
+        "chart-2": "#38A169",
+        "chart-3": "#DD6B20",
+        "chart-4": "#9F7AEA",
+        "chart-5": "#E53E3E",
+        "chart-6": "#319795",
+        "chart-7": "#D69E2E",
+        "chart-8": "#E53E3E"
+      }
+    },
+    
+    "high-contrast": {
+      "name": "High Contrast",
+      "icon": "🔳",
+      "colors": {
+        "primary-bg": "#000000",
+        "secondary-bg": "#000000",
+        "accent-bg": "#1A1A1A",
+        "card-bg": "#000000",
+        "surface-bg": "#2D2D2D",
+        
+        "text-primary": "#FFFFFF",
+        "text-secondary": "#FFFFFF",
+        "text-muted": "#E0E0E0",
+        "text-inverse": "#000000",
+        
+        "border-light": "#FFFFFF",
+        "border-medium": "#FFFFFF",
+        "border-dark": "#FFFFFF",
+        
+        "brand-primary": "#4A90E2",
+        "brand-secondary": "#50C878",
+        "brand-accent": "#FFD700",
+        
+        "success": "#00FF00",
+        "warning": "#FFD700",
+        "error": "#FF4444",
+        "info": "#00BFFF",
+        
+        "chart-1": "#4A90E2",
+        "chart-2": "#50C878",
+        "chart-3": "#FFD700",
+        "chart-4": "#FF69B4",
+        "chart-5": "#FF4444",
+        "chart-6": "#00FFFF",
+        "chart-7": "#FF1493",
+        "chart-8": "#7B68EE"
+      }
+    },
+    
+    "swaccha-green": {
+      "name": "Swaccha Green",
+      "icon": "🌿",
+      "colors": {
+        "primary-bg": "#0D1B0F",
+        "secondary-bg": "#1A2F1D",
+        "accent-bg": "#264829",
+        "card-bg": "#2D5A31",
+        "surface-bg": "#3D6B41",
+        
+        "text-primary": "#FFFFFF",
+        "text-secondary": "#B8E6C1",
+        "text-muted": "#8FD1A4",
+        "text-inverse": "#000000",
+        
+        "border-light": "#2D5A31",
+        "border-medium": "#4F7F53",
+        "border-dark": "#1A2F1D",
+        
+        "brand-primary": "#4CAF50",
+        "brand-secondary": "#2E7D32",
+        "brand-accent": "#66BB6A",
+        
+        "success": "#81C784",
+        "warning": "#FFA726",
+        "error": "#EF5350",
+        "info": "#42A5F5",
+        
+        "chart-1": "#4CAF50",
+        "chart-2": "#2E7D32",
+        "chart-3": "#66BB6A",
+        "chart-4": "#A5D6A7",
+        "chart-5": "#C8E6C9",
+        "chart-6": "#388E3C",
+        "chart-7": "#1B5E20",
+        "chart-8": "#8BC34A"
+      }
+    }
+  },
+  
+  "settings": {
+    "default_theme": "dark",
+    "remember_preference": true,
+    "enable_auto_switch": false,
+    "auto_switch_times": {
+      "dark_start": "18:00",
+      "light_start": "06:00"
+    },
+    "animation_duration": "0.3s",
+    "storage_key": "swaccha_theme_preference"
+  },
+  
+  "typography": {
+    "font_family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+    "font_sizes": {
+      "xs": "0.75rem",
+      "sm": "0.875rem", 
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
+      "5xl": "3rem",
+      "6xl": "3.75rem"
+    },
+    "font_weights": {
+      "normal": "400",
+      "medium": "500", 
+      "semibold": "600",
+      "bold": "700",
+      "extrabold": "800"
+    }
+  },
+  
+  "spacing": {
+    "0": "0",
+    "1": "0.25rem",
+    "2": "0.5rem", 
+    "3": "0.75rem",
+    "4": "1rem",
+    "5": "1.25rem",
+    "6": "1.5rem",
+    "8": "2rem",
+    "10": "2.5rem",
+    "12": "3rem",
+    "16": "4rem",
+    "20": "5rem"
+  },
+  
+  "breakpoints": {
+    "mobile": "576px",
+    "tablet": "768px", 
+    "desktop": "992px",
+    "large": "1200px",
+    "tv": "1920px"
+  }
+}

@@ -1,0 +1,580 @@
+Agency,Sub_contractor,Cluster,Site,Machines,Total_capacity_per_day,Total_waste_to_be_remediated,date,ticket_no,net_weight_calculated,_source_company
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",11-06-2025,T0001,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",11-06-2025,T0002,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",11-06-2025,T0003,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0112,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0112,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0112,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0113,16490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0113,16490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0113,16490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0114,18820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0114,18820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0114,18820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0115,16360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0115,16360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0115,16360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0116,16750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0116,16750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0116,16750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0117,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0117,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0117,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0118,17750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0118,17750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0118,17750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0119,16930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0119,16930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0119,16930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0120,18110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0120,18110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0120,18110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0121,17880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0121,17880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0122,15460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0123,15210.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0124,16380.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0125,15980.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0126,15690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0127,16760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0128,16290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0129,18730.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0130,17850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0131,17550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0132,16690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0133,18650.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0134,18030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0135,17200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0136,17110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0137,17610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0138,17810.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0139,17610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0140,18660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0141,18310.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0142,18720.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0143,17760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0144,390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0145,18210.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0146,18410.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0147,19400.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0148,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0149,18490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0150,17080.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0151,17170.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0152,17150.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0153,18760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0154,18430.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0112,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0113,16490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0114,18820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0115,16360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0116,16750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0117,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0118,17750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0119,16930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0120,18110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0121,17880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0122,15460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0123,15210.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0124,16380.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0125,15980.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0126,15690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0208,20690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0208,20690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0209,19820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0209,19820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0210,22590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0211,20250.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0211,20250.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0212,19890.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0212,19890.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0213,21110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0214,20330.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0215,19860.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0112,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0113,16490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0114,18820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0115,16360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0116,16750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0117,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0118,17750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0119,16930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0120,18110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0121,17880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0122,15460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0123,15210.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0124,16380.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0125,15980.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0126,15690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0127,16760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0128,16290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0129,18730.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0130,17850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0131,17550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0132,16690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0133,18650.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0134,18030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0135,17200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0136,17110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0137,17610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0138,17810.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0139,17610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0140,18660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0141,18310.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0142,18720.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0143,17760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0144,390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0145,18210.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0146,18410.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0147,19400.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0148,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0149,18490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0150,17080.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0151,17170.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0152,17150.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0153,18760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0154,18430.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0155,19610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0156,16340.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0157,17040.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0158,18960.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0159,19230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0160,19390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0161,19010.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0162,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0163,19620.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0164,19800.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0165,19840.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0166,19160.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0167,18200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0168,18590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0169,19800.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0170,17840.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0171,17780.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0172,17580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0173,17280.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0174,18390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0175,17690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0176,18000.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0177,18690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0178,17680.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0179,17600.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",13-06-2025,T0180,17390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0181,18900.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0182,17650.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0183,17260.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0184,19550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0185,18500.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0186,19600.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0187,17160.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0188,18830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0189,18260.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0190,19440.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0191,15830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0192,17410.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0193,16030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0194,14750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0195,14810.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0196,17020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0197,15260.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0198,15000.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0199,13150.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0200,15050.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0201,15560.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0202,15080.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0203,13900.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0204,16940.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0205,15230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0206,15140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",14-06-2025,T0207,15150.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0242,19780.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0243,18850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0244,21640.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0242,19780.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0245,20610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0246,20750.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0248,19200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0249,20370.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0250,20720.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0250,20720.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0251,19090.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0252,32890.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0253,20070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0253,20070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0254,20120.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0254,20120.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0255,21380.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0256,20790.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0257,20300.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0258,20850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0259,21830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0260,22550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0261,20690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0262,21720.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0263,21350.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0264,21180.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0265,19930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0266,20160.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0267,20920.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0268,19560.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0269,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0270,28180.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0271,17130.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0272,27730.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0273,17560.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0274,18030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0275,17130.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0276,18990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0277,17440.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0278,18070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0242,19780.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0243,18850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",15-06-2025,T0244,21640.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0279,20140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0280,19610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0281,19880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0282,20400.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0283,20570.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0284,21060.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0285,21450.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0286,19070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0287,19690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0288,19930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0289,18520.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0290,19360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0291,18920.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0292,20370.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0293,19360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0294,19090.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0295,17850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0296,19230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0297,18470.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0298,18080.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0299,19290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0300,20920.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0301,19410.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0302,18600.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0303,19630.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0304,18960.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0305,18480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0306,18120.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0307,19740.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0308,19690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0309,20580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0310,17990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0311,19990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0312,17360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0313,16690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0314,19350.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0315,19690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0316,19530.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0317,20360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0318,20140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0319,18730.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0320,18140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0321,20930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0322,19660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0323,20240.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0324,19420.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0325,20230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0326,20030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0327,21090.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0328,19460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0329,19480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0330,18500.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0331,18790.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0332,19310.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0333,19500.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0334,18580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0335,18730.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0336,17470.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0337,17940.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0338,19030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0339,2560.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0340,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0341,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0342,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0343,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0344,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0345,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0346,17480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0347,19470.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0348,20240.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0349,18000.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0350,18870.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0351,17930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0352,17580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0353,20400.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0354,32000.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0355,20380.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0356,17690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0357,20500.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0358,19610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0359,20590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0360,19660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0361,19620.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0362,0.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0363,21150.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0364,21170.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0365,20760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0366,19830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0367,19310.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0368,20450.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0369,22000.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0370,21230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0371,21200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0372,19950.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0373,20760.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0374,19590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0375,20700.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0376,19880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0377,20300.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0378,18830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0379,18590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0380,18690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0381,20980.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0382,18450.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0383,19360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0384,18810.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0385,19910.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0386,18240.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0387,19400.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0388,17710.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0389,17440.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0390,18020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0391,17960.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0392,17860.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0393,19700.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0394,18030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0395,18600.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0396,19260.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0397,19710.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0398,19290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0399,18710.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0400,19860.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0401,18450.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0402,19520.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0403,19940.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0404,20060.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0405,18890.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0406,17770.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0407,17620.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0408,16670.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0409,18880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0410,16800.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0411,18330.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0412,16780.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0413,18450.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0414,20350.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",17-06-2025,T0415,20100.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0313,16690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0313,16690.0,Tharuni
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1,1800,"67,308",16-06-2025,T0313,16690.0,Tharuni
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2004,10580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2006,9480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2007,12550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2008,10570.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2009,12740.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2010,10890.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2011,10450.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2012,10890.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2013,12230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2014,12290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2015,7930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2016,8190.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2017,8930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2018,9070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2019,9080.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2020,8910.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2021,8250.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2022,8680.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2023,10110.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",15-06-2025,T2024,8590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2025,12420.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2026,9270.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2027,12560.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2028,11200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2029,10580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2030,11630.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2031,12020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2032,11420.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2033,12420.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2034,11700.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2035,12100.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2036,11020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2037,10710.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2005,11960.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2038,11480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2039,12530.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2040,10790.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2041,12090.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2042,9460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2043,10020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2044,10830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2045,11230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2046,9200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2047,11510.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2048,9240.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2049,10660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2050,11490.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2051,9460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2052,8830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2053,11050.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2054,10460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2055,10910.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2056,10970.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2057,11200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2058,11010.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2059,11480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2060,12130.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2061,12020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2062,11880.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2063,11520.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2064,12520.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2065,10740.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2066,11310.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2067,9870.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2068,12120.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2069,11390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2070,9040.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2071,10970.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2072,11100.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2073,12800.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2074,10930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2075,9260.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2076,10100.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2077,10140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2078,10820.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2079,11400.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2080,12210.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2081,9960.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2082,11030.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2083,10290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2084,11480.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2085,11620.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2086,12390.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2087,11710.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2088,11580.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2089,11060.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2090,10990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2091,11530.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2092,13650.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2093,12900.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2094,11200.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2095,10550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2096,11360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2097,12630.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2098,11680.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2099,10660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2100,11180.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2101,9990.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2102,10310.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2103,11670.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2104,11640.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2105,11120.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2106,11000.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2107,10060.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2108,12350.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2109,380.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2110,11180.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2111,11180.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",16-06-2025,T2112,11690.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2113,11140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2114,9230.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2115,10070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2116,8930.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2117,8550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2118,7440.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2119,9070.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2120,8850.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2121,10270.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2122,7360.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2123,8140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2124,8550.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2125,7430.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2126,11020.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2127,8700.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2128,7440.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2129,10720.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2130,7530.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2131,7590.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2132,8100.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2133,5950.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2134,7610.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2135,11410.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2136,10250.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2137,10840.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2138,7660.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2139,9460.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2140,8290.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2141,11320.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2142,11140.0,Saurashtra Enviro Projects Pvt  Ltd 
+Saurashtra,Saurashtra,Nandyal,Nandyal,M4,1800,"80,083",17-06-2025,T2143,10830.0,Saurashtra Enviro Projects Pvt  Ltd 
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1805,17700.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1811,14190.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1812,20360.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1813,18140.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1814,18330.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1815,17240.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1816,16370.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1817,14820.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1818,19200.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1819,16670.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1820,19500.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",13-06-2025,T1821,17370.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1926,19340.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1928,14620.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1929,15850.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1930,18220.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1931,15290.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1932,15580.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1934,18940.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1935,18900.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1936,19690.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1937,19810.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1938,19030.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1939,18430.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1940,16870.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1941,19850.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1942,18290.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1928,14620.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1929,15850.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1930,18220.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1931,15290.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1932,15580.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1934,18940.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1935,18900.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1936,19690.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1937,19810.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1938,19030.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1939,18430.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1940,16870.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1941,19850.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1942,18290.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1943,19120.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1944,19630.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1928,14620.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1929,15850.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1930,18220.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1931,15290.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1932,15580.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1934,18940.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1935,18900.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1936,19690.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1937,19810.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1938,19030.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1939,18430.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1940,16870.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1941,19850.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",16-06-2025,T1942,18290.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1943,19120.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1944,19630.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1943,19120.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1944,19630.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1971,22440.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1972,20080.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1973,20730.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1974,18900.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1975,18160.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1976,19330.0,Tharuni
+Tharuni,Tharuni,Chilakaluripet,Guntur,M13,900,"43,811",17-06-2025,T1977,20150.0,Tharuni

@@ -1,0 +1,499 @@
+/* assets/css/enhanced_animations.css */
+/* Enhanced animations for the auto-rotating public layout with full-size histogram */
+
+/* Enhanced animations for icons */
+.pulse-slow { 
+    animation: pulse-slow 3s ease-in-out infinite; 
+}
+
+.bounce-subtle { 
+    animation: bounce-subtle 2s ease-in-out infinite; 
+}
+
+.move-truck { 
+    animation: move-truck 4s linear infinite; 
+}
+
+.flip { 
+    animation: flip 3s ease-in-out infinite; 
+}
+
+.rotate { 
+    animation: rotate 4s linear infinite; 
+}
+
+.scale-pulse { 
+    animation: scale-pulse 2s ease-in-out infinite; 
+}
+
+.spin-slow { 
+    animation: spin-slow 8s linear infinite; 
+}
+
+.logo-animate { 
+    animation: logo-float 6s ease-in-out infinite; 
+}
+
+.title-animate { 
+    animation: title-glow 4s ease-in-out infinite; 
+}
+
+.card-enhanced { 
+    animation: card-entry 0.6s ease-out; 
+}
+
+/* Counter animation styles */
+.animated-number-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+.animated-number {
+    font-weight: 800;
+    color: var(--brand-primary);
+    transition: all 0.3s ease;
+    animation: number-pop 0.8s ease-out;
+}
+
+/* Enhanced Card 1 styles for Agency/Cluster/Site display */
+.location-info-container {
+    text-align: center;
+    margin: 0.5rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.agency-line {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.cluster-line {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+    opacity: 0.9;
+}
+
+.site-line {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.2;
+    opacity: 0.8;
+}
+
+/* Enhanced Card 4 (Histogram) styles */
+.histogram-card {
+    min-height: 320px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.histogram-card .metric-icon {
+    font-size: 1.8rem !important;
+    margin-bottom: 0.3rem !important;
+}
+
+.histogram-card .metric-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.3rem !important;
+    flex-shrink: 0;
+}
+
+.histogram-card .metric-value {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.3rem !important;
+    flex-shrink: 0;
+}
+
+.histogram-card .metric-unit {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    flex-shrink: 0;
+}
+
+/* Ensure histogram takes full available space */
+.histogram-card > div:last-child {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 200px !important;
+}
+
+/* Legacy location container for backward compatibility */
+.location-container {
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.location-primary {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    margin-bottom: 0.2rem;
+}
+
+.location-secondary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+}
+
+.location-tertiary {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.unit-main {
+    font-weight: 600;
+}
+
+.unit-sub {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+
+/* Debug info styles */
+.debug-info {
+    font-size: 0.7rem !important;
+    color: var(--warning, #ffc107) !important;
+    margin-top: 0.5rem !important;
+    padding: 0.25rem !important;
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    border-radius: 4px !important;
+    word-break: break-word !important;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    font-family: 'Courier New', monospace;
+    line-height: 1.3;
+}
+
+.enhanced-layout .metric-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.enhanced-layout .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.enhanced-layout .metric-card:hover::before {
+    left: 100%;
+}
+
+/* Loading animation for numbers */
+.loading-number {
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    background-size: 200% 200%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Keyframe animations */
+@keyframes pulse-slow {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.05); 
+    }
+}
+
+@keyframes bounce-subtle {
+    0%, 100% { 
+        transform: translateY(0); 
+    }
+    50% { 
+        transform: translateY(-3px); 
+    }
+}
+
+@keyframes move-truck {
+    0%, 100% { 
+        transform: translateX(0); 
+    }
+    25% { 
+        transform: translateX(2px); 
+    }
+    75% { 
+        transform: translateX(-2px); 
+    }
+}
+
+@keyframes flip {
+    0%, 100% { 
+        transform: rotateY(0); 
+    }
+    50% { 
+        transform: rotateY(180deg); 
+    }
+}
+
+@keyframes rotate {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
+}
+
+@keyframes scale-pulse {
+    0%, 100% { 
+        transform: scale(1); 
+    }
+    50% { 
+        transform: scale(1.1); 
+    }
+}
+
+@keyframes spin-slow {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
+}
+
+@keyframes logo-float {
+    0%, 100% { 
+        transform: translateY(0) rotate(0deg); 
+    }
+    33% { 
+        transform: translateY(-2px) rotate(1deg); 
+    }
+    66% { 
+        transform: translateY(1px) rotate(-1deg); 
+    }
+}
+
+@keyframes title-glow {
+    0%, 100% { 
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    }
+    50% { 
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5), 0 0 10px var(--brand-primary); 
+    }
+}
+
+@keyframes card-entry {
+    0% { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+@keyframes number-pop {
+    0% { 
+        transform: scale(0.8); 
+        opacity: 0; 
+    }
+    50% { 
+        transform: scale(1.1); 
+    }
+    100% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+}
+
+@keyframes shimmer {
+    0% { 
+        background-position: 200% 200%; 
+    }
+    100% { 
+        background-position: -200% -200%; 
+    }
+}
+
+/* Enhanced metric value animations */
+.animated-value {
+    position: relative;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.animated-value .animated-number {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* Card entrance animations with staggered delay */
+.card-enhanced:nth-child(1) { animation-delay: 0.1s; }
+.card-enhanced:nth-child(2) { animation-delay: 0.2s; }
+.card-enhanced:nth-child(3) { animation-delay: 0.3s; }
+.card-enhanced:nth-child(4) { animation-delay: 0.4s; }
+.card-enhanced:nth-child(5) { animation-delay: 0.5s; }
+.card-enhanced:nth-child(6) { animation-delay: 0.6s; }
+.card-enhanced:nth-child(7) { animation-delay: 0.7s; }
+.card-enhanced:nth-child(8) { animation-delay: 0.8s; }
+
+/* Icon hover effects */
+.metric-icon {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.metric-icon:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+/* Responsive design for histogram card */
+@media (max-width: 768px) {
+    .pulse-slow, .bounce-subtle, .move-truck, 
+    .flip, .rotate, .scale-pulse, .spin-slow {
+        animation-duration: 1.5s;
+    }
+    
+    .logo-animate {
+        animation-duration: 3s;
+    }
+    
+    .title-animate {
+        animation-duration: 2s;
+    }
+    
+    .agency-line {
+        font-size: 0.9rem;
+    }
+    
+    .cluster-line {
+        font-size: 0.8rem;
+    }
+    
+    .site-line {
+        font-size: 0.75rem;
+    }
+    
+    .debug-info {
+        font-size: 0.6rem !important;
+        padding: 0.2rem !important;
+    }
+    
+    /* Adjust histogram card for mobile */
+    .histogram-card {
+        min-height: 280px !important;
+    }
+    
+    .histogram-card > div:last-child {
+        min-height: 180px !important;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet adjustments for histogram */
+    .histogram-card {
+        min-height: 300px !important;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Desktop - full size histogram */
+    .histogram-card {
+        min-height: 340px !important;
+    }
+    
+    .histogram-card > div:last-child {
+        min-height: 220px !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .pulse-slow, .bounce-subtle, .move-truck, 
+    .flip, .rotate, .scale-pulse, .spin-slow, 
+    .logo-animate, .title-animate, .card-enhanced {
+        animation: none !important;
+    }
+}
+
+/* Loading states for better UX */
+.loading-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    animation: pulse-slow 2s ease-in-out infinite;
+}
+
+.histogram-card {
+    min-height: 360px !important;  /* INCREASED FROM 320px */
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.histogram-card .metric-icon {
+    font-size: 1.8rem !important;
+    margin-bottom: 0.3rem !important;
+}
+
+.histogram-card .metric-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.3rem !important;
+    flex-shrink: 0;
+}
+
+.histogram-card .metric-value {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.3rem !important;
+    flex-shrink: 0;
+}
+
+.histogram-card .metric-unit {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    flex-shrink: 0;
+}
+
+/* Ensure histogram takes full available space */
+.histogram-card > div:last-child {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 280px !important;  /* INCREASED HEIGHT */
+}
+
+/* Graph container should fill the space */
+.histogram-card .dash-graph {
+    height: 100% !important;
+    min-height: 280px !important;
+}

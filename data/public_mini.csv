@@ -1,0 +1,41 @@
+Agency,Sub-contractor,Cluster,Site,Machine,Daily_Capacity,start_date,planned_end_date,expected_end_date,days_to_sept30,"Quantity 
+to be remediated in MT","Cumulative Quantity remediated till date 
+in MT",Active_site
+Saurashtra,Saurashtra,Kurnool,Kurnool,M1 ,1800,29-04-2025,30-06-2025,,,"67,308","49,401",Yes
+Saurashtra,Saurashtra,Kurnool,Dhone,M2,1200,18-06-2025,30-07-2025,,,"2,666",0,No
+Saurashtra,Saurashtra,Kurnool,Yemmiganur,M3,600,2/6/25,30-07-2025,,,"50,000",0,No
+Saurashtra,Saurashtra,Kurnool,Adoni,M2_MC,1200, 10.08.2025 , 20.08.2025 ,,,"41,357","3,477",Yes
+Saurashtra,Saurashtra,Kurnool,Gudur(K),M1_S,1800,15.06.2025,20.06.2025,,,"10,000",0,No
+Saurashtra,Saurashtra,Nandyal,Nandyala,M4,"1,800",28.04.2025,30.06.2025,,,"80,083","42,510",Yes
+Saurashtra,Saurashtra,Nandyala,Bethamcherla,M5,"1,200",15.06.2025,15.07.2025,,,"24,189",0,No
+Saurashtra,Saurashtra,Nandyala,Nandikotkur,M5_MC,"1,200",25.07.2025,15.08.2025,,,"19,700",0,No
+Saurashtra,Saurashtra,Nandyala,Atmakur(K),M5_S,"1,200",06.07.2025,10.07.2025,,,"3,596",0,No
+Saurashtra,Saurashtra,Nandyala,Giddalur,M6,700,30.06.2025,20.07.2025,,,"9,773",0,No
+Saurashtra,Saurashtra,Nandyala,Allagadda,M6_MC,800,30.07.2025,15.08.2025,,,"6,153",0,No
+Zigma,Zigma,Nellore Municipal Corporation,allipuram, M2 ,800,19/4/25,25/6/25,,,"34,037","31,432",Yes
+Zigma,Zigma,Nellore Municipal Corporation,donthalli," M4, M15",1400,25/5/25,11/9/25,,,"290,442","8,567",Yes
+Zigma,Zigma,GVMC,visag, M1 ,1300,10/3/25,11/8/25,,,"201,400","136,856",Yes
+Zigma,Zigma,Chittoor,Chittoor,"M9,M7_MC",500-500,19/6/25,15/9/25,,,"146,232",0,No
+Zigma,Zigma,Chittoor,madanapalle,M3,500,21/5/25,15/7/25,,,"27,532","8,246",Yes
+Zigma,Zigma,Chittoor,B.Kothakota,M4_S,1400,16/7/25,5/9/25,,,"25,772",0,No
+Zigma,Zigma,Chittoor,Punganur,M8,500,8/6/25,18/7/25,,,"22,945","3,230",Yes
+Zigma,Zigma,Chittoor,kuppam,M16,500,31/5/25,10/7/25,,,"20,000","5,522",Yes
+Zigma,Zigma,Chittoor,palamaner,M7,500,31/5/25,15/7/25,,,"13,177","3,327",Yes
+Zigma,Zigma,Tirupati,tpty,"M6,M18A,M18B",800-800-1000,31/5/25,24/8/25,,,"221,473","6,098",Yes
+Zigma,Zigma,Tirupati,Srikalahasti,M10,800,13/6/25,11/8/25,,,"50,307",0,No
+Zigma,Zigma,Tirupati,Sullurpet,M11,800,15/6/25,27/7/25,,,"38,261",0,No
+Zigma,Zigma,Tirupati,Nagari,M4_S_MC,1400,30/7/25,18/9/25,,,"20,034",0,No
+Zigma,Zigma,Tirupati,Puttur,M12 ,400,16/6/25,30/7/25,,,"21,977",0,No
+Zigma,Zigma,Tirupati,Venkatagiri,M13,500,16/6/25,10/7/25,,,"15,093",0,No
+Zigma,Zigma,Nellore,Kavali,M16,400,20/6/25,15/8/25,,,"18,536",0,No
+Zigma,Zigma,Nellore,Gudur(N),M19,400,30/6/25,4/9/25,,,"26,563",0,No
+Zigma,Zigma,Nellore,Atmakur(N),M14,500,15/6/25,10/7/25,,,"12,784",0,No
+Zigma,Zigma,Nellore,Buchireddypalem,M4_S,1400,22/6/25,7/7/25,,,"6,030",0,No
+Zigma,Zigma,Nellore,Naidupet,M19_S,400,4/9/25,14/9/25,,,"4,186",0,No
+Zigma,Zigma,Nellore,Alluru,M4_S,1400,6/7/25,8/7/25,,,908,0,No
+Zigma,Zigma,Anantapur,Anantapur,"M17,M20",900-900,18/6/25,19/9/25,,,"168,285",0,No
+Zigma,Zigma,Anantapur,Tadipatri,M8_MC,500,10/7/25,24/8/25,,,"22,735",0,No
+Zigma,Zigma,Anantapur,Guntakal,M9_MC,,18/7/25,27/8/25,,,"20,000",0,No
+Zigma,Zigma,Anantapur,Kalyanadurgam,M21,400,27/7/25,13/8/25,,,"7,184",0,No
+Zigma,Zigma,Anantapur,Rayadurgam,M21_MC,,28/8/25,15/9/25,,,"6,919",0,No
+Zigma,Zigma,Anantapur,Gooty,M9_S,,18/7/25,27/8/25,,,"4,563",0,No

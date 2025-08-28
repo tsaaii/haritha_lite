@@ -1,0 +1,80 @@
+/* Filter Container Custom Styles */
+.filter-container-wrapper {
+    transition: all 0.3s ease;
+}
+
+.filter-container-wrapper:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Custom dropdown styling for your theme */
+.custom-dropdown .Select-control {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-light) !important;
+    color: var(--text-primary) !important;
+}
+
+.custom-dropdown .Select-value-label {
+    color: var(--text-primary) !important;
+}
+
+.custom-dropdown .Select-placeholder {
+    color: var(--text-secondary) !important;
+}
+
+.custom-dropdown .Select-menu {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-light) !important;
+}
+
+.custom-dropdown .Select-option {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+.custom-dropdown .Select-option:hover {
+    background-color: var(--accent-bg) !important;
+}
+
+/* Date picker theme integration */
+.custom-date-picker .DateInput_input {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-light) !important;
+}
+
+.custom-date-picker .DateRangePickerInput {
+    background-color: var(--card-bg) !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .filter-grid {
+        padding: 0 !important;
+    }
+    
+    .filter-item {
+        margin-bottom: 1rem !important;
+    }
+    
+    .filter-actions {
+        position: sticky !important;
+        bottom: 0 !important;
+        background-color: var(--card-bg) !important;
+        padding: 1rem !important;
+        margin: 0 -1rem -1.5rem -1rem !important;
+        border-radius: 0 0 12px 12px !important;
+    }
+}
+
+/* Loading states */
+.filter-container-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.filter-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
