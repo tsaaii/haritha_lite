@@ -1,6 +1,6 @@
 # simple_legacy_report.py
 """
-Enhanced Legacy Report with Column Management and PDF Export
+Enhanced Legacy Report with Weighbridge Data Integration
 """
 
 from flask import Blueprint, render_template, session, redirect, request, jsonify, send_file
@@ -9,6 +9,7 @@ from datetime import datetime
 import json
 import io
 import os
+import glob
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter, A4, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
@@ -19,49 +20,90 @@ from reportlab.lib.units import inch
 legacy_bp = Blueprint('legacy_report', __name__, url_prefix='/legacy')
 
 def load_data():
-    """Load CSV data with your headers"""
+    """Load weighbridge CSV data"""
     try:
-        df = pd.read_csv('data/waste_data.csv')  # Update path as needed
+        # Look for the most recent weighbridge CSV file
+        csv_files = glob.glob('weighbridge_records_*.csv')
         
-        # Ensure date columns are datetime
-        date_columns = ['start_date', 'planned_end_date', 'expected_end_date']
-        for col in date_columns:
+        if csv_files:
+            # Sort by modification time to get the most recent
+            latest_csv = max(csv_files, key=os.path.getmtime)
+            print(f"Loading weighbridge data from: {latest_csv}")
+            df = pd.read_csv(latest_csv)
+        else:
+            # Try different possible locations and names
+            possible_files = [
+                'weighbridge_records_last_2_dates_20250829_012603.csv',
+                'data/weighbridge_records_*.csv',
+                'weighbridge_data.csv',
+                'data/weighbridge_data.csv'
+            ]
+            
+            df = None
+            for pattern in possible_files:
+                if '*' in pattern:
+                    files = glob.glob(pattern)
+                    if files:
+                        df = pd.read_csv(files[0])
+                        print(f"Loading weighbridge data from: {files[0]}")
+                        break
+                else:
+                    if os.path.exists(pattern):
+                        df = pd.read_csv(pattern)
+                        print(f"Loading weighbridge data from: {pattern}")
+                        break
+            
+            if df is None:
+                print("No weighbridge CSV files found - using sample data")
+                return create_sample_weighbridge_data()
+        
+        # Convert date columns to datetime
+        if 'date' in df.columns:
+            df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        
+        # Convert timestamp columns
+        timestamp_columns = ['first_timestamp', 'second_timestamp', 'cloud_upload_timestamp', '_processed_timestamp']
+        for col in timestamp_columns:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce')
-            
+        
+        # Convert numeric columns
+        numeric_columns = ['first_weight', 'second_weight', 'net_weight', 'net_weight_calculated']
+        for col in numeric_columns:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
+        
+        print(f"Loaded {len(df)} weighbridge records")
         return df
-    except FileNotFoundError:
-        return create_sample_data()
+        
+    except Exception as e:
+        print(f"Error loading weighbridge data: {e}")
+        return create_sample_weighbridge_data()
 
-def create_sample_data():
-    """Create sample data matching your CSV structure"""
+def create_sample_weighbridge_data():
+    """Create sample weighbridge data if file not found"""
     import numpy as np
     
-    agencies = ['Agency A', 'Agency B', 'Agency C']
-    contractors = ['Contractor 1', 'Contractor 2', 'Contractor 3']
-    clusters = ['Cluster North', 'Cluster South', 'Cluster East', 'Cluster West']
-    sites = ['Site 1', 'Site 2', 'Site 3', 'Site 4', 'Site 5']
-    machines = ['Machine A', 'Machine B', 'Machine C']
-    
-    n_records = 100
+    # Create sample data matching your CSV structure
+    n_records = 50
     
     data = {
-        'Agency': np.random.choice(agencies, n_records),
-        'Sub/contractor': np.random.choice(contractors, n_records),
-        'Cluster': np.random.choice(clusters, n_records),
-        'Site': np.random.choice(sites, n_records),
-        'Machine': np.random.choice(machines, n_records),
-        'Daily_Capacity': np.random.randint(10, 100, n_records),
-        'start_date': pd.date_range('2024-01-01', periods=n_records, freq='D'),
-        'planned_end_date': pd.date_range('2024-06-01', periods=n_records, freq='D'),
-        'expected_end_date': pd.date_range('2024-07-01', periods=n_records, freq='D'),
-        'days_to_sept30': np.random.randint(30, 150, n_records),
-        'Quantity to be remediated in MT': np.random.randint(50, 500, n_records),
-        'Cumulative Quantity remediated till date in MT': np.random.randint(20, 300, n_records),
-        'Active_site': np.random.choice(['Yes', 'No'], n_records),
-        'net_to_be_remediated_mt': np.random.randint(10, 200, n_records),
-        'days_required': np.random.randint(5, 60, n_records),
-        'Quantity remediated today': np.random.randint(0, 50, n_records)
+        'date': pd.date_range('2025-08-27', periods=n_records, freq='H'),
+        'time': ['12:00:00'] * n_records,
+        'site_name': np.random.choice(['Bheemavaram', 'Eluru', 'Hindupur', 'Kurnool'], n_records),
+        'cluster': np.random.choice(['Bheemavaram', 'Eluru', 'Hindupur', 'Kurnool'], n_records),
+        'agency_name': np.random.choice(['Tharuni Associates', 'Saurashtra Enviro Projects'], n_records),
+        'material': np.random.choice(['Legacy/MSW', 'Recyclables', 'Organic Waste'], n_records),
+        'ticket_no': [f'T{3000+i}' for i in range(n_records)],
+        'vehicle_no': np.random.choice(['AP37BG6795', 'AP27TU6165', 'AP21CV1234'], n_records),
+        'transfer_party_name': ['On-site'] * n_records,
+        'first_weight': np.random.randint(5000, 8000, n_records),
+        'second_weight': np.random.randint(2000, 4000, n_records),
+        'net_weight': np.random.randint(2000, 5000, n_records),
+        'record_status': ['complete'] * n_records,
+        'site_incharge': np.random.choice(['Manikanta', 'Rajesh', 'Suresh'], n_records),
+        'user_name': ['admin'] * n_records,
+        '_folder_source': np.random.choice(['Tharuni_Associates/Bheemavaram', 'Tharuni_Associates/Eluru'], n_records)
     }
     
     return pd.DataFrame(data)
@@ -69,35 +111,63 @@ def create_sample_data():
 def get_column_metadata(df):
     """Get metadata about columns for the UI"""
     columns = []
+    
+    # Define user-friendly names for weighbridge columns
+    column_display_names = {
+        'date': 'Date',
+        'time': 'Time',
+        'site_name': 'Site Name',
+        'cluster': 'Cluster',
+        'agency_name': 'Agency Name',
+        'material': 'Material',
+        'ticket_no': 'Ticket Number',
+        'vehicle_no': 'Vehicle Number',
+        'transfer_party_name': 'Transfer Party',
+        'first_weight': 'First Weight (kg)',
+        'first_timestamp': 'First Weighing Time',
+        'second_weight': 'Second Weight (kg)',
+        'second_timestamp': 'Second Weighing Time',
+        'net_weight': 'Net Weight (kg)',
+        'material_type': 'Material Type',
+        'site_incharge': 'Site Incharge',
+        'user_name': 'User Name',
+        'cloud_upload_timestamp': 'Upload Time',
+        'record_status': 'Status',
+        'net_weight_calculated': 'Calculated Net Weight (kg)',
+        '_source_file': 'Source File',
+        '_processed_timestamp': 'Processed Time',
+        '_folder_source': 'Folder Source'
+    }
+    
     for col in df.columns:
         col_info = {
             'name': col,
-            'display_name': col.replace('_', ' ').title(),
+            'display_name': column_display_names.get(col, col.replace('_', ' ').title()),
             'type': str(df[col].dtype),
             'sample_value': str(df[col].iloc[0]) if not df.empty else '',
-            'visible': True  # Default to visible
+            'visible': col not in ['_source_file', '_processed_timestamp']  # Hide internal columns by default
         }
         columns.append(col_info)
     return columns
 
 @legacy_bp.route('/report')
 def legacy_report():
-    """Main legacy report page with column management"""
+    """Main weighbridge report page"""
     if not session.get('swaccha_session_id'):
         return redirect('/login')
     
     user_data = session.get('user_data', {})
     user_name = user_data.get('name', 'User')
     
-    print(f"🎉 Hello from Legacy Report! User: {user_name}")
+    print(f"Loading Weighbridge Report for user: {user_name}")
     
-    # Load data
+    # Load weighbridge data
     df = load_data()
     
-    # Get filter options
-    agencies = sorted(df['Agency'].unique()) if 'Agency' in df.columns else []
-    clusters = sorted(df['Cluster'].unique()) if 'Cluster' in df.columns else []
-    sites = sorted(df['Site'].unique()) if 'Site' in df.columns else []
+    # Get filter options from actual data
+    agencies = sorted(df['agency_name'].dropna().unique()) if 'agency_name' in df.columns else []
+    clusters = sorted(df['cluster'].dropna().unique()) if 'cluster' in df.columns else []
+    sites = sorted(df['site_name'].dropna().unique()) if 'site_name' in df.columns else []
     
     # Get column metadata
     column_metadata = get_column_metadata(df)
@@ -107,18 +177,40 @@ def legacy_report():
     
     # Get column preferences from session
     column_prefs = session.get('column_preferences', {})
-    visible_columns = column_prefs.get('visible_columns', list(df.columns))
+    visible_columns = column_prefs.get('visible_columns', [col['name'] for col in column_metadata if col['visible']])
     column_order = column_prefs.get('column_order', list(df.columns))
     
     # Reorder and filter columns
     ordered_columns = [col for col in column_order if col in visible_columns and col in filtered_df.columns]
+    if not ordered_columns:  # Fallback to main columns if none selected
+        ordered_columns = ['date', 'time', 'site_name', 'agency_name', 'ticket_no', 'vehicle_no', 
+                          'first_weight', 'second_weight', 'net_weight', 'record_status']
+        ordered_columns = [col for col in ordered_columns if col in filtered_df.columns]
+    
     display_df = filtered_df[ordered_columns] if ordered_columns else filtered_df
     
-    # Calculate dynamic cards
-    cards_data = calculate_cards(filtered_df)
+    # Calculate dynamic cards for weighbridge data
+    cards_data = calculate_weighbridge_cards(filtered_df)
     
-    # Convert to records for template
-    records = display_df.to_dict('records')
+    # Format data for display
+    records = []
+    for _, row in display_df.iterrows():
+        record = {}
+        for col in ordered_columns:
+            value = row[col]
+            
+            # Format different data types
+            if pd.isna(value):
+                record[col] = ''
+            elif col in ['first_weight', 'second_weight', 'net_weight', 'net_weight_calculated']:
+                record[col] = f"{value:,.1f}" if isinstance(value, (int, float)) else str(value)
+            elif col == 'date':
+                record[col] = value.strftime('%Y-%m-%d') if hasattr(value, 'strftime') else str(value)
+            elif col in ['first_timestamp', 'second_timestamp', 'cloud_upload_timestamp']:
+                record[col] = value.strftime('%Y-%m-%d %H:%M:%S') if hasattr(value, 'strftime') else str(value)
+            else:
+                record[col] = str(value)
+        records.append(record)
     
     return render_template('legacy_report/simple_dashboard.html',
                          user_name=user_name,
@@ -155,7 +247,7 @@ def update_column_preferences():
 
 @legacy_bp.route('/api/export-pdf')
 def export_pdf():
-    """Export filtered data as PDF"""
+    """Export filtered weighbridge data as PDF"""
     if not session.get('swaccha_session_id'):
         return jsonify({'error': 'Authentication required'}), 401
     
@@ -171,14 +263,18 @@ def export_pdf():
         
         # Reorder and filter columns
         ordered_columns = [col for col in column_order if col in visible_columns and col in filtered_df.columns]
+        if not ordered_columns:
+            ordered_columns = ['date', 'site_name', 'ticket_no', 'vehicle_no', 'net_weight']
+            ordered_columns = [col for col in ordered_columns if col in filtered_df.columns]
+        
         display_df = filtered_df[ordered_columns] if ordered_columns else filtered_df
         
         # Create PDF
-        pdf_buffer = create_pdf_report(display_df, request.args)
+        pdf_buffer = create_pdf_report(display_df, request.args, is_weighbridge=True)
         
         # Generate filename
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f'legacy_report_{timestamp}.pdf'
+        filename = f'weighbridge_report_{timestamp}.pdf'
         
         return send_file(
             pdf_buffer,
@@ -191,8 +287,8 @@ def export_pdf():
         print(f"PDF export error: {e}")
         return jsonify({'error': str(e)}), 500
 
-def create_pdf_report(df, filters):
-    """Create PDF report from dataframe"""
+def create_pdf_report(df, filters, is_weighbridge=False):
+    """Create PDF report from weighbridge dataframe"""
     buffer = io.BytesIO()
     
     # Create document
@@ -219,11 +315,12 @@ def create_pdf_report(df, filters):
     content = []
     
     # Title
-    title = Paragraph("🎉 Legacy Report - स्वच्छ आंध्र प्रदेश", title_style)
+    title_text = "Weighbridge Data Report" if is_weighbridge else "Legacy Report"
+    title = Paragraph(f"{title_text} - Swachh Andhra Pradesh", title_style)
     content.append(title)
     
     # Filters summary
-    filter_text = create_filter_summary(filters)
+    filter_text = create_filter_summary(filters, is_weighbridge)
     if filter_text:
         filter_para = Paragraph(f"<b>Applied Filters:</b> {filter_text}", styles['Normal'])
         content.append(filter_para)
@@ -237,34 +334,46 @@ def create_pdf_report(df, filters):
     
     # Prepare table data
     if not df.empty:
-        # Limit columns for PDF (max 8 columns to fit page)
-        max_cols = 8
-        if len(df.columns) > max_cols:
-            df_pdf = df.iloc[:, :max_cols]
-            content.append(Paragraph(f"<i>Note: Showing first {max_cols} columns due to page width constraints</i>", styles['Italic']))
-            content.append(Spacer(1, 12))
-        else:
-            df_pdf = df
+        # Select key columns for PDF
+        pdf_columns = ['date', 'site_name', 'ticket_no', 'vehicle_no', 'net_weight', 'record_status']
+        available_columns = [col for col in pdf_columns if col in df.columns]
+        
+        if len(available_columns) == 0:
+            available_columns = list(df.columns)[:6]  # Take first 6 columns as fallback
+        
+        df_pdf = df[available_columns]
         
         # Create table data
         table_data = []
         
         # Headers
-        headers = [col.replace('_', ' ').title()[:15] for col in df_pdf.columns]  # Truncate long headers
+        headers = []
+        for col in df_pdf.columns:
+            if col == 'net_weight':
+                headers.append('Net Weight (kg)')
+            elif col == 'ticket_no':
+                headers.append('Ticket No')
+            elif col == 'vehicle_no':
+                headers.append('Vehicle No')
+            elif col == 'site_name':
+                headers.append('Site')
+            else:
+                headers.append(col.replace('_', ' ').title())
         table_data.append(headers)
         
         # Data rows (limit to 50 rows for PDF)
         max_rows = 50
         for _, row in df_pdf.head(max_rows).iterrows():
             row_data = []
-            for val in row:
+            for col, val in zip(df_pdf.columns, row):
                 if pd.isna(val):
                     row_data.append('')
-                elif isinstance(val, (int, float)):
-                    row_data.append(str(val))
+                elif col in ['net_weight', 'first_weight', 'second_weight']:
+                    row_data.append(f"{val:,.1f}" if isinstance(val, (int, float)) else str(val))
+                elif col == 'date':
+                    row_data.append(val.strftime('%Y-%m-%d') if hasattr(val, 'strftime') else str(val))
                 else:
-                    # Truncate long text
-                    row_data.append(str(val)[:20])
+                    row_data.append(str(val)[:20])  # Truncate long text
             table_data.append(row_data)
         
         if len(df) > max_rows:
@@ -305,75 +414,179 @@ def create_pdf_report(df, filters):
     
     return buffer
 
-def create_filter_summary(filters):
+def create_filter_summary(filters, is_weighbridge=False):
     """Create a summary of applied filters"""
     filter_parts = []
     
-    if filters.get('agency'):
-        filter_parts.append(f"Agency: {filters['agency']}")
-    if filters.get('cluster'):
-        filter_parts.append(f"Cluster: {filters['cluster']}")
-    if filters.get('site'):
-        filter_parts.append(f"Site: {filters['site']}")
-    if filters.get('start_date'):
-        filter_parts.append(f"Start Date: {filters['start_date']}")
-    if filters.get('end_date'):
-        filter_parts.append(f"End Date: {filters['end_date']}")
+    if is_weighbridge:
+        if filters.get('agency'):
+            filter_parts.append(f"Agency: {filters['agency']}")
+        if filters.get('cluster'):
+            filter_parts.append(f"Cluster: {filters['cluster']}")
+        if filters.get('site'):
+            filter_parts.append(f"Site: {filters['site']}")
+        if filters.get('start_date'):
+            filter_parts.append(f"Start Date: {filters['start_date']}")
+        if filters.get('end_date'):
+            filter_parts.append(f"End Date: {filters['end_date']}")
+        if filters.get('vehicle'):
+            filter_parts.append(f"Vehicle: {filters['vehicle']}")
+        if filters.get('status'):
+            filter_parts.append(f"Status: {filters['status']}")
+    else:
+        # Original filters for legacy data
+        if filters.get('agency'):
+            filter_parts.append(f"Agency: {filters['agency']}")
+        if filters.get('cluster'):
+            filter_parts.append(f"Cluster: {filters['cluster']}")
+        if filters.get('site'):
+            filter_parts.append(f"Site: {filters['site']}")
+        if filters.get('start_date'):
+            filter_parts.append(f"Start Date: {filters['start_date']}")
+        if filters.get('end_date'):
+            filter_parts.append(f"End Date: {filters['end_date']}")
     
     return " | ".join(filter_parts) if filter_parts else "None"
 
 def apply_filters(df, filters):
-    """Apply filters to dataframe"""
+    """Apply filters to weighbridge dataframe"""
     filtered_df = df.copy()
     
-    if filters.get('agency') and 'Agency' in df.columns:
-        filtered_df = filtered_df[filtered_df['Agency'] == filters.get('agency')]
+    # Agency filter
+    if filters.get('agency') and 'agency_name' in df.columns:
+        filtered_df = filtered_df[filtered_df['agency_name'] == filters.get('agency')]
     
-    if filters.get('cluster') and 'Cluster' in df.columns:
-        filtered_df = filtered_df[filtered_df['Cluster'] == filters.get('cluster')]
+    # Cluster filter
+    if filters.get('cluster') and 'cluster' in df.columns:
+        filtered_df = filtered_df[filtered_df['cluster'] == filters.get('cluster')]
     
-    if filters.get('site') and 'Site' in df.columns:
-        filtered_df = filtered_df[filtered_df['Site'] == filters.get('site')]
+    # Site filter
+    if filters.get('site') and 'site_name' in df.columns:
+        filtered_df = filtered_df[filtered_df['site_name'] == filters.get('site')]
     
-    if filters.get('start_date') and 'start_date' in df.columns:
+    # Date filters
+    if filters.get('start_date') and 'date' in df.columns:
         start_date = pd.to_datetime(filters.get('start_date'))
-        filtered_df = filtered_df[filtered_df['start_date'] >= start_date]
+        filtered_df = filtered_df[filtered_df['date'] >= start_date]
     
-    if filters.get('end_date') and 'start_date' in df.columns:
+    if filters.get('end_date') and 'date' in df.columns:
         end_date = pd.to_datetime(filters.get('end_date'))
-        filtered_df = filtered_df[filtered_df['start_date'] <= end_date]
+        filtered_df = filtered_df[filtered_df['date'] <= end_date]
+    
+    # Vehicle filter
+    if filters.get('vehicle') and 'vehicle_no' in df.columns:
+        filtered_df = filtered_df[filtered_df['vehicle_no'].str.contains(filters.get('vehicle'), case=False, na=False)]
+    
+    # Status filter
+    if filters.get('status') and 'record_status' in df.columns:
+        filtered_df = filtered_df[filtered_df['record_status'] == filters.get('status')]
     
     return filtered_df
 
-def calculate_cards(df):
-    """Calculate dynamic card values"""
+def calculate_weighbridge_cards(df):
+    """Calculate card values for weighbridge data with material type logic"""
     if len(df) == 0:
         return {
             'total_records': 0,
             'total_msw_received': 0,
             'total_output': 0,
-            'total_trips': 0
+            'unique_vehicles': 0
         }
     
     total_records = len(df)
     
-    # Use your actual column names
-    total_msw_received = df['Quantity to be remediated in MT'].sum() if 'Quantity to be remediated in MT' in df.columns else 0
-    total_output = df['Cumulative Quantity remediated till date in MT'].sum() if 'Cumulative Quantity remediated till date in MT' in df.columns else 0
-    total_trips = len(df)  # Count of records as requested
+    # Calculate Legacy/MSW total (sum of net_weight where material = 'Legacy/MSW')
+    if 'material' in df.columns and 'net_weight' in df.columns:
+        legacy_msw_mask = df['material'].str.contains('Legacy/MSW', case=False, na=False)
+        total_msw_kg = df.loc[legacy_msw_mask, 'net_weight'].sum()
+        
+        # Calculate Other Materials total (sum of net_weight where material != 'Legacy/MSW')
+        other_materials_mask = ~legacy_msw_mask & df['net_weight'].notna()
+        total_output_kg = df.loc[other_materials_mask, 'net_weight'].sum()
+        
+        # Convert from kg to metric tonnes (divide by 1000)
+        total_msw = total_msw_kg / 1000
+        total_output = total_output_kg / 1000
+    else:
+        # Fallback if columns don't exist
+        total_weight_kg = df['net_weight'].sum() if 'net_weight' in df.columns else 0
+        total_msw = total_weight_kg / 1000
+        total_output = 0
+    
+    # Count unique vehicles (changed from total trips to unique vehicles)
+    unique_vehicles = df['vehicle_no'].nunique() if 'vehicle_no' in df.columns else 0
     
     return {
         'total_records': total_records,
-        'total_msw_received': round(total_msw_received, 2),
-        'total_output': round(total_output, 2),
-        'total_trips': total_trips
+        'total_msw_received': round(total_msw, 2),  # Round to 2 decimal places for tonnes
+        'total_output': round(total_output, 2),     # Round to 2 decimal places for tonnes
+        'unique_vehicles': unique_vehicles
     }
 
+@legacy_bp.route('/logout')
+def logout():
+    """Logout route - clears session and redirects to main page"""
+    try:
+        # Get user info before clearing session
+        user_data = session.get('user_data', {})
+        user_name = user_data.get('name', 'User')
+        
+        print(f"DEBUG: Logout initiated for user: {user_name}")
+        
+        # Clear all session data
+        session.clear()
+        
+        print("DEBUG: Session cleared - redirecting to main page")
+        
+        # Redirect to main page with logout success message
+        return redirect('/?logout=success')
+        
+    except Exception as e:
+        print(f"ERROR: Logout failed: {e}")
+        # Force redirect even if there's an error
+        session.clear()
+        return redirect('/')
+
+# API endpoint for logout
+@legacy_bp.route('/api/logout', methods=['POST'])
+def api_logout():
+    """API endpoint for logout"""
+    try:
+        user_data = session.get('user_data', {})
+        user_name = user_data.get('name', 'User')
+        
+        print(f"DEBUG: API logout for user: {user_name}")
+        
+        # Clear session
+        session.clear()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Logged out successfully',
+            'redirect_url': '/'
+        })
+        
+    except Exception as e:
+        print(f"ERROR: API logout failed: {e}")
+        session.clear()  # Clear session anyway
+        return jsonify({
+            'success': True,  # Still return success to ensure redirect
+            'message': 'Logged out',
+            'redirect_url': '/'
+        })
+
 if __name__ == "__main__":
-    print("🎉 Hello from Legacy Report!")
-    print("✅ Enhanced with column management and PDF export")
+    print("Loading Weighbridge Report System")
+    print("Updated for real weighbridge data integration")
     
     # Test data loading
     df = load_data()
-    print(f"📊 Loaded {len(df)} records")
-    print(f"📋 Columns: {list(df.columns)}")
+    print(f"Loaded {len(df)} weighbridge records")
+    print(f"Columns: {list(df.columns)}")
+    
+    if not df.empty:
+        print(f"Date range: {df['date'].min()} to {df['date'].max()}")
+        if 'site_name' in df.columns:
+            print(f"Sites: {list(df['site_name'].unique())}")
+        if 'agency_name' in df.columns:
+            print(f"Agencies: {list(df['agency_name'].unique())}")

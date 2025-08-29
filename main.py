@@ -25,27 +25,14 @@ from simple_legacy_report import legacy_bp
 from flask_bootstrap import Bootstrap
 #from layouts.public_layout import build_public_layout
 from layouts.login_layout import build_login_layout
-from layouts.admin_dashboard import (
-    build_enhanced_dashboard, 
-    register_dashboard_flask_routes,
-    ensure_upload_directory,
-    configure_upload_settings
-)
+
 from file_watcher import start_file_monitoring, stop_file_monitoring
-from layouts.admin_dashboard import register_enhanced_csv_routes
+
 # ❌ REMOVED: from callbacks.filter_container_callbacks import register_filter_container_callbacks
 from data_loader import get_cached_data, refresh_cached_data
-from layouts.unauthorized_layout import create_unauthorized_layout, UNAUTHORIZED_CSS
 from services.auth_service import auth_service
 # ❌ REMOVED: from callbacks.dashboard_filter_callbacks import register_dashboard_filter_callbacks
 # ✅ FIXED: Import dashboard routes but with custom registration to avoid conflicts
-from endpoints.analytics_page import register_analytics_routes
-from endpoints.reports_page import register_reports_routes
-from endpoints.forecasting_page import register_forecasting_routes
-from endpoints.reviews_page import register_reviews_routes
-from endpoints.oauth_routes import register_oauth_routes
-from endpoints.debug_routes import register_debug_routes
-from callbacks.unified_dashboard_callbacks import register_unified_dashboard_callbacks
 # ✅ ONLY IMPORT: The consolidated callbacks
 #from callbacks.consolidated_filter_callbacks import register_all_callbacks
 from layouts.public_layout_uniform import build_public_layout
@@ -132,7 +119,6 @@ app.index_string = f'''
         <link rel="manifest" href="/assets/manifest.json">
         <style>
             {get_hover_overlay_css()}
-            {UNAUTHORIZED_CSS}
             
             /* Enhanced Google OAuth styling */
             #google-login-btn, #google-login-btn-alt {{
@@ -1326,6 +1312,172 @@ def start_streamlit_server():
         print(f"❌ Failed to start Streamlit: {e}")
 
 
+@callback(
+    Output('main-layout', 'children', allow_duplicate=True),
+    [Input('username-password-login-btn', 'n_clicks'),
+     Input('demo-login-btn', 'n_clicks')],
+    [State('username-input', 'value'),
+     State('password-input', 'value')],
+    prevent_initial_call=True
+)
+def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
+    """Handle login and force page refresh on success"""
+    if not ctx.triggered:
+        raise PreventUpdate
+    
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    triggered_value = ctx.triggered[0]['value']
+    
+    if triggered_value in [None, 0]:
+        raise PreventUpdate
+    
+    print(f"DEBUG: Login attempt - {button_id}")
+    
+    # USERNAME/PASSWORD LOGIN
+    if button_id == 'username-password-login-btn':
+        if not username or not password:
+            print("DEBUG: Missing credentials")
+            # Show error message
+            return html.Div([
+                html.Div("❌ Please enter both username and password", 
+                        style={'color': 'red', 'textAlign': 'center', 'padding': '1rem'}),
+                build_login_layout(DEFAULT_THEME, 'missing_credentials')
+            ])
+        
+        if validate_user_credentials(username, password):
+            role = get_user_role_by_username(username)
+            create_demo_session(username, f"User {username}", role)
+            print(f"DEBUG: Login successful for {username} - REFRESHING PAGE")
+            
+            # Return success page with immediate refresh
+            return html.Div([
+                html.Div([
+                    html.H1("✅ Login Successful!", 
+                           style={'color': 'green', 'textAlign': 'center', 'marginBottom': '1rem'}),
+                    html.P(f"Welcome, {username}!", 
+                           style={'textAlign': 'center', 'fontSize': '1.2rem', 'marginBottom': '1rem'}),
+                    html.P("Loading your dashboard...", 
+                           style={'textAlign': 'center', 'marginBottom': '2rem'}),
+                    html.Div("🔄", style={'textAlign': 'center', 'fontSize': '3rem'})
+                ], style={
+                    'padding': '3rem',
+                    'backgroundColor': '#f0f9ff',
+                    'borderRadius': '12px',
+                    'margin': '2rem auto',
+                    'maxWidth': '500px',
+                    'border': '2px solid green'
+                }),
+                # FORCE IMMEDIATE PAGE REFRESH
+                dcc.Location(id='success-redirect', refresh=True, href='/legacy/report')
+            ])
+        else:
+            print(f"DEBUG: Invalid credentials for {username}")
+            return html.Div([
+                html.Div("❌ Invalid username or password", 
+                        style={'color': 'red', 'textAlign': 'center', 'padding': '1rem'}),
+                build_login_layout(DEFAULT_THEME, 'invalid_credentials')
+            ])
+    
+    # DEMO LOGIN
+    elif button_id == 'demo-login-btn':
+        create_demo_session('demo_user', 'Demo User', 'administrator')
+        print("DEBUG: Demo login successful - REFRESHING PAGE")
+        
+        return html.Div([
+            html.Div([
+                html.H1("✅ Demo Login Successful!", 
+                       style={'color': 'green', 'textAlign': 'center', 'marginBottom': '1rem'}),
+                html.P("Welcome, Demo User!", 
+                       style={'textAlign': 'center', 'fontSize': '1.2rem', 'marginBottom': '1rem'}),
+                html.P("Loading legacy report dashboard...", 
+                       style={'textAlign': 'center', 'marginBottom': '2rem'}),
+                html.Div("🔄", style={'textAlign': 'center', 'fontSize': '3rem'})
+            ], style={
+                'padding': '3rem',
+                'backgroundColor': '#f0f9ff',
+                'borderRadius': '12px',
+                'margin': '2rem auto',
+                'maxWidth': '500px',
+                'border': '2px solid green'
+            }),
+            # FORCE IMMEDIATE PAGE REFRESH
+            dcc.Location(id='demo-success-redirect', refresh=True, href='/legacy/report')
+        ])
+    
+    raise PreventUpdate
+
+
+# ALTERNATIVE: Even simpler with just JavaScript
+@callback(
+    Output('login-redirect-script', 'children'),
+    [Input('username-password-login-btn', 'n_clicks'),
+     Input('demo-login-btn', 'n_clicks')],
+    [State('username-input', 'value'),
+     State('password-input', 'value')],
+    prevent_initial_call=True
+)
+def login_and_redirect(username_clicks, demo_clicks, username, password):
+    """Validate login and return JavaScript redirect"""
+    if not ctx.triggered:
+        raise PreventUpdate
+    
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    
+    # USERNAME/PASSWORD LOGIN
+    if button_id == 'username-password-login-btn':
+        if username and password and validate_user_credentials(username, password):
+            role = get_user_role_by_username(username)
+            create_demo_session(username, f"User {username}", role)
+            print(f"DEBUG: Login successful, executing redirect script")
+            # Return JavaScript that immediately redirects
+            return html.Script("window.location.href = '/legacy/report';")
+    
+    # DEMO LOGIN
+    elif button_id == 'demo-login-btn':
+        create_demo_session('demo_user', 'Demo User', 'administrator')
+        print("DEBUG: Demo login successful, executing redirect script")
+        return html.Script("window.location.href = '/legacy/report';")
+    
+    return ""
+
+def create_logout_success_handler():
+    """Create component to handle logout success"""
+    return html.Div([
+        html.Div(id='logout-success-message', style={'display': 'none'}),
+        html.Script("""
+            // Check for logout success in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('logout') === 'success') {
+                // Show success message
+                const successDiv = document.createElement('div');
+                successDiv.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3" 
+                         style="z-index: 9999; max-width: 400px;">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            <div>
+                                <strong>Logged out successfully!</strong>
+                                <br><small>Welcome back to the main page</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                document.body.appendChild(successDiv);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(function() {
+                    if (successDiv.parentNode) {
+                        successDiv.remove();
+                    }
+                }, 5000);
+                
+                // Clean URL (remove logout parameter)
+                const newUrl = window.location.href.split('?')[0];
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        """)
+    ])
 # 5. Login actions - NO GOOGLE OAUTH OR LOGOUT (handled by JavaScript)
 @callback(
     Output('url', 'pathname', allow_duplicate=True),
@@ -1431,7 +1583,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
             role = 'administrator' if 'swaccha' in manual_email.lower() else 'viewer'
             create_demo_session('manual_user', f'User ({manual_email})', role)
             print(f"DEBUG: Email login successful for {manual_email} → REDIRECTING to /legacy/report")
-            return '/legacy/report'
+            handle_login_with_refresh
         else:
             return '/login?error=invalid_email'
     
@@ -2015,18 +2167,12 @@ def create_demo_session(user_id, name, role):
     print(f"DEBUG: Demo session created for {name}")
 
 # Configure upload settings and register dashboard routes
-configure_upload_settings(server)
-ensure_upload_directory(server)
 
 # ✅ FIXED: Register routes WITH custom dashboard routes (no conflicts)
 register_custom_dashboard_routes(server)  # Custom routes for dashboard functionality
-register_oauth_routes(server, google_auth_manager, GOOGLE_AUTH_AVAILABLE, logger)
-register_debug_routes(server)
-register_dashboard_flask_routes(server)
+
 # ✅ KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
 # This handles the /dashboard route without conflicts
-register_enhanced_csv_routes(server)
-# Create upload directories
 upload_dir = Path('/tmp/uploads')
 upload_dir.mkdir(exist_ok=True)
 user_upload_dir = upload_dir / 'dash_uploads'
@@ -2040,7 +2186,6 @@ if __name__ == '__main__':
         setup_legacy_report(server)
         
         # Register existing callbacks
-        register_unified_dashboard_callbacks()
         logger.info("✅ Unified callbacks registered successfully")
         logger.info("✅ Simple Legacy report integrated")
         

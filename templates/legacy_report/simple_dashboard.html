@@ -1,10 +1,10 @@
-<!-- templates/legacy_report/enhanced_dashboard.html -->
+<!-- templates/legacy_report/simple_dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legacy Report - स्वच्छ आंध्र प्रदेश</title>
+    <title>Weighbridge Report - स्वच्छ आंध्र प्रदेश</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -310,6 +310,31 @@
             color: var(--text-secondary);
             font-size: 0.875rem;
         }
+
+        /* Enhanced card styling with color coding */
+        .metric-card.legacy-msw {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .metric-card.legacy-msw .metric-value {
+            color: #e74c3c;
+        }
+
+        .metric-card.other-output {
+            border-left: 4px solid var(--success);
+        }
+
+        .metric-card.other-output .metric-value {
+            color: var(--success);
+        }
+
+        .metric-card.vehicle-count {
+            border-left: 4px solid var(--info);
+        }
+
+        .metric-card.vehicle-count .metric-value {
+            color: var(--info);
+        }
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -325,29 +350,73 @@
     <nav class="navbar navbar-expand-lg" style="background: var(--card-bg); border-bottom: 1px solid var(--border-light);">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" style="color: var(--brand-primary);">
-                <i class="fas fa-chart-line me-2"></i>
-                స్వర్ణ ఆంధ్ర స్వచ్ఛ ఆంధ్ర - Legacy Report View
+                <i class="fas fa-weight-hanging me-2"></i>
+                Weighbridge Data Report - स्वच्छ आंध्र प्रदेश
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/" style="color: var(--text-primary);">
-                    <i class="fas fa-home me-1"></i>Home
-                </a>
-                <a class="nav-link" href="/analytics" style="color: var(--text-primary);">
-                    <i class="fas fa-chart-bar me-1"></i>Analytics
-                </a>
+            
+            <!-- Navbar toggle for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link" href="/" style="color: var(--text-primary);">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                    <a class="nav-link" href="/analytics" style="color: var(--text-primary);">
+                        <i class="fas fa-chart-bar me-1"></i>Analytics
+                    </a>
+                </div>
+                
+                <!-- User info and logout -->
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+                           style="color: var(--text-primary);">
+                            <i class="fas fa-user-circle me-2" style="color: var(--brand-primary);"></i>
+                            <span>{{ user_name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background: var(--card-bg); border: 1px solid var(--border-light);">
+                            <li>
+                                <span class="dropdown-item-text" style="color: var(--text-secondary);">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Last updated: {{ current_time }}
+                                </span>
+                            </li>
+                            <li><hr class="dropdown-divider" style="border-color: var(--border-light);"></li>
+                            <li>
+                                <button class="dropdown-item" onclick="confirmLogout()" 
+                                        style="color: var(--error); background: none; border: none; width: 100%; text-align: left;">
+                                    <i class="fas fa-sign-out-alt me-2"></i>
+                                    Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Quick logout button (always visible) -->
+                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="confirmLogout()" 
+                            style="border-color: var(--error); color: var(--error);">
+                        <i class="fas fa-sign-out-alt me-1"></i>
+                        <span class="d-none d-md-inline">Logout</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
-
+    
     <div class="container-fluid">
         <!-- Welcome Header -->
         <div class="welcome-header">
             <h1>Hello {{ user_name }}!</h1>
             <small style="color: var(--text-secondary);">
+                Weighbridge Data Analysis Dashboard
             </small>
         </div>
 
-        <!-- Dynamic Cards -->
+        <!-- Enhanced Dynamic Cards with Material Type Logic -->
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="metric-card">
@@ -357,24 +426,27 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="metric-card">
-                    <i class="fas fa-weight-hanging fa-2x mb-2" style="color: var(--success);"></i>
+                <div class="metric-card legacy-msw">
+                    <i class="fas fa-trash fa-2x mb-2" style="color: #e74c3c;"></i>
                     <div class="metric-value">{{ cards_data.total_msw_received }}</div>
-                    <div class="metric-label">Total MSW (MT)</div>
+                    <div class="metric-label">Legacy/MSW Total (MT)</div>
+                    <small class="text-muted">Material: Legacy/MSW</small>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="metric-card">
-                    <i class="fas fa-industry fa-2x mb-2" style="color: var(--warning);"></i>
+                <div class="metric-card other-output">
+                    <i class="fas fa-recycle fa-2x mb-2" style="color: var(--success);"></i>
                     <div class="metric-value">{{ cards_data.total_output }}</div>
-                    <div class="metric-label">Total Output (MT)</div>
+                    <div class="metric-label">Other Materials (MT)</div>
+                    <small class="text-muted">Non-Legacy/MSW</small>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="metric-card">
+                <div class="metric-card vehicle-count">
                     <i class="fas fa-truck fa-2x mb-2" style="color: var(--info);"></i>
-                    <div class="metric-value">{{ cards_data.total_trips }}</div>
-                    <div class="metric-label">Total Trips</div>
+                    <div class="metric-value">{{ cards_data.unique_vehicles }}</div>
+                    <div class="metric-label">Number of Vehicles</div>
+                    <small class="text-muted">Unique Vehicle Count</small>
                 </div>
             </div>
         </div>
@@ -438,7 +510,7 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
                     <i class="fas fa-table me-2"></i>
-                    Data Grid ({{ total_records }} records)
+                    Weighbridge Data ({{ total_records }} records)
                 </h5>
                 <div>
                     <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#columnModal">
@@ -464,12 +536,14 @@
                             <tr>
                                 {% for col in display_columns %}
                                 <td>
-                                    {% if col == 'Active_site' %}
-                                        {% if record[col] == 'Yes' %}
-                                            <span class="badge badge-success">Yes</span>
+                                    {% if col == 'record_status' %}
+                                        {% if record[col] == 'complete' %}
+                                            <span class="badge badge-success">Complete</span>
                                         {% else %}
-                                            <span class="badge badge-secondary">No</span>
+                                            <span class="badge badge-secondary">{{ record[col] }}</span>
                                         {% endif %}
+                                    {% elif col == 'material' and record[col] == 'Legacy/MSW' %}
+                                        <span class="badge" style="background-color: #e74c3c; color: white;">{{ record[col] }}</span>
                                     {% elif record[col].__class__.__name__ == 'Timestamp' %}
                                         {{ record[col].strftime('%Y-%m-%d') }}
                                     {% else %}
@@ -487,15 +561,15 @@
 
         <!-- Status Info -->
         <div class="alert" style="background: rgba(56, 161, 105, 0.1); border: 1px solid var(--success); color: var(--text-primary);">
-            <h5><i class="fas fa-info-circle me-2"></i>Enhanced Features Active</h5>
+            <h5><i class="fas fa-info-circle me-2"></i>Enhanced Weighbridge Features</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-0">✅ Column management with drag & drop reordering</p>
-                    <p class="mb-0">✅ PDF export with applied filters</p>
+                    <p class="mb-0">✅ Material-based weight segregation</p>
+                    <p class="mb-0">✅ Unique vehicle counting</p>
                 </div>
                 <div class="col-md-6">
-                    <p class="mb-0">✅ Responsive Bootstrap design</p>
-                    <p class="mb-0">✅ Real-time filtering and search</p>
+                    <p class="mb-0">✅ Real-time filtering by agency, site, date</p>
+                    <p class="mb-0">✅ PDF export with weighbridge data</p>
                 </div>
             </div>
         </div>
@@ -548,6 +622,38 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout and return to the main page?')) {
+                showLogoutMessage();
+                setTimeout(function() {
+                    window.location.href = '/legacy/logout';
+                }, 1000);
+            }
+        }
+        
+        function showLogoutMessage() {
+            const logoutMessage = document.createElement('div');
+            logoutMessage.innerHTML = `
+                <div class="alert alert-info alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3" 
+                     style="z-index: 9999; background: var(--info); color: white; border: none;">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                        <div>
+                            <strong>Logging out...</strong>
+                            <br><small>Returning to main page</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(logoutMessage);
+            
+            setTimeout(function() {
+                if (logoutMessage.parentNode) {
+                    logoutMessage.remove();
+                }
+            }, 3000);
+        }
+
         // Initialize DataTable
         $(document).ready(function() {
             $('#data-table').DataTable({
@@ -555,7 +661,7 @@
                 responsive: true,
                 order: [[0, 'asc']],
                 language: {
-                    search: "Search records:",
+                    search: "Search weighbridge records:",
                     lengthMenu: "Show _MENU_ records per page"
                 }
             });
@@ -567,7 +673,7 @@
                 ghostClass: 'bg-light'
             });
             
-            console.log('🎉 Enhanced Legacy Report loaded successfully!');
+            console.log('Enhanced Weighbridge Report loaded successfully!');
         });
 
         function applyFilters() {
@@ -617,7 +723,6 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    // Close modal and reload page
                     bootstrap.Modal.getInstance(document.getElementById('columnModal')).hide();
                     location.reload();
                 } else {
@@ -634,19 +739,16 @@
             const currentParams = new URLSearchParams(window.location.search);
             const exportUrl = '/legacy/api/export-pdf?' + currentParams.toString();
             
-            // Show loading indicator
             const btn = event.target.closest('button');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Generating PDF...';
             btn.disabled = true;
             
-            // Create download link
             const link = document.createElement('a');
             link.href = exportUrl;
-            link.download = 'legacy_report.pdf';
+            link.download = 'weighbridge_report.pdf';
             link.click();
             
-            // Reset button after delay
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -655,7 +757,7 @@
 
         // Auto-refresh every 5 minutes
         setInterval(function() {
-            console.log('🔄 Auto-refresh check at', new Date().toLocaleTimeString());
+            console.log('Auto-refresh check at', new Date().toLocaleTimeString());
         }, 300000);
     </script>
 </body>
