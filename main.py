@@ -1014,6 +1014,25 @@ def route_and_authenticate(pathname, search):
     if search:
         params = dict(urllib.parse.parse_qsl(search.lstrip('?')))
 
+    # Handle logout FIRST before any other logic
+    if params.get('logout') == 'true':
+        print("DEBUG: Logout detected - clearing all session data")
+        flask.session.clear()
+        if GOOGLE_AUTH_AVAILABLE and google_auth_manager:
+            try:
+                session_id = flask.session.get('swaccha_session_id')
+                if session_id:
+                    google_auth_manager.logout(session_id)
+                    print(f"DEBUG: Cleared OAuth session: {session_id}")
+            except Exception as e:
+                print(f"DEBUG: OAuth logout error: {e}")
+        print("DEBUG: Logout complete - returning to public landing")
+        return 'public_landing', False, {}, 'Logged out successfully.'
+
+    # ADD THIS: Handle site routes - let Flask handle them
+    if pathname and pathname.startswith('/site/'):
+        print(f"DEBUG: Site route detected: {pathname} - forcing page refresh")
+        return 'site_redirect', False, {'redirect_url': pathname}, ''
     # Session validation
     session_id = flask.session.get('swaccha_session_id')
     user_data = flask.session.get('user_data', {})
@@ -1053,7 +1072,7 @@ def route_and_authenticate(pathname, search):
     
     print(f"DEBUG: Final auth state - authenticated: {is_authenticated}")
     
-    # ✅ Handle Flask routes
+    # Handle Flask routes
     if pathname == '/legacy/report' or pathname.startswith('/legacy/'):
         if is_authenticated:
             print(f"DEBUG: Flask route {pathname} - letting Flask handle it")
@@ -1132,7 +1151,6 @@ def route_and_authenticate(pathname, search):
         return 'public_landing', is_authenticated, user_data, ''
 
 # 2. Then, replace the layout rendering section in main.py (around line 374):
-
 @callback(
     Output('main-layout', 'children'),
     [Input('current-theme', 'data'),
@@ -1142,7 +1160,7 @@ def route_and_authenticate(pathname, search):
      Input('auth-error-message', 'data')]
 )
 def render_layout(theme_name, is_authenticated, current_page, user_data, error_message):
-    """Render appropriate layout - FIXED with legacy redirect support"""
+    """Render appropriate layout"""
     # Handle None values
     theme_name = theme_name or DEFAULT_THEME
     is_authenticated = bool(is_authenticated)
@@ -1153,6 +1171,16 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
     print(f"DEBUG: Rendering layout - page: {current_page}, theme: {theme_name}, authenticated: {is_authenticated}")
     
     try:
+        # Handle site redirects FIRST
+        if current_page == 'site_redirect':
+            redirect_url = user_data.get('redirect_url', '/')
+            print(f"DEBUG: Rendering site redirect to: {redirect_url}")
+            return html.Div([
+                html.Meta(httpEquiv="refresh", content=f"0;url={redirect_url}"),
+                html.Div(f"Redirecting to {redirect_url}...", 
+                        style={'textAlign': 'center', 'padding': '2rem', 'fontSize': '1.2rem'})
+            ])
+        
         if current_page == 'login':
             layout = build_login_layout(theme_name, error_message)
             print("DEBUG: Login layout rendered")
@@ -1166,7 +1194,7 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
             print("DEBUG: Kadapa Rayachoti layout rendered")
             return layout
         elif current_page == 'legacy_redirect_page' and is_authenticated:
-            # ✅ FIXED: Proper syntax for redirect page
+            # Legacy redirect page
             layout = html.Div([
                 html.Div([
                     html.H1("🎉 Hello from Legacy Report!", 
@@ -1192,7 +1220,7 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
             print("DEBUG: Legacy redirect page rendered")
             return layout
         elif current_page == 'legacy_report' and is_authenticated:
-            # Your existing legacy_report handling (if any)
+            # Legacy report handling
             layout = html.Div([
                 html.Div([
                     html.H1("📊 Legacy Report Dashboard", 
@@ -1242,6 +1270,7 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
         import traceback
         print(f"ERROR: Full traceback: {traceback.format_exc()}")
         return build_public_layout(DEFAULT_THEME, False, {})
+
 # 3. MOST IMPORTANT: Update the Flask routes in admin_dashboard.py to check access:
 
 # In admin_dashboard.py, update these routes:

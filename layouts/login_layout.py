@@ -322,7 +322,7 @@ def build_login_layout(theme_name="dark", error_message=""):
                 style={"textAlign": "center", "marginBottom": "3rem"},
                 children=[
                     html.H1(
-                        "🎯 Haritha Dashboard Portal",
+                        "Swachha Andhra Corporation Login portal",
                         className="portal-title",
                         style={
                             "color": "#FFFFFF", 

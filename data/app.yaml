@@ -1,0 +1,17 @@
+runtime: python39
+
+instance_class: F2
+
+env_variables:
+  # Add any environment variables your app needs
+  FLASK_ENV: production
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+
+handlers:
+- url: /static
+  static_dir: static
+- url: /.*
+  script: auto
