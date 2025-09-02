@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }} Dashboard - Haritha Weighbridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #eb9534 0%, #DD6B20 100%);
+            --secondary-gradient: linear-gradient(135deg, #38A169 0%, #2D7D32 100%);
+            --success-gradient: linear-gradient(135deg, #38A169 0%, #2F855A 100%);
+            --warning-gradient: linear-gradient(135deg, #DD6B20 0%, #C05621 100%);
+            --info-gradient: linear-gradient(135deg, #3182CE 0%, #2C5282 100%);
+            --purple-gradient: linear-gradient(135deg, #805AD5 0%, #6B46C1 100%);
+            
+            --primary-bg: #F8F9FA;
+            --secondary-bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --card-hover: #F1F5F9;
+            --border-color: #E2E8F0;
+            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.16);
+            
+            --text-primary: #1A202C;
+            --text-secondary: #4A5568;
+            --text-muted: #718096;
+            --text-on-color: #FFFFFF;
+            
+            --accent-orange: #eb9534;
+            --accent-green: #38A169;
+            --accent-blue: #3182CE;
+            --accent-purple: #805AD5;
+            --accent-red: #E53E3E;
+            --accent-teal: #319795;
+            --accent-pink: #D53F8C;
+            --accent-indigo: #5A67D8;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .dashboard-header {
+            background: var(--primary-gradient);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path d="M0,100 C50,150 100,50 200,100 C300,150 400,50 500,100 C600,150 700,50 800,100 C900,150 950,50 1000,100 L1000,200 L0,200 Z" fill="rgba(255,255,255,0.2)"/></svg>') repeat-x;
+            background-size: 1000px 200px;
+            opacity: 0.4;
+        }
+        
+        .site-header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .status-active {
+            background: var(--success-gradient);
+            border-color: var(--accent-green);
+        }
+        
+        .status-inactive {
+            background: var(--warning-gradient);
+            border-color: var(--accent-orange);
+        }
+        
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            height: 180px; /* Fixed height for all cards */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            background: var(--card-hover);
+            border-color: var(--accent-orange);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+        
+        .metric-card:nth-child(1) { border-left: 4px solid var(--accent-orange); }
+        .metric-card:nth-child(2) { border-left: 4px solid var(--accent-green); }
+        .metric-card:nth-child(3) { border-left: 4px solid var(--accent-blue); }
+        .metric-card:nth-child(4) { border-left: 4px solid var(--accent-purple); }
+        
+        
+        .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-card:nth-child(1) .metric-value { color: var(--accent-orange); }
+        .metric-card:nth-child(2) .metric-value { color: var(--accent-green); }
+        .metric-card:nth-child(3) .metric-value { color: var(--accent-blue); }
+        .metric-card:nth-child(4) .metric-value { color: var(--accent-purple); }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-sublabel {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        
+        .progress-circle {
+            width: 80px;  /* Reduced from 120px */
+            height: 80px; /* Reduced from 120px */
+            position: relative;
+            margin: 0 auto 0.5rem auto; /* Reduced bottom margin */
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 8;
+        }
+        
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem; /* Reduced from 1.5rem */
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+        .chart-container {
+            height: 300px;
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .material-item {
+            background: linear-gradient(135deg, rgba(235, 149, 52, 0.05) 0%, rgba(235, 149, 52, 0.02) 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--accent-orange);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(235, 149, 52, 0.1);
+        }
+        
+        .material-item:hover {
+            background: linear-gradient(135deg, rgba(235, 149, 52, 0.08) 0%, rgba(235, 149, 52, 0.05) 100%);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .material-item:nth-child(odd) {
+            border-left-color: var(--accent-green);
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.05) 0%, rgba(56, 161, 105, 0.02) 100%);
+            border: 1px solid rgba(56, 161, 105, 0.1);
+        }
+        
+        .material-item:nth-child(odd):hover {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.08) 0%, rgba(56, 161, 105, 0.05) 100%);
+        }
+        
+        .vehicle-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .vehicle-card:hover {
+            background: var(--card-hover);
+            border-color: var(--accent-blue);
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+        
+        .vehicle-card:nth-child(odd) {
+            border-left: 4px solid var(--accent-teal);
+        }
+        
+        .vehicle-card:nth-child(even) {
+            border-left: 4px solid var(--accent-purple);
+        }
+        
+        .alert-card {
+            background: linear-gradient(135deg, rgba(235, 149, 52, 0.08) 0%, rgba(221, 107, 32, 0.05) 100%);
+            border: 2px solid rgba(235, 149, 52, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .back-btn {
+            background: var(--secondary-gradient);
+            border: 2px solid var(--accent-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+            font-weight: 500;
+        }
+        
+        .back-btn:hover {
+            background: var(--warning-gradient);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--accent-orange);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .section-title:nth-of-type(1) .section-icon { background: var(--primary-gradient); }
+        .section-title:nth-of-type(2) .section-icon { background: var(--info-gradient); }
+        .section-title:nth-of-type(3) .section-icon { background: var(--purple-gradient); }
+        .section-title:nth-of-type(4) .section-icon { background: var(--secondary-gradient); }
+        
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+        
+        .info-badge:nth-child(3) {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.2) 0%, rgba(56, 161, 105, 0.1) 100%);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .info-badge:nth-child(4) {
+            background: linear-gradient(135deg, rgba(49, 151, 149, 0.2) 0%, rgba(49, 151, 149, 0.1) 100%);
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 1.5rem 0;
+            }
+            
+            .metric-value {
+                font-size: 1.875rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .metric-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="site-header-content">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-5 fw-bold mb-2">{{ site_name }} Dashboard</h1>
+                        <div class="info-badge mb-2">
+                            <i class="fas fa-building me-2"></i>
+                            Contractor: {{ contractor|default('Not specified') }}
+                        </div>
+                        <div class="info-badge">
+                            <i class="fas fa-layer-group me-2"></i>
+                            Cluster: {{ cluster|default('Not specified') }}
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="mb-3">
+                            <span class="status-indicator status-{{ 'active' if status == 'Active' else 'inactive' }}">
+                                <i class="fas fa-circle me-2" style="font-size: 0.5rem;"></i>
+                                {{ status }}
+                            </span>
+                        </div>
+                        <a href="/login" class="back-btn">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Overview
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Project Progress Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    Project Progress
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ total_quantity_given|default(0) }}</div>
+                    <div class="metric-label">Total Quantity Given</div>
+                    <div class="metric-sublabel">MT allocated for remediation</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ total_remediated|default(0) }}</div>
+                    <div class="metric-label">Total Remediated</div>
+                    <div class="metric-sublabel">MT processed to date</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card text-center">
+                    <div class="progress-circle mx-auto mb-3">
+                        <svg class="progress-ring" viewBox="0 0 100 100">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#eb9534;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#DD6B20;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress-ring-fill" cx="50" cy="50" r="45" 
+                                    style="stroke-dashoffset: {{ progress_offset|default(283) }};"></circle>
+                        </svg>
+                        <div class="progress-text">{{ completion_percentage|default(0)|round(1) }}%</div>
+                    </div>
+                    <div class="metric-label">Completion Rate</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ target_quantity_per_day|default(0)|round(1) }} MT</div>
+                    <div class="metric-label">Target Per Day</div>
+                    <div class="metric-sublabel">Daily quantity target</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Operations Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    Today's Operations
+                </h2>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="metric-card">
+                <div class="metric-value">{{ total_trips }}</div>
+                <div class="metric-label">Total Trips Today</div>
+                <div class="metric-sublabel">Vehicle movements processed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ total_inward }} MT</div>
+                <div class="metric-label">Inward Material</div>
+                <div class="metric-sublabel">Legacy/MSW received</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ total_outward }} MT</div>
+                <div class="metric-label">Outward Material</div>
+                <div class="metric-sublabel">Processed material dispatched</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ total_net_weight }} MT</div>
+                <div class="metric-label">Total Weight Processed</div>
+                <div class="metric-sublabel">{{ avg_weight_per_trip }} MT average per trip</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Material Breakdown -->
+            <div class="col-lg-6 mb-4">
+                <h3 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    Material Analysis
+                </h3>
+                
+                <div class="metric-card">
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="h4 text-success">{{ inward_percentage }}%</div>
+                                <div class="small text-muted">Inward Flow</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="h4 text-info">{{ outward_percentage }}%</div>
+                                <div class="small text-muted">Outward Flow</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if material_breakdown %}
+                        {% for material, data in material_breakdown.items() %}
+                        <div class="material-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-semibold">{{ material }}</div>
+                                    <small class="text-muted">{{ data.count }} trips</small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">{{ (data.weight/1000)|round(1) }} MT</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-2x mb-3 d-block"></i>
+                            No material data available
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Vehicles -->
+            <div class="col-lg-6 mb-4">
+                <h3 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    Recent Vehicles
+                </h3>
+                
+                <div style="max-height: 500px; overflow-y: auto;">
+                    {% if recent_vehicles %}
+                        {% for vehicle in recent_vehicles %}
+                        <div class="vehicle-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="fw-semibold mb-1">{{ vehicle.vehicle_no }}</div>
+                                    <div class="small text-muted">Ticket: {{ vehicle.ticket_no }}</div>
+                                    <div class="small text-info">{{ vehicle.time }}</div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">{{ (vehicle.weight/1000)|round(1) }} MT</div>
+                                    <span class="badge" style="background: var(--primary-gradient); font-size: 0.7rem;">
+                                        {{ vehicle.material }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-road fa-2x mb-3 d-block"></i>
+                            No recent vehicle activity
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        {% if alerts %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    System Status
+                </h3>
+                
+                {% for alert in alerts %}
+                <div class="alert-card">
+                    {{ alert }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- System Info -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="metric-card">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <i class="fas fa-database fa-2x text-info mb-2 d-block"></i>
+                            <div class="fw-bold">{{ todays_record_count|default(0) }}</div>
+                            <small class="text-muted">Records Today</small>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-clock fa-2x text-warning mb-2 d-block"></i>
+                            <div class="fw-bold">{{ last_updated }}</div>
+                            <small class="text-muted">Last Updated</small>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-calendar fa-2x text-success mb-2 d-block"></i>
+                            <div class="fw-bold">{{ target_date|default('Today') }}</div>
+                            <small class="text-muted">Data Date</small>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-server fa-2x text-primary mb-2 d-block"></i>
+                            <div class="fw-bold">{{ total_historical_records|default(0) }}</div>
+                            <small class="text-muted">Total Records</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-refresh data every 5 minutes
+        setInterval(refreshData, 300000);
+        
+        function refreshData() {
+            console.log('Refreshing dashboard data...');
+            fetch('/site/{{ site_name }}/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    updateDashboard(data);
+                    console.log('Data refreshed successfully');
+                })
+                .catch(error => {
+                    console.error('Error refreshing data:', error);
+                });
+        }
+        
+        function updateDashboard(data) {
+            // Update metric values
+            const metrics = {
+                'total_trips': data.total_trips,
+                'total_inward': data.total_inward + ' MT',
+                'total_outward': data.total_outward + ' MT',
+                'total_net_weight': data.total_net_weight + ' MT'
+            };
+            
+            // Update progress circle
+            const completionPercentage = data.completion_percentage || 0;
+            const progressFill = document.querySelector('.progress-ring-fill');
+            if (progressFill) {
+                const offset = 283 - (283 * completionPercentage / 100);
+                progressFill.style.strokeDashoffset = offset;
+            }
+            
+            const progressText = document.querySelector('.progress-text');
+            if (progressText) {
+                progressText.textContent = completionPercentage.toFixed(1) + '%';
+            }
+        }
+        
+        // Add smooth scroll and interaction effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress circle on load
+            setTimeout(() => {
+                const progressFill = document.querySelector('.progress-ring-fill');
+                if (progressFill) {
+                    progressFill.style.transition = 'stroke-dashoffset 2s ease-in-out';
+                }
+            }, 500);
+            
+            // Add hover effects for cards
+            document.querySelectorAll('.metric-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

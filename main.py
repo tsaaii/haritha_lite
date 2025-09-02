@@ -25,7 +25,7 @@ from simple_legacy_report import legacy_bp
 from flask_bootstrap import Bootstrap
 #from layouts.public_layout import build_public_layout
 from layouts.login_layout import build_login_layout
-
+from site_dashboard import site_dashboard_bp
 from file_watcher import start_file_monitoring, stop_file_monitoring
 
 # ❌ REMOVED: from callbacks.filter_container_callbacks import register_filter_container_callbacks
@@ -1274,6 +1274,18 @@ def handle_navigation(login_clicks, overview_clicks, analytics_clicks, reports_c
     }
     return routes.get(button_id, '/')
 
+def setup_site_dashboard(server):
+    """Setup site dashboard with Bootstrap"""
+    
+    # Register the blueprint
+    server.register_blueprint(site_dashboard_bp)
+    
+    print("✅ Site Dashboard Blueprint registered")
+    print("📊 Available routes:")
+    print("   - Site List: http://localhost:8050/site/")
+    print("   - Site Dashboard: http://localhost:8050/site/{site_name}")
+    print("   - Site Analytics: http://localhost:8050/site/{site_name}/analytics")
+
 
 def setup_legacy_report(server):
     """Setup legacy report with Bootstrap"""
@@ -1311,6 +1323,19 @@ def start_streamlit_server():
     except Exception as e:
         print(f"❌ Failed to start Streamlit: {e}")
 
+@callback(
+    Output('url', 'pathname', allow_duplicate=True),
+    [Input('magic-view-go-btn', 'n_clicks')],
+    [State('site-selector-dropdown', 'value')],
+    prevent_initial_call=True
+)
+def navigate_to_site_dashboard(n_clicks, selected_site):
+    """Navigate to Flask site dashboard"""
+    if not n_clicks or not selected_site:
+        raise PreventUpdate
+    
+    # Redirect to Flask route instead of Dash
+    return f'/site/{selected_site}'
 
 @callback(
     Output('main-layout', 'children', allow_duplicate=True),
@@ -2184,7 +2209,7 @@ if __name__ == '__main__':
         
         # Setup legacy report (ADD THIS LINE)
         setup_legacy_report(server)
-        
+        setup_site_dashboard(server)
         # Register existing callbacks
         logger.info("✅ Unified callbacks registered successfully")
         logger.info("✅ Simple Legacy report integrated")
