@@ -28,25 +28,25 @@ from layouts.login_layout import build_login_layout
 from site_dashboard import site_dashboard_bp
 from file_watcher import start_file_monitoring, stop_file_monitoring
 
-# ❌ REMOVED: from callbacks.filter_container_callbacks import register_filter_container_callbacks
+# âŒ REMOVED: from callbacks.filter_container_callbacks import register_filter_container_callbacks
 from data_loader import get_cached_data, refresh_cached_data
 from services.auth_service import auth_service
-# ❌ REMOVED: from callbacks.dashboard_filter_callbacks import register_dashboard_filter_callbacks
-# ✅ FIXED: Import dashboard routes but with custom registration to avoid conflicts
-# ✅ ONLY IMPORT: The consolidated callbacks
+# âŒ REMOVED: from callbacks.dashboard_filter_callbacks import register_dashboard_filter_callbacks
+# âœ… FIXED: Import dashboard routes but with custom registration to avoid conflicts
+# âœ… ONLY IMPORT: The consolidated callbacks
 #from callbacks.consolidated_filter_callbacks import register_all_callbacks
 from layouts.public_layout_uniform import build_public_layout
 
 from pathlib import Path
 
-app = dash.Dash(__name__)
-app.layout = html.Div([
-    dcc.Store(id='current-theme', data=DEFAULT_THEME),
-    dcc.Store(id='user-authenticated', data=False),
-    dcc.Store(id='current-page', data='public_landing'),
-    dcc.Location(id='url', refresh=False),
-    html.Div(id="main-layout")
-])
+# app = dash.Dash(__name__)
+# app.layout = html.Div([
+#     dcc.Store(id='current-theme', data=DEFAULT_THEME),
+#     dcc.Store(id='user-authenticated', data=False),
+#     dcc.Store(id='current-page', data='public_landing'),
+#     dcc.Location(id='url', refresh=False),
+#     html.Div(id="main-layout")
+# ])
 
 logging.basicConfig(
     level=logging.INFO,
@@ -59,19 +59,19 @@ try:
     from utils.google_auth import get_google_auth_manager
     google_auth_manager = get_google_auth_manager()
     GOOGLE_AUTH_AVAILABLE = True
-    print("✅ Google OAuth utilities loaded successfully")
-    print(f"✅ Auth manager type: {type(google_auth_manager).__name__}")
+    print("âœ… Google OAuth utilities loaded successfully")
+    print(f"âœ… Auth manager type: {type(google_auth_manager).__name__}")
     
     # Test if it's the real GoogleAuthManager or MockGoogleAuth
     if hasattr(google_auth_manager, 'client_secrets_file'):
-        print("✅ Real GoogleAuthManager detected")
+        print("âœ… Real GoogleAuthManager detected")
         REAL_OAUTH_AVAILABLE = True
     else:
-        print("⚠️ MockGoogleAuth detected - client_secrets.json missing or invalid")
+        print("âš ï¸ MockGoogleAuth detected - client_secrets.json missing or invalid")
         REAL_OAUTH_AVAILABLE = False
         
 except Exception as e:
-    print(f"❌ Google OAuth utilities not available: {e}")
+    print(f"âŒ Google OAuth utilities not available: {e}")
     google_auth_manager = None
     GOOGLE_AUTH_AVAILABLE = False
     REAL_OAUTH_AVAILABLE = False
@@ -212,13 +212,13 @@ app.index_string = f'''
             
             // RELIABLE EVENT DELEGATION APPROACH - FIXED with clean navigation
             document.addEventListener('click', function(e) {{
-                console.log('🎯 Click detected on:', e.target.id, e.target.className);
+                console.log('ðŸŽ¯ Click detected on:', e.target.id, e.target.className);
                 
                 // Handle Admin Login button - FORCE clean navigation
                 if (e.target.id === 'admin-login-btn') {{
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('🔐 Admin login button clicked - navigating to clean /login');
+                    console.log('ðŸ” Admin login button clicked - navigating to clean /login');
                     window.location.replace('/login');  // Clean URL without parameters
                     return false;
                 }}
@@ -227,7 +227,7 @@ app.index_string = f'''
                 if (e.target.id === 'google-login-btn' || e.target.id === 'google-login-btn-alt') {{
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('🔵 Google OAuth button clicked - redirecting to /oauth/login');
+                    console.log('ðŸ”µ Google OAuth button clicked - redirecting to /oauth/login');
                     window.location.replace('/oauth/login');
                     return false;
                 }}
@@ -236,7 +236,7 @@ app.index_string = f'''
                 if (e.target.id === 'overlay-logout-btn') {{
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('🚪 Logout button clicked - redirecting to /?logout=true');
+                    console.log('ðŸšª Logout button clicked - redirecting to /?logout=true');
                     window.location.replace('/?logout=true');
                     return false;
                 }}
@@ -248,13 +248,13 @@ app.index_string = f'''
                     e.stopPropagation();
                     
                     if (parentButton.id === 'admin-login-btn') {{
-                        console.log('🔐 Admin login button (nested click) - navigating to clean /login');
+                        console.log('ðŸ” Admin login button (nested click) - navigating to clean /login');
                         window.location.replace('/login');  // Clean URL without parameters
                     }} else if (parentButton.id === 'google-login-btn' || parentButton.id === 'google-login-btn-alt') {{
-                        console.log('🔵 Google OAuth button (nested click) - redirecting to /oauth/login');
+                        console.log('ðŸ”µ Google OAuth button (nested click) - redirecting to /oauth/login');
                         window.location.replace('/oauth/login');
                     }} else if (parentButton.id === 'overlay-logout-btn') {{
-                        console.log('🚪 Logout button (nested click) - redirecting to /?logout=true');
+                        console.log('ðŸšª Logout button (nested click) - redirecting to /?logout=true');
                         window.location.replace('/?logout=true');
                     }}
                     return false;
@@ -265,7 +265,7 @@ app.index_string = f'''
 </html>
 '''
 start_file_monitoring()
-# ✅ CUSTOM DASHBOARD ROUTE REGISTRATION - AVOIDS CONFLICTS
+# âœ… CUSTOM DASHBOARD ROUTE REGISTRATION - AVOIDS CONFLICTS
 def register_custom_dashboard_routes(server):
     """Register dashboard routes without conflicts"""
     
@@ -302,7 +302,7 @@ def register_custom_dashboard_routes(server):
                 for cluster, sites in grouped.items():
                     cluster_sites[cluster] = list(sites)
             
-            logger.info(f"✅ CSV relationships: {len(agency_clusters)} agencies, {len(cluster_sites)} clusters")
+            logger.info(f"âœ… CSV relationships: {len(agency_clusters)} agencies, {len(cluster_sites)} clusters")
             
             return flask.jsonify({
                 'agency_clusters': agency_clusters,
@@ -311,7 +311,7 @@ def register_custom_dashboard_routes(server):
             })
             
         except Exception as e:
-            logger.error(f"❌ Error getting CSV relationships: {e}")
+            logger.error(f"âŒ Error getting CSV relationships: {e}")
             return flask.jsonify({
                 'error': 'Error processing CSV data',
                 'message': str(e)
@@ -376,12 +376,12 @@ def register_custom_dashboard_routes(server):
                 "total_records_available": len(df)
             }
             
-            logger.info(f"✅ Filtered CSV data: {record_count} records from {len(df)} total")
+            logger.info(f"âœ… Filtered CSV data: {record_count} records from {len(df)} total")
             
             return flask.jsonify(filter_response)
             
         except Exception as e:
-            logger.error(f"❌ Error filtering CSV data: {e}")
+            logger.error(f"âŒ Error filtering CSV data: {e}")
             return flask.jsonify({
                 "error": "Error processing CSV data",
                 "message": str(e)
@@ -427,7 +427,7 @@ def update_theme_with_session_sync(dark_clicks, light_clicks, contrast_clicks, g
     if new_theme != current_theme:
         try:
             session['current_theme'] = new_theme
-            logger.info(f"Theme successfully changed: {current_theme} → {new_theme}")
+            logger.info(f"Theme successfully changed: {current_theme} â†’ {new_theme}")
         except Exception as e:
             logger.warning(f"Could not sync theme to Flask session: {e}")
     
@@ -438,7 +438,7 @@ clientside_callback(
     function(theme_name) {
         if (!theme_name) return window.dash_clientside.no_update;
         
-        console.log('🎨 Updating theme to:', theme_name);
+        console.log('ðŸŽ¨ Updating theme to:', theme_name);
         
         // Define theme colors - COMPLETE THEME DEFINITIONS
         const themes = {
@@ -509,13 +509,13 @@ clientside_callback(
                 root.style.setProperty(key, themeVars[key]);
             });
             
-            console.log('✅ Theme CSS variables updated successfully');
+            console.log('âœ… Theme CSS variables updated successfully');
             
             // Also update theme attribute on body for additional styling
             document.body.setAttribute('data-theme', theme_name);
             
         } else {
-            console.warn('⚠️ Theme not found:', theme_name);
+            console.warn('âš ï¸ Theme not found:', theme_name);
         }
         
         return window.dash_clientside.no_update;
@@ -598,10 +598,10 @@ def test_overlay():
         </style>
     </head>
     <body>
-        <h1>🧪 Hover Overlay Test</h1>
+        <h1>ðŸ§ª Hover Overlay Test</h1>
         <div class="test-area">Hover at the very top of this page to test overlay</div>
         <p>The overlay should appear when you hover at the top edge of the page.</p>
-        <p><a href="/" style="color: #68D391;">← Back to Dashboard</a></p>
+        <p><a href="/" style="color: #68D391;">â† Back to Dashboard</a></p>
         
         <script>
             // Check if hover overlay CSS is loaded
@@ -614,9 +614,9 @@ def test_overlay():
             }).join('\\n');
             
             if (styles.includes('hover-trigger-area') || styles.includes('overlay-banner')) {
-                console.log('✅ Hover overlay CSS detected');
+                console.log('âœ… Hover overlay CSS detected');
             } else {
-                console.log('❌ Hover overlay CSS not found');
+                console.log('âŒ Hover overlay CSS not found');
             }
         </script>
     </body>
@@ -673,19 +673,19 @@ def oauth_login():
         from utils.simple_oauth import get_oauth_manager
         oauth_manager = get_oauth_manager()
         
-        logger.info(f"🔐 OAuth login attempt - configured: {oauth_manager.is_available()}")
+        logger.info(f"ðŸ” OAuth login attempt - configured: {oauth_manager.is_available()}")
         
         if not oauth_manager.is_available():
-            logger.info("⚠️ OAuth not configured - creating demo session")
+            logger.info("âš ï¸ OAuth not configured - creating demo session")
             success, message, session_data = oauth_manager.create_demo_session()
             
             if success:
                 flask.session['swaccha_session_id'] = session_data['session_id']
                 flask.session['user_data'] = session_data
-                logger.info("✅ Demo OAuth session created successfully")
+                logger.info("âœ… Demo OAuth session created successfully")
                 return redirect('/dashboard')
             else:
-                logger.error(f"❌ Demo session creation failed: {message}")
+                logger.error(f"âŒ Demo session creation failed: {message}")
                 return redirect('/login?error=demo_oauth_failed')
         
         # Real OAuth flow
@@ -696,11 +696,11 @@ def oauth_login():
             flask.session['oauth_state'] = state
             flask.session['oauth_timestamp'] = time.time()
             
-            logger.info(f"🔗 Redirecting to Google OAuth: {auth_url[:100]}...")
+            logger.info(f"ðŸ”— Redirecting to Google OAuth: {auth_url[:100]}...")
             return redirect(auth_url)
             
         except Exception as e:
-            logger.error(f"❌ OAuth URL generation failed: {e}")
+            logger.error(f"âŒ OAuth URL generation failed: {e}")
             # Fallback to demo
             success, message, session_data = oauth_manager.create_demo_session()
             if success:
@@ -711,7 +711,7 @@ def oauth_login():
                 return redirect('/login?error=oauth_fallback_failed')
         
     except Exception as e:
-        logger.error(f"❌ Critical OAuth error: {e}")
+        logger.error(f"âŒ Critical OAuth error: {e}")
         return redirect('/login?error=oauth_critical_error')
 
 @server.route('/oauth/callback')
@@ -727,40 +727,40 @@ def oauth_callback():
         state = request.args.get('state')
         error = request.args.get('error')
         
-        logger.info(f"📥 OAuth callback - code: {'✅' if code else '❌'}, state: {'✅' if state else '❌'}, error: {error or 'None'}")
+        logger.info(f"ðŸ“¥ OAuth callback - code: {'âœ…' if code else 'âŒ'}, state: {'âœ…' if state else 'âŒ'}, error: {error or 'None'}")
         
         if error:
-            logger.error(f"❌ OAuth error from Google: {error}")
+            logger.error(f"âŒ OAuth error from Google: {error}")
             return redirect(f'/login?error=oauth_denied&details={error}')
         
         if not code:
-            logger.error("❌ No authorization code received")
+            logger.error("âŒ No authorization code received")
             return redirect('/login?error=oauth_no_code')
         
         # Exchange code for tokens
-        logger.info("🔄 Starting token exchange...")
+        logger.info("ðŸ”„ Starting token exchange...")
         token_response = oauth_manager.exchange_code_for_tokens(code)
         
         if 'error' in token_response:
-            logger.error(f"❌ Token exchange failed: {token_response['error']}")
+            logger.error(f"âŒ Token exchange failed: {token_response['error']}")
             return redirect('/login?error=token_exchange_failed')
         
         # Get access token
         access_token = token_response.get('access_token')
         if not access_token:
-            logger.error("❌ No access token in response")
+            logger.error("âŒ No access token in response")
             return redirect('/login?error=no_access_token')
         
         # Get user information
-        logger.info("👤 Fetching user information...")
+        logger.info("ðŸ‘¤ Fetching user information...")
         user_info = oauth_manager.get_user_info(access_token)
         
         if 'error' in user_info:
-            logger.error(f"❌ Failed to get user info: {user_info['error']}")
+            logger.error(f"âŒ Failed to get user info: {user_info['error']}")
             return redirect('/login?error=user_info_failed')
         
         # Authenticate user
-        logger.info(f"🔐 Authenticating user: {user_info.get('email', 'unknown')}")
+        logger.info(f"ðŸ” Authenticating user: {user_info.get('email', 'unknown')}")
         success, message, session_data = oauth_manager.authenticate_user(user_info)
         
         if success:
@@ -768,14 +768,14 @@ def oauth_callback():
             flask.session['swaccha_session_id'] = session_data['session_id']
             flask.session['user_data'] = session_data
             
-            logger.info(f"✅ OAuth login successful for: {user_info.get('email')}")
+            logger.info(f"âœ… OAuth login successful for: {user_info.get('email')}")
             return redirect('/dashboard')
         else:
-            logger.warning(f"❌ User authorization failed: {message}")
+            logger.warning(f"âŒ User authorization failed: {message}")
             return redirect(f'/login?error=unauthorized&message={urllib.parse.quote(message)}')
             
     except Exception as e:
-        logger.error(f"❌ OAuth callback critical error: {e}")
+        logger.error(f"âŒ OAuth callback critical error: {e}")
         return redirect('/login?error=oauth_callback_error')
 
 @server.route('/debug/oauth')
@@ -800,7 +800,7 @@ def debug_oauth():
         <!DOCTYPE html>
         <html>
         <head>
-            <title>🔧 OAuth Debug Center</title>
+            <title>ðŸ”§ OAuth Debug Center</title>
             <style>
                 body {{ 
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
@@ -843,15 +843,15 @@ def debug_oauth():
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🔧 OAuth Debug Center</h1>
+                    <h1>ðŸ”§ OAuth Debug Center</h1>
                     <p>Complete OAuth configuration and testing dashboard</p>
                 </div>
                 
                 <div class="section">
-                    <h2>🚦 System Status</h2>
+                    <h2>ðŸš¦ System Status</h2>
                     
                     <div class="status {'good' if debug_info.get('oauth_configured') else 'bad'}">
-                        <div class="icon">{'✅' if debug_info.get('oauth_configured') else '❌'}</div>
+                        <div class="icon">{'âœ…' if debug_info.get('oauth_configured') else 'âŒ'}</div>
                         <div class="details">
                             <div class="label">OAuth Configuration</div>
                             <div class="desc">
@@ -863,25 +863,25 @@ def debug_oauth():
                 
                 <div class="grid">
                     <div class="section">
-                        <h2>🧪 Quick Tests</h2>
-                        <a href="/oauth/login" class="btn success">🔗 Test OAuth Flow</a>
+                        <h2>ðŸ§ª Quick Tests</h2>
+                        <a href="/oauth/login" class="btn success">ðŸ”— Test OAuth Flow</a>
                         <p><em>Tests the complete OAuth login process</em></p>
                         
-                        <a href="/login" class="btn">📋 Login Page</a>
+                        <a href="/login" class="btn">ðŸ“‹ Login Page</a>
                         <p><em>Go to the main login page</em></p>
                         
-                        <a href="/" class="btn">🏠 Dashboard</a>
+                        <a href="/" class="btn">ðŸ  Dashboard</a>
                         <p><em>Return to main dashboard</em></p>
                     </div>
                 </div>
                 
                 <div class="section">
-                    <h2>⚙️ Configuration Details</h2>
+                    <h2>âš™ï¸ Configuration Details</h2>
                     <pre>{json.dumps(debug_info, indent=2, default=str)}</pre>
                 </div>
                 
                 <div class="section">
-                    <h2>🖥️ System Information</h2>
+                    <h2>ðŸ–¥ï¸ System Information</h2>
                     <pre>{json.dumps(system_info, indent=2, default=str)}</pre>
                 </div>
             </div>
@@ -894,9 +894,9 @@ def debug_oauth():
         logger.error(f"Debug page error: {e}")
         return f"""
         <html><body style="font-family: monospace; background: #1a1a1a; color: #fff; padding: 40px;">
-            <h1>❌ Debug Error</h1>
+            <h1>âŒ Debug Error</h1>
             <p>Error loading debug info: {str(e)}</p>
-            <p><a href="/" style="color: #3182CE;">← Back to Dashboard</a></p>
+            <p><a href="/" style="color: #3182CE;">â† Back to Dashboard</a></p>
         </body></html>
         """
 
@@ -1003,7 +1003,7 @@ app.layout = html.Div([
     prevent_initial_call=False
 )
 def route_and_authenticate(pathname, search):
-    """Core routing and authentication logic - FIXED with redirect support"""
+    """Core routing and authentication logic - FIXED: No infinite loop"""
     if pathname:
         pathname = urllib.parse.unquote(pathname)
     
@@ -1014,7 +1014,7 @@ def route_and_authenticate(pathname, search):
     if search:
         params = dict(urllib.parse.parse_qsl(search.lstrip('?')))
 
-    # Handle logout FIRST before any other logic
+    # Handle logout FIRST
     if params.get('logout') == 'true':
         print("DEBUG: Logout detected - clearing all session data")
         flask.session.clear()
@@ -1023,17 +1023,16 @@ def route_and_authenticate(pathname, search):
                 session_id = flask.session.get('swaccha_session_id')
                 if session_id:
                     google_auth_manager.logout(session_id)
-                    print(f"DEBUG: Cleared OAuth session: {session_id}")
             except Exception as e:
                 print(f"DEBUG: OAuth logout error: {e}")
-        print("DEBUG: Logout complete - returning to public landing")
         return 'public_landing', False, {}, 'Logged out successfully.'
 
-    # ADD THIS: Handle site routes - let Flask handle them
+    # CRITICAL FIX: Let Flask handle site routes - DON'T interfere
     if pathname and pathname.startswith('/site/'):
-        print(f"DEBUG: Site route detected: {pathname} - forcing page refresh")
-        return 'site_redirect', False, {'redirect_url': pathname}, ''
-    # Session validation
+        print(f"DEBUG: Site route detected: {pathname} - letting Flask handle it")
+        raise PreventUpdate  # This prevents Dash from interfering
+
+    # Session validation (rest of your existing code)
     session_id = flask.session.get('swaccha_session_id')
     user_data = flask.session.get('user_data', {})
     oauth_user_info = flask.session.get('oauth_user_info', {})
@@ -1042,11 +1041,9 @@ def route_and_authenticate(pathname, search):
     print(f"DEBUG: Session check - session_id: {'Yes' if session_id else 'No'}, user_data: {'Yes' if user_data else 'No'}")
     
     if session_id:
-        # Demo sessions (always valid if they exist)
         if session_id.startswith('stable_session_'):
             is_authenticated = True
             print("DEBUG: Demo session detected - authenticated")
-        # OAuth sessions
         elif GOOGLE_AUTH_AVAILABLE and google_auth_manager:
             try:
                 session_data = google_auth_manager.validate_session(session_id)
@@ -1060,9 +1057,7 @@ def route_and_authenticate(pathname, search):
                         'auth_method': 'google_oauth'
                     }
                     flask.session['user_data'] = user_data
-                    print("DEBUG: OAuth session validated - authenticated")
                 else:
-                    print("DEBUG: OAuth session invalid - clearing")
                     flask.session.clear()
                     user_data = {}
             except Exception as e:
@@ -1072,36 +1067,19 @@ def route_and_authenticate(pathname, search):
     
     print(f"DEBUG: Final auth state - authenticated: {is_authenticated}")
     
-    # Handle Flask routes
+    # Handle other Flask routes
     if pathname == '/legacy/report' or pathname.startswith('/legacy/'):
         if is_authenticated:
             print(f"DEBUG: Flask route {pathname} - letting Flask handle it")
             raise PreventUpdate
         else:
-            print(f"DEBUG: Flask route {pathname} accessed without auth - redirecting to login")
             return 'login', False, {}, 'Please log in to access this page.'
     
-    # Keep existing /legacy-report handling for backward compatibility
-    elif pathname == '/legacy-report':
-        if is_authenticated:
-            print("DEBUG: Routing to legacy-report page for authenticated user")
-            return 'legacy_report', True, user_data, ''
-        else:
-            print("DEBUG: /legacy-report accessed without auth - redirecting to login")
-            return 'login', False, {}, 'Please log in to access legacy report.'
-    
-    # Public routes (no auth required)
-    elif pathname == '/Kadapa/Rayachoti':
-        return 'kadapa_rayachoti', False, {}, ''
-    
-    # Route determination with role-based access control
+    # Your existing routing logic for Dash pages
     elif not pathname or pathname == '/':
         return 'public_landing', is_authenticated, user_data, ''
     elif pathname == '/login':
-        if params.get('logout') == 'true':
-            error = ''
-        else:
-            error = params.get('error', '')
+        error = params.get('error', '')
         error_messages = {
             'oauth_not_available': 'Google OAuth not configured. Use demo login.',
             'oauth_failed': 'OAuth setup failed. Use demo login.',
@@ -1110,47 +1088,18 @@ def route_and_authenticate(pathname, search):
             'missing_credentials': 'Please enter both username and password.',
             'invalid_credentials': 'Invalid username or password. Try: admin/password'
         }
-        print(f"DEBUG: Routing to login page - error: {error}")
         return 'login', is_authenticated, user_data, error_messages.get(error, error)
     elif pathname == '/dashboard':
         if is_authenticated:
             return 'admin_dashboard', True, user_data, ''
         else:
             return 'unauthorized_access', False, {}, 'Please log in to access dashboard.'
-    elif pathname in ['/analytics', '/reports', '/data-analytics']:
-        if is_authenticated:
-            # Check access before routing
-            user_role = user_data.get('role', 'viewer')
-            required_tab = 'analytics' if pathname in ['/analytics', '/data-analytics'] else 'reports'
-            
-            # Check access logic (keeping your existing code)
-            try:
-                from config.auth import can_user_access_tab
-                has_access = can_user_access_tab(user_role, required_tab)
-            except ImportError:
-                # Restrictive fallback
-                allowed_tabs = {
-                    'viewer': ['dashboard', 'analytics', 'reports'],
-                    'administrator': ['dashboard', 'analytics', 'reports', 'reviews', 'upload'],
-                    'super_admin': ['dashboard', 'analytics', 'reports', 'reviews', 'upload', 'forecasting']
-                }.get(user_role, ['dashboard'])
-                has_access = required_tab in allowed_tabs
-            
-            if not has_access:
-                print(f"DEBUG: User {user_role} denied access to {required_tab}, redirecting to dashboard")
-                return 'admin_dashboard', True, user_data, f'Access denied to {required_tab} section.'
-            
-            # User has access
-            page = 'analytics_page' if pathname in ['/analytics', '/data-analytics'] else 'reports_page'
-            return page, True, user_data, ''
-        else:
-            return 'unauthorized_access', False, {}, 'Please log in to access this page.'
     elif pathname.startswith('/oauth/') or pathname.startswith('/debug/'):
         raise PreventUpdate
     else:
         return 'public_landing', is_authenticated, user_data, ''
+    
 
-# 2. Then, replace the layout rendering section in main.py (around line 374):
 @callback(
     Output('main-layout', 'children'),
     [Input('current-theme', 'data'),
@@ -1160,8 +1109,7 @@ def route_and_authenticate(pathname, search):
      Input('auth-error-message', 'data')]
 )
 def render_layout(theme_name, is_authenticated, current_page, user_data, error_message):
-    """Render appropriate layout"""
-    # Handle None values
+    """Render appropriate layout - FIXED: No site_redirect"""
     theme_name = theme_name or DEFAULT_THEME
     is_authenticated = bool(is_authenticated)
     current_page = current_page or 'public_landing'
@@ -1171,15 +1119,7 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
     print(f"DEBUG: Rendering layout - page: {current_page}, theme: {theme_name}, authenticated: {is_authenticated}")
     
     try:
-        # Handle site redirects FIRST
-        if current_page == 'site_redirect':
-            redirect_url = user_data.get('redirect_url', '/')
-            print(f"DEBUG: Rendering site redirect to: {redirect_url}")
-            return html.Div([
-                html.Meta(httpEquiv="refresh", content=f"0;url={redirect_url}"),
-                html.Div(f"Redirecting to {redirect_url}...", 
-                        style={'textAlign': 'center', 'padding': '2rem', 'fontSize': '1.2rem'})
-            ])
+        # REMOVED: No more site_redirect handling - Flask handles site routes directly
         
         if current_page == 'login':
             layout = build_login_layout(theme_name, error_message)
@@ -1187,88 +1127,16 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
             return layout
         elif current_page == 'unauthorized_access':
             layout = create_unauthorized_layout(theme_name)
-            print("DEBUG: Unauthorized access layout rendered")
-            return layout
-        elif current_page == 'kadapa_rayachoti':
-            layout = kadapa_rayachoti_layout()
-            print("DEBUG: Kadapa Rayachoti layout rendered")
-            return layout
-        elif current_page == 'legacy_redirect_page' and is_authenticated:
-            # Legacy redirect page
-            layout = html.Div([
-                html.Div([
-                    html.H1("🎉 Hello from Legacy Report!", 
-                           style={"color": "#10b981", "fontSize": "3rem", "fontWeight": "800", "marginBottom": "20px"}),
-                    html.P("Login successful! Redirecting to dashboard...", 
-                           style={"fontSize": "1.2rem", "marginBottom": "30px"}),
-                    html.Div([
-                        html.I(className="fas fa-spinner fa-spin", 
-                               style={"fontSize": "3rem", "color": "#4f46e5"})
-                    ], style={"margin": "30px 0"})
-                ], style={
-                    "textAlign": "center",
-                    "padding": "50px",
-                    "maxWidth": "600px",
-                    "margin": "50px auto",
-                    "background": "rgba(16,185,129,0.1)",
-                    "borderRadius": "20px",
-                    "border": "2px solid #10b981",
-                    "boxShadow": "0 10px 30px rgba(0,0,0,0.3)"
-                }),
-                html.Script("setTimeout(() => { window.location.href = '/legacy/report'; }, 1500);")
-            ])
-            print("DEBUG: Legacy redirect page rendered")
-            return layout
-        elif current_page == 'legacy_report' and is_authenticated:
-            # Legacy report handling
-            layout = html.Div([
-                html.Div([
-                    html.H1("📊 Legacy Report Dashboard", 
-                           style={"textAlign": "center", "color": "#3182CE"}),
-                    html.Div([
-                        html.H2("🎉 Hello from Legacy Report!", 
-                               style={"color": "#10b981"}),
-                        html.P("Redirecting to Flask dashboard...", 
-                               style={"fontSize": "1.2rem"}),
-                        html.A("📊 Click here if not redirected", 
-                               href="/legacy/report", 
-                               style={"color": "#3182CE", "fontSize": "1.1rem"})
-                    ], style={
-                        "background": "rgba(16,185,129,0.1)", 
-                        "padding": "2rem", 
-                        "borderRadius": "12px", 
-                        "margin": "2rem 0",
-                        "border": "2px solid #10b981"
-                    })
-                ], style={
-                    "maxWidth": "600px", 
-                    "margin": "3rem auto", 
-                    "padding": "2rem",
-                    "textAlign": "center"
-                }),
-                html.Script("setTimeout(() => { window.location.href = '/legacy/report'; }, 1500);")
-            ])
-            print("DEBUG: Legacy report layout rendered with Flask redirect")
             return layout
         elif current_page == 'admin_dashboard' and is_authenticated:
             layout = build_enhanced_dashboard(theme_name, user_data)
-            print("DEBUG: Enhanced dashboard layout rendered")
-            return layout
-        elif current_page in ['analytics_page', 'reports_page'] and is_authenticated:
-            # Since we already checked access in routing, just render with correct tab
-            active_tab = 'tab-analytics' if current_page == 'analytics_page' else 'tab-reports'
-            layout = build_enhanced_dashboard(theme_name, user_data, active_tab)
-            print(f"DEBUG: Enhanced dashboard layout rendered for {current_page}")
             return layout
         else:
-            # Use your public layout
+            # Default to public layout
             layout = build_public_layout(theme_name, is_authenticated, user_data)
-            print(f"DEBUG: Public layout rendered with auth state: {is_authenticated}")
             return layout
     except Exception as e:
         print(f"ERROR: Layout build failed: {e}")
-        import traceback
-        print(f"ERROR: Full traceback: {traceback.format_exc()}")
         return build_public_layout(DEFAULT_THEME, False, {})
 
 # 3. MOST IMPORTANT: Update the Flask routes in admin_dashboard.py to check access:
@@ -1309,8 +1177,8 @@ def setup_site_dashboard(server):
     # Register the blueprint
     server.register_blueprint(site_dashboard_bp)
     
-    print("✅ Site Dashboard Blueprint registered")
-    print("📊 Available routes:")
+    print("âœ… Site Dashboard Blueprint registered")
+    print("ðŸ“Š Available routes:")
     print("   - Site List: http://localhost:8050/site/")
     print("   - Site Dashboard: http://localhost:8050/site/{site_name}")
     print("   - Site Analytics: http://localhost:8050/site/{site_name}/analytics")
@@ -1333,9 +1201,9 @@ def setup_legacy_report(server):
             return redirect('/login')
         return redirect('/legacy/report')
     
-    print("✅ Legacy Report Blueprint registered")
-    print("✅ Bootstrap initialized")
-    print("📊 Available at: /legacy/report")
+    print("âœ… Legacy Report Blueprint registered")
+    print("âœ… Bootstrap initialized")
+    print("ðŸ“Š Available at: /legacy/report")
 
 def start_streamlit_server():
     """Start Streamlit server in background thread"""
@@ -1348,9 +1216,9 @@ def start_streamlit_server():
             "--server.address=0.0.0.0",
             "--server.enableCORS=false"
         ])
-        print("✅ Streamlit legacy-report started on http://localhost:8051")
+        print("âœ… Streamlit legacy-report started on http://localhost:8051")
     except Exception as e:
-        print(f"❌ Failed to start Streamlit: {e}")
+        print(f"âŒ Failed to start Streamlit: {e}")
 
 @callback(
     Output('url', 'pathname', allow_duplicate=True),
@@ -1393,7 +1261,7 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
             print("DEBUG: Missing credentials")
             # Show error message
             return html.Div([
-                html.Div("❌ Please enter both username and password", 
+                html.Div("âŒ Please enter both username and password", 
                         style={'color': 'red', 'textAlign': 'center', 'padding': '1rem'}),
                 build_login_layout(DEFAULT_THEME, 'missing_credentials')
             ])
@@ -1406,13 +1274,13 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
             # Return success page with immediate refresh
             return html.Div([
                 html.Div([
-                    html.H1("✅ Login Successful!", 
+                    html.H1("âœ… Login Successful!", 
                            style={'color': 'green', 'textAlign': 'center', 'marginBottom': '1rem'}),
                     html.P(f"Welcome, {username}!", 
                            style={'textAlign': 'center', 'fontSize': '1.2rem', 'marginBottom': '1rem'}),
                     html.P("Loading your dashboard...", 
                            style={'textAlign': 'center', 'marginBottom': '2rem'}),
-                    html.Div("🔄", style={'textAlign': 'center', 'fontSize': '3rem'})
+                    html.Div("ðŸ”„", style={'textAlign': 'center', 'fontSize': '3rem'})
                 ], style={
                     'padding': '3rem',
                     'backgroundColor': '#f0f9ff',
@@ -1427,7 +1295,7 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
         else:
             print(f"DEBUG: Invalid credentials for {username}")
             return html.Div([
-                html.Div("❌ Invalid username or password", 
+                html.Div("âŒ Invalid username or password", 
                         style={'color': 'red', 'textAlign': 'center', 'padding': '1rem'}),
                 build_login_layout(DEFAULT_THEME, 'invalid_credentials')
             ])
@@ -1439,13 +1307,13 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
         
         return html.Div([
             html.Div([
-                html.H1("✅ Demo Login Successful!", 
+                html.H1("âœ… Demo Login Successful!", 
                        style={'color': 'green', 'textAlign': 'center', 'marginBottom': '1rem'}),
                 html.P("Welcome, Demo User!", 
                        style={'textAlign': 'center', 'fontSize': '1.2rem', 'marginBottom': '1rem'}),
                 html.P("Loading legacy report dashboard...", 
                        style={'textAlign': 'center', 'marginBottom': '2rem'}),
-                html.Div("🔄", style={'textAlign': 'center', 'fontSize': '3rem'})
+                html.Div("ðŸ”„", style={'textAlign': 'center', 'fontSize': '3rem'})
             ], style={
                 'padding': '3rem',
                 'backgroundColor': '#f0f9ff',
@@ -1548,14 +1416,14 @@ def create_logout_success_handler():
      State('username-input', 'value'),
      State('password-input', 'value'),
      State('current-page', 'data'),
-     State('url', 'pathname')],  # ✅ ADD: Current pathname to prevent loops
+     State('url', 'pathname')],  # âœ… ADD: Current pathname to prevent loops
     prevent_initial_call=True
 )
 def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks, 
                                 viewer_clicks, pin_clicks, manual_clicks, 
                                 username_password_clicks, back_clicks,
                                 access_pin, manual_email, username, password,
-                                current_page, current_pathname):  # ✅ ADD: current_pathname
+                                current_page, current_pathname):  # âœ… ADD: current_pathname
     """Handle all login actions with DIRECT redirect to Flask route - FIXED to prevent loops"""
     if not ctx.triggered or current_page != 'login':
         raise PreventUpdate
@@ -1566,14 +1434,14 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
     if triggered_value in [None, 0]:
         raise PreventUpdate
     
-    # ✅ PREVENT LOOPS: Check if already on target page
+    # âœ… PREVENT LOOPS: Check if already on target page
     if current_pathname == '/legacy/report':
         print("DEBUG: Already on legacy report page, preventing loop")
         raise PreventUpdate
     
     print(f"DEBUG: Enhanced login action - {button_id} (value: {triggered_value})")
     
-    # ✅ ADD: Debouncing - only process if click count is reasonable
+    # âœ… ADD: Debouncing - only process if click count is reasonable
     if triggered_value > 10:  # Prevent excessive clicking
         print("DEBUG: Too many clicks detected, ignoring")
         raise PreventUpdate
@@ -1582,7 +1450,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
     if button_id == 'back-to-public-btn':
         return '/'
     
-    # ✅ USERNAME/PASSWORD LOGIN
+    # âœ… USERNAME/PASSWORD LOGIN
     elif button_id == 'username-password-login-btn':
         if not username or not password:
             print("DEBUG: Missing credentials")
@@ -1591,31 +1459,31 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
         if validate_user_credentials(username, password):
             role = get_user_role_by_username(username)
             create_demo_session(username, f"User {username}", role)
-            print(f"DEBUG: Username/password login successful for {username} → REDIRECTING to /legacy/report")
+            print(f"DEBUG: Username/password login successful for {username} â†’ REDIRECTING to /legacy/report")
             return '/legacy/report'
         else:
             print(f"DEBUG: Invalid credentials for {username}")
             return '/login?error=invalid_credentials'
     
-    # ✅ OTHER LOGIN METHODS
+    # âœ… OTHER LOGIN METHODS
     elif button_id == 'demo-login-btn':
         create_demo_session('demo_user', 'Demo User', 'administrator')
-        print("DEBUG: Demo login successful → REDIRECTING to /legacy/report")
+        print("DEBUG: Demo login successful â†’ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'admin-account-btn':
         create_demo_session('admin', 'Administrator', 'administrator')
-        print("DEBUG: Admin login successful → REDIRECTING to /legacy/report")
+        print("DEBUG: Admin login successful â†’ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'dev-account-btn':
         create_demo_session('developer', 'Developer', 'administrator')
-        print("DEBUG: Developer login successful → REDIRECTING to /legacy/report")
+        print("DEBUG: Developer login successful â†’ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'viewer-account-btn':
         create_demo_session('viewer', 'Viewer', 'viewer')
-        print("DEBUG: Viewer login successful → REDIRECTING to /legacy/report")
+        print("DEBUG: Viewer login successful â†’ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'pin-login-btn':
@@ -1627,7 +1495,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
         if access_pin in pins:
             user_id, name, role = pins[access_pin]
             create_demo_session(user_id, name, role)
-            print(f"DEBUG: PIN login successful for {name} → REDIRECTING to /legacy/report")
+            print(f"DEBUG: PIN login successful for {name} â†’ REDIRECTING to /legacy/report")
             return '/legacy/report'
         else:
             return '/login?error=invalid_pin'
@@ -1636,7 +1504,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
         if manual_email and '@' in manual_email:
             role = 'administrator' if 'swaccha' in manual_email.lower() else 'viewer'
             create_demo_session('manual_user', f'User ({manual_email})', role)
-            print(f"DEBUG: Email login successful for {manual_email} → REDIRECTING to /legacy/report")
+            print(f"DEBUG: Email login successful for {manual_email} â†’ REDIRECTING to /legacy/report")
             handle_login_with_refresh
         else:
             return '/login?error=invalid_email'
@@ -1711,8 +1579,8 @@ error_messages = {
     'oauth_failed': 'OAuth setup failed. Use demo login.',
     'unauthorized': 'You are not authorized. Contact administrator.',
     'invalid_pin': 'Invalid PIN. Try: 1234, 5678, or 9999',
-    'missing_credentials': 'Please enter both username and password.',    # ✅ ADD
-    'invalid_credentials': 'Invalid username or password. Try: admin/password'  # ✅ ADD
+    'missing_credentials': 'Please enter both username and password.',    # âœ… ADD
+    'invalid_credentials': 'Invalid username or password. Try: admin/password'  # âœ… ADD
 }
 
 # 6. Admin dashboard actions - NO LOGOUT (handled by JavaScript)
@@ -1797,7 +1665,7 @@ def kadapa_rayachoti_layout():
         html.Div([
             # Card 1 - Machine Capacity
             html.Div([
-                html.Div("⚙️", className="card-icon"),
+                html.Div("âš™ï¸", className="card-icon"),
                 html.Div("Machine Capacity", className="card-title"),
                 html.Div("1,200 MT/day", className="card-value"),
                 html.Div("Daily processing capability", className="card-description")
@@ -1805,7 +1673,7 @@ def kadapa_rayachoti_layout():
             
             # Card 2 - Given Quantity
             html.Div([
-                html.Div("📦", className="card-icon"),
+                html.Div("ðŸ“¦", className="card-icon"),
                 html.Div("Given Quantity", className="card-title"),
                 html.Div("94,604 MT", className="card-value"),
                 html.Div("Total material to process", className="card-description")
@@ -1813,7 +1681,7 @@ def kadapa_rayachoti_layout():
             
             # Card 3 - Cumulative
             html.Div([
-                html.Div("📊", className="card-icon"),
+                html.Div("ðŸ“Š", className="card-icon"),
                 html.Div("Cumulative", className="card-title"),
                 html.Div("31,344 MT", className="card-value"),
                 html.Div("Processed to date", className="card-description")
@@ -1821,7 +1689,7 @@ def kadapa_rayachoti_layout():
             
             # Card 4 - Remaining
             html.Div([
-                html.Div("⏳", className="card-icon"),
+                html.Div("â³", className="card-icon"),
                 html.Div("Remaining", className="card-title"),
                 html.Div("63,260 MT", className="card-value"),
                 html.Div("Material left to process", className="card-description")
@@ -1829,7 +1697,7 @@ def kadapa_rayachoti_layout():
             
             # Card 5 - Yesterday's Processing
             html.Div([
-                html.Div("📅", className="card-icon"),
+                html.Div("ðŸ“…", className="card-icon"),
                 html.Div("Processed Yesterday", className="card-title"),
                 html.Div("1,564 MT", className="card-value"),
                 html.Div("Previous day's progress", className="card-description")
@@ -2222,10 +2090,10 @@ def create_demo_session(user_id, name, role):
 
 # Configure upload settings and register dashboard routes
 
-# ✅ FIXED: Register routes WITH custom dashboard routes (no conflicts)
+# âœ… FIXED: Register routes WITH custom dashboard routes (no conflicts)
 register_custom_dashboard_routes(server)  # Custom routes for dashboard functionality
 
-# ✅ KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
+# âœ… KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
 # This handles the /dashboard route without conflicts
 # upload_dir = Path('/tmp/uploads')
 # upload_dir.mkdir(exist_ok=True)
@@ -2234,26 +2102,26 @@ register_custom_dashboard_routes(server)  # Custom routes for dashboard function
 
 if __name__ == '__main__':
     try:
-        print("🚀 Starting Enhanced Flask Application...")
+        print("ðŸš€ Starting Enhanced Flask Application...")
         
         # Setup legacy report (ADD THIS LINE)
         setup_legacy_report(server)
         setup_site_dashboard(server)
         # Register existing callbacks
-        logger.info("✅ Unified callbacks registered successfully")
-        logger.info("✅ Simple Legacy report integrated")
+        logger.info("âœ… Unified callbacks registered successfully")
+        logger.info("âœ… Simple Legacy report integrated")
         
-        print("🌐 Application URLs:")
+        print("ðŸŒ Application URLs:")
         print("   - Main App: http://localhost:8050")
         print("   - Login: http://localhost:8050/login")
-        print("   - Legacy Report: http://localhost:8050/legacy-report → /legacy/report")
+        print("   - Legacy Report: http://localhost:8050/legacy-report â†’ /legacy/report")
         print("   - Direct Access: http://localhost:8050/legacy/report")
         
         # Start the main Flask/Dash app
         app.run(debug=True, host='0.0.0.0', port=8050)
         
     except Exception as e:
-        logger.error(f"❌ Failed to start enhanced app: {e}")
+        logger.error(f"âŒ Failed to start enhanced app: {e}")
         import traceback
         logger.error(traceback.format_exc())
     finally:
