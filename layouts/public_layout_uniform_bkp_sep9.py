@@ -83,177 +83,6 @@ def load_agency_data():
         logger.error(f"❌ Error loading agency data: {e}")
         return create_sample_agency_data()
 
-
-
-
-
-def create_tri_metric_card(icon, title, metric1_label, metric1_value, metric1_color, 
-                          metric2_label, metric2_value, metric2_color,
-                          metric3_label, metric3_value, metric3_color):
-    """Create a card with three metrics side by side with vertical separators"""
-    return html.Div(
-        className="enhanced-metric-card tri-metric-card",
-        children=[
-            # Card Header
-            html.Div(
-                className="card-header",
-                children=[
-                    html.Div(icon, className="card-icon"),
-                    html.H3(title, className="card-title")
-                ]
-            ),
-            
-            # Tri-Metrics Container - Side by side layout like dual metric
-            html.Div(
-                className="tri-metrics-container",
-                children=[
-                    # First metric (100% reclaimed)
-                    html.Div(
-                        className="metric-display primary tri-metric",
-                        children=[
-                            html.Div(
-                                str(metric1_value),
-                                className="metric-number",
-                                style={"color": metric1_color}
-                            ),
-                            html.Div(
-                                metric1_label,
-                                className="metric-label"
-                            )
-                        ]
-                    ),
-                    
-                    # First Vertical Separator
-                    html.Div(className="metrics-separator"),
-                    
-                    # Second metric (75-99% reclaimed)
-                    html.Div(
-                        className="metric-display secondary tri-metric",
-                        children=[
-                            html.Div(
-                                str(metric2_value),
-                                className="metric-number",
-                                style={"color": metric2_color}
-                            ),
-                            html.Div(
-                                metric2_label,
-                                className="metric-label"
-                            )
-                        ]
-                    ),
-                    
-                    # Second Vertical Separator
-                    html.Div(className="metrics-separator"),
-                    
-                    # Third metric (50-74% reclaimed)
-                    html.Div(
-                        className="metric-display tertiary tri-metric",
-                        children=[
-                            html.Div(
-                                str(metric3_value),
-                                className="metric-number",
-                                style={"color": metric3_color}
-                            ),
-                            html.Div(
-                                metric3_label,
-                                className="metric-label"
-                            )
-                        ]
-                    )
-                ]
-            )
-        ]
-    )
-
-def calculate_reclaimed_sites_metrics(agency_data):
-    """Calculate reclaimed sites metrics based on reclaimed_sites column"""
-    
-    # Initialize counters
-    fully_reclaimed = 0      # 100% reclaimed
-    partially_reclaimed = 0  # 75-99% reclaimed  
-    minimally_reclaimed = 0  # 50-74% reclaimed
-    
-    if agency_data is None or agency_data.empty:
-        logger.warning("No agency data available for reclaimed sites calculation")
-        return fully_reclaimed, partially_reclaimed, minimally_reclaimed
-    
-    if 'reclaimed_sites' not in agency_data.columns:
-        logger.warning("reclaimed_sites column not found in agency data")
-        return fully_reclaimed, partially_reclaimed, minimally_reclaimed
-    
-    try:
-        # Process each row to count reclaimed sites by percentage ranges
-        for _, row in agency_data.iterrows():
-            reclaimed_percentage = row['reclaimed_sites']
-            
-            # Skip if reclaimed_percentage is null or invalid
-            if pd.isna(reclaimed_percentage):
-                continue
-                
-            # Convert to numeric if it's a string
-            try:
-                reclaimed_percentage = float(reclaimed_percentage)
-            except (ValueError, TypeError):
-                logger.debug(f"Invalid reclaimed_sites value: {reclaimed_percentage}")
-                continue
-            
-            # Categorize based on percentage ranges
-            if reclaimed_percentage == 100.0:
-                fully_reclaimed += 1
-            elif 75.0 <= reclaimed_percentage < 100.0:
-                partially_reclaimed += 1
-            elif 50.0 <= reclaimed_percentage < 75.0:
-                minimally_reclaimed += 1
-            # Sites below 50% are not counted in any category
-        
-        logger.info(f"Reclaimed sites breakdown: {fully_reclaimed} fully (100%), {partially_reclaimed} partially (75-99%), {minimally_reclaimed} minimally (50-74%)")
-        
-    except Exception as e:
-        logger.error(f"Error calculating reclaimed sites metrics: {e}")
-        fully_reclaimed = 0
-        partially_reclaimed = 0
-        minimally_reclaimed = 0
-    
-    return fully_reclaimed, partially_reclaimed, minimally_reclaimed
-
-def create_reclaimed_sites_card(current_agency_display, agency_data):
-    """Create Card 4: Reclaimed Sites Status with tri-metric layout"""
-    
-    # Calculate reclaimed sites metrics
-    fully_reclaimed, partially_reclaimed, minimally_reclaimed = calculate_reclaimed_sites_metrics(agency_data)
-    
-    # Create multi-line labels using HTML structure with spacing
-    metric1_label = html.Div([
-        html.Div("100%", style={"fontWeight": "800", "lineHeight": "1", "marginBottom": "0.3rem", "fontSize": "0.8 rem"}),
-        html.Div("Reclaimed", style={"lineHeight": "1"})
-    ], style={"textAlign": "center"})
-    
-    metric2_label = html.Div([
-        html.Div("75%-99%", style={"fontWeight": "800", "lineHeight": "1", "marginBottom": "0.3rem", "fontSize": "0.8 rem"}),
-        html.Div("Reclaimed", style={"lineHeight": "1"})
-    ], style={"textAlign": "center"})
-    
-    metric3_label = html.Div([
-        html.Div("50%-75%", style={"fontWeight": "800", "lineHeight": "1", "marginBottom": "0.3rem", "fontSize": "0.8 rem"}),
-        html.Div("Reclaimed", style={"lineHeight": "1"})
-    ], style={"textAlign": "center"})
-    
-    # Create the tri-metric card
-    return create_tri_metric_card(
-        icon="🏗️",  # Construction/reclamation icon
-        title="Sites Reclaimed",
-        metric1_label=metric1_label,      # 100% sites
-        metric1_value=fully_reclaimed,
-        metric1_color="var(--success, #38A169)",  # Green for 100% completion
-        metric2_label=metric2_label,      # 75-99% sites  
-        metric2_value=partially_reclaimed,
-        metric2_color="var(--warning, #DD6B20)",  # Orange for 75-99% completion
-        metric3_label=metric3_label,      # 50-74% sites
-        metric3_value=minimally_reclaimed,
-        metric3_color="var(--error, #E53E3E)"     # Red for 50-74% completion
-    )
-
-
 def create_sample_agency_data():
     """Create sample data using configured agency keys"""
     agency_keys = list(AGENCY_NAMES.keys())
@@ -2633,13 +2462,8 @@ def create_specific_metric_cards(current_agency_display, metrics, theme_styles, 
     cards.append(card3)
     
     # Card 4: ENHANCED - Agency Completion Percentage (similar to header card 4)
-    # card4 = create_agency_completion_card(agency_data)
-    # cards.append(card4)
-    if agency_data is not None and not agency_data.empty:
-        card4 = create_reclaimed_sites_card(current_agency_display, agency_data)
-    else:
-        card4 = create_empty_card(4)
-    cards.append(card4)    
+    card4 = create_agency_completion_card(agency_data)
+    cards.append(card4)
     
     # Card 5: Cluster Progress (LIST STYLE) - UNCHANGED
     if agency_data is not None and not agency_data.empty:
@@ -3140,10 +2964,7 @@ __all__ = [
     'create_header_card_4',        # NEW
     'create_project_overview_header',
     'get_display_agency_name',
-    'AGENCY_NAMES',
-    'create_tri_metric_card',           # ADD
-    'calculate_reclaimed_sites_metrics', # ADD
-    'create_reclaimed_sites_card' 
+    'AGENCY_NAMES'
 ]
 
 def register_public_layout_callbacks():

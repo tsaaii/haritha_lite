@@ -12,7 +12,7 @@ def register_all_missing_callbacks():
     try:
         # Import and register public layout callbacks
         try:
-            from layouts.public_layout_uniform import register_public_layout_callbacks
+            from layouts.public_layout_uniform_bkp_sep9 import register_public_layout_callbacks
             register_public_layout_callbacks()
             logger.info("✅ Public layout callbacks registered")
         except ImportError:

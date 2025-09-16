@@ -13,7 +13,7 @@ import urllib.parse
 import os
 import logging
 import time
-from datetime import timedelta
+from datetime import datetime,timedelta
 from flask import session, redirect, request
 from utils.theme_utils import get_theme_styles
 import json
@@ -28,12 +28,12 @@ from layouts.login_layout import build_login_layout
 from site_dashboard import site_dashboard_bp
 from file_watcher import start_file_monitoring, stop_file_monitoring
 
-# âŒ REMOVED: from callbacks.filter_container_callbacks import register_filter_container_callbacks
+# Ã¢ÂÅ’ REMOVED: from callbacks.filter_container_callbacks import register_filter_container_callbacks
 from data_loader import get_cached_data, refresh_cached_data
 from services.auth_service import auth_service
-# âŒ REMOVED: from callbacks.dashboard_filter_callbacks import register_dashboard_filter_callbacks
-# âœ… FIXED: Import dashboard routes but with custom registration to avoid conflicts
-# âœ… ONLY IMPORT: The consolidated callbacks
+# Ã¢ÂÅ’ REMOVED: from callbacks.dashboard_filter_callbacks import register_dashboard_filter_callbacks
+# Ã¢Å“â€¦ FIXED: Import dashboard routes but with custom registration to avoid conflicts
+# Ã¢Å“â€¦ ONLY IMPORT: The consolidated callbacks
 #from callbacks.consolidated_filter_callbacks import register_all_callbacks
 from layouts.public_layout_uniform import build_public_layout
 
@@ -59,19 +59,19 @@ try:
     from utils.google_auth import get_google_auth_manager
     google_auth_manager = get_google_auth_manager()
     GOOGLE_AUTH_AVAILABLE = True
-    print("âœ… Google OAuth utilities loaded successfully")
-    print(f"âœ… Auth manager type: {type(google_auth_manager).__name__}")
+    print("Ã¢Å“â€¦ Google OAuth utilities loaded successfully")
+    print(f"Ã¢Å“â€¦ Auth manager type: {type(google_auth_manager).__name__}")
     
     # Test if it's the real GoogleAuthManager or MockGoogleAuth
     if hasattr(google_auth_manager, 'client_secrets_file'):
-        print("âœ… Real GoogleAuthManager detected")
+        print("Ã¢Å“â€¦ Real GoogleAuthManager detected")
         REAL_OAUTH_AVAILABLE = True
     else:
-        print("âš ï¸ MockGoogleAuth detected - client_secrets.json missing or invalid")
+        print("Ã¢Å¡ Ã¯Â¸Â MockGoogleAuth detected - client_secrets.json missing or invalid")
         REAL_OAUTH_AVAILABLE = False
         
 except Exception as e:
-    print(f"âŒ Google OAuth utilities not available: {e}")
+    print(f"Ã¢ÂÅ’ Google OAuth utilities not available: {e}")
     google_auth_manager = None
     GOOGLE_AUTH_AVAILABLE = False
     REAL_OAUTH_AVAILABLE = False
@@ -87,6 +87,8 @@ server.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
     PERMANENT_SESSION_LIFETIME=timedelta(hours=1)
 )
+
+
 
 app = dash.Dash(
     __name__, 
@@ -212,13 +214,13 @@ app.index_string = f'''
             
             // RELIABLE EVENT DELEGATION APPROACH - FIXED with clean navigation
             document.addEventListener('click', function(e) {{
-                console.log('ðŸŽ¯ Click detected on:', e.target.id, e.target.className);
+                console.log('Ã°Å¸Å½Â¯ Click detected on:', e.target.id, e.target.className);
                 
                 // Handle Admin Login button - FORCE clean navigation
                 if (e.target.id === 'admin-login-btn') {{
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('ðŸ” Admin login button clicked - navigating to clean /login');
+                    console.log('Ã°Å¸â€Â Admin login button clicked - navigating to clean /login');
                     window.location.replace('/login');  // Clean URL without parameters
                     return false;
                 }}
@@ -227,7 +229,7 @@ app.index_string = f'''
                 if (e.target.id === 'google-login-btn' || e.target.id === 'google-login-btn-alt') {{
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('ðŸ”µ Google OAuth button clicked - redirecting to /oauth/login');
+                    console.log('Ã°Å¸â€Âµ Google OAuth button clicked - redirecting to /oauth/login');
                     window.location.replace('/oauth/login');
                     return false;
                 }}
@@ -236,7 +238,7 @@ app.index_string = f'''
                 if (e.target.id === 'overlay-logout-btn') {{
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('ðŸšª Logout button clicked - redirecting to /?logout=true');
+                    console.log('Ã°Å¸Å¡Âª Logout button clicked - redirecting to /?logout=true');
                     window.location.replace('/?logout=true');
                     return false;
                 }}
@@ -248,13 +250,13 @@ app.index_string = f'''
                     e.stopPropagation();
                     
                     if (parentButton.id === 'admin-login-btn') {{
-                        console.log('ðŸ” Admin login button (nested click) - navigating to clean /login');
+                        console.log('Ã°Å¸â€Â Admin login button (nested click) - navigating to clean /login');
                         window.location.replace('/login');  // Clean URL without parameters
                     }} else if (parentButton.id === 'google-login-btn' || parentButton.id === 'google-login-btn-alt') {{
-                        console.log('ðŸ”µ Google OAuth button (nested click) - redirecting to /oauth/login');
+                        console.log('Ã°Å¸â€Âµ Google OAuth button (nested click) - redirecting to /oauth/login');
                         window.location.replace('/oauth/login');
                     }} else if (parentButton.id === 'overlay-logout-btn') {{
-                        console.log('ðŸšª Logout button (nested click) - redirecting to /?logout=true');
+                        console.log('Ã°Å¸Å¡Âª Logout button (nested click) - redirecting to /?logout=true');
                         window.location.replace('/?logout=true');
                     }}
                     return false;
@@ -265,7 +267,7 @@ app.index_string = f'''
 </html>
 '''
 start_file_monitoring()
-# âœ… CUSTOM DASHBOARD ROUTE REGISTRATION - AVOIDS CONFLICTS
+# Ã¢Å“â€¦ CUSTOM DASHBOARD ROUTE REGISTRATION - AVOIDS CONFLICTS
 def register_custom_dashboard_routes(server):
     """Register dashboard routes without conflicts"""
     
@@ -302,7 +304,7 @@ def register_custom_dashboard_routes(server):
                 for cluster, sites in grouped.items():
                     cluster_sites[cluster] = list(sites)
             
-            logger.info(f"âœ… CSV relationships: {len(agency_clusters)} agencies, {len(cluster_sites)} clusters")
+            logger.info(f"Ã¢Å“â€¦ CSV relationships: {len(agency_clusters)} agencies, {len(cluster_sites)} clusters")
             
             return flask.jsonify({
                 'agency_clusters': agency_clusters,
@@ -311,7 +313,7 @@ def register_custom_dashboard_routes(server):
             })
             
         except Exception as e:
-            logger.error(f"âŒ Error getting CSV relationships: {e}")
+            logger.error(f"Ã¢ÂÅ’ Error getting CSV relationships: {e}")
             return flask.jsonify({
                 'error': 'Error processing CSV data',
                 'message': str(e)
@@ -376,12 +378,12 @@ def register_custom_dashboard_routes(server):
                 "total_records_available": len(df)
             }
             
-            logger.info(f"âœ… Filtered CSV data: {record_count} records from {len(df)} total")
+            logger.info(f"Ã¢Å“â€¦ Filtered CSV data: {record_count} records from {len(df)} total")
             
             return flask.jsonify(filter_response)
             
         except Exception as e:
-            logger.error(f"âŒ Error filtering CSV data: {e}")
+            logger.error(f"Ã¢ÂÅ’ Error filtering CSV data: {e}")
             return flask.jsonify({
                 "error": "Error processing CSV data",
                 "message": str(e)
@@ -427,7 +429,7 @@ def update_theme_with_session_sync(dark_clicks, light_clicks, contrast_clicks, g
     if new_theme != current_theme:
         try:
             session['current_theme'] = new_theme
-            logger.info(f"Theme successfully changed: {current_theme} â†’ {new_theme}")
+            logger.info(f"Theme successfully changed: {current_theme} Ã¢â€ â€™ {new_theme}")
         except Exception as e:
             logger.warning(f"Could not sync theme to Flask session: {e}")
     
@@ -438,7 +440,7 @@ clientside_callback(
     function(theme_name) {
         if (!theme_name) return window.dash_clientside.no_update;
         
-        console.log('ðŸŽ¨ Updating theme to:', theme_name);
+        console.log('Ã°Å¸Å½Â¨ Updating theme to:', theme_name);
         
         // Define theme colors - COMPLETE THEME DEFINITIONS
         const themes = {
@@ -509,13 +511,13 @@ clientside_callback(
                 root.style.setProperty(key, themeVars[key]);
             });
             
-            console.log('âœ… Theme CSS variables updated successfully');
+            console.log('Ã¢Å“â€¦ Theme CSS variables updated successfully');
             
             // Also update theme attribute on body for additional styling
             document.body.setAttribute('data-theme', theme_name);
             
         } else {
-            console.warn('âš ï¸ Theme not found:', theme_name);
+            console.warn('Ã¢Å¡ Ã¯Â¸Â Theme not found:', theme_name);
         }
         
         return window.dash_clientside.no_update;
@@ -598,10 +600,10 @@ def test_overlay():
         </style>
     </head>
     <body>
-        <h1>ðŸ§ª Hover Overlay Test</h1>
+        <h1>Ã°Å¸Â§Âª Hover Overlay Test</h1>
         <div class="test-area">Hover at the very top of this page to test overlay</div>
         <p>The overlay should appear when you hover at the top edge of the page.</p>
-        <p><a href="/" style="color: #68D391;">â† Back to Dashboard</a></p>
+        <p><a href="/" style="color: #68D391;">Ã¢â€ Â Back to Dashboard</a></p>
         
         <script>
             // Check if hover overlay CSS is loaded
@@ -614,9 +616,9 @@ def test_overlay():
             }).join('\\n');
             
             if (styles.includes('hover-trigger-area') || styles.includes('overlay-banner')) {
-                console.log('âœ… Hover overlay CSS detected');
+                console.log('Ã¢Å“â€¦ Hover overlay CSS detected');
             } else {
-                console.log('âŒ Hover overlay CSS not found');
+                console.log('Ã¢ÂÅ’ Hover overlay CSS not found');
             }
         </script>
     </body>
@@ -673,19 +675,19 @@ def oauth_login():
         from utils.simple_oauth import get_oauth_manager
         oauth_manager = get_oauth_manager()
         
-        logger.info(f"ðŸ” OAuth login attempt - configured: {oauth_manager.is_available()}")
+        logger.info(f"Ã°Å¸â€Â OAuth login attempt - configured: {oauth_manager.is_available()}")
         
         if not oauth_manager.is_available():
-            logger.info("âš ï¸ OAuth not configured - creating demo session")
+            logger.info("Ã¢Å¡ Ã¯Â¸Â OAuth not configured - creating demo session")
             success, message, session_data = oauth_manager.create_demo_session()
             
             if success:
                 flask.session['swaccha_session_id'] = session_data['session_id']
                 flask.session['user_data'] = session_data
-                logger.info("âœ… Demo OAuth session created successfully")
+                logger.info("Ã¢Å“â€¦ Demo OAuth session created successfully")
                 return redirect('/dashboard')
             else:
-                logger.error(f"âŒ Demo session creation failed: {message}")
+                logger.error(f"Ã¢ÂÅ’ Demo session creation failed: {message}")
                 return redirect('/login?error=demo_oauth_failed')
         
         # Real OAuth flow
@@ -696,11 +698,11 @@ def oauth_login():
             flask.session['oauth_state'] = state
             flask.session['oauth_timestamp'] = time.time()
             
-            logger.info(f"ðŸ”— Redirecting to Google OAuth: {auth_url[:100]}...")
+            logger.info(f"Ã°Å¸â€â€” Redirecting to Google OAuth: {auth_url[:100]}...")
             return redirect(auth_url)
             
         except Exception as e:
-            logger.error(f"âŒ OAuth URL generation failed: {e}")
+            logger.error(f"Ã¢ÂÅ’ OAuth URL generation failed: {e}")
             # Fallback to demo
             success, message, session_data = oauth_manager.create_demo_session()
             if success:
@@ -711,7 +713,7 @@ def oauth_login():
                 return redirect('/login?error=oauth_fallback_failed')
         
     except Exception as e:
-        logger.error(f"âŒ Critical OAuth error: {e}")
+        logger.error(f"Ã¢ÂÅ’ Critical OAuth error: {e}")
         return redirect('/login?error=oauth_critical_error')
 
 @server.route('/oauth/callback')
@@ -727,40 +729,40 @@ def oauth_callback():
         state = request.args.get('state')
         error = request.args.get('error')
         
-        logger.info(f"ðŸ“¥ OAuth callback - code: {'âœ…' if code else 'âŒ'}, state: {'âœ…' if state else 'âŒ'}, error: {error or 'None'}")
+        logger.info(f"Ã°Å¸â€œÂ¥ OAuth callback - code: {'Ã¢Å“â€¦' if code else 'Ã¢ÂÅ’'}, state: {'Ã¢Å“â€¦' if state else 'Ã¢ÂÅ’'}, error: {error or 'None'}")
         
         if error:
-            logger.error(f"âŒ OAuth error from Google: {error}")
+            logger.error(f"Ã¢ÂÅ’ OAuth error from Google: {error}")
             return redirect(f'/login?error=oauth_denied&details={error}')
         
         if not code:
-            logger.error("âŒ No authorization code received")
+            logger.error("Ã¢ÂÅ’ No authorization code received")
             return redirect('/login?error=oauth_no_code')
         
         # Exchange code for tokens
-        logger.info("ðŸ”„ Starting token exchange...")
+        logger.info("Ã°Å¸â€â€ž Starting token exchange...")
         token_response = oauth_manager.exchange_code_for_tokens(code)
         
         if 'error' in token_response:
-            logger.error(f"âŒ Token exchange failed: {token_response['error']}")
+            logger.error(f"Ã¢ÂÅ’ Token exchange failed: {token_response['error']}")
             return redirect('/login?error=token_exchange_failed')
         
         # Get access token
         access_token = token_response.get('access_token')
         if not access_token:
-            logger.error("âŒ No access token in response")
+            logger.error("Ã¢ÂÅ’ No access token in response")
             return redirect('/login?error=no_access_token')
         
         # Get user information
-        logger.info("ðŸ‘¤ Fetching user information...")
+        logger.info("Ã°Å¸â€˜Â¤ Fetching user information...")
         user_info = oauth_manager.get_user_info(access_token)
         
         if 'error' in user_info:
-            logger.error(f"âŒ Failed to get user info: {user_info['error']}")
+            logger.error(f"Ã¢ÂÅ’ Failed to get user info: {user_info['error']}")
             return redirect('/login?error=user_info_failed')
         
         # Authenticate user
-        logger.info(f"ðŸ” Authenticating user: {user_info.get('email', 'unknown')}")
+        logger.info(f"Ã°Å¸â€Â Authenticating user: {user_info.get('email', 'unknown')}")
         success, message, session_data = oauth_manager.authenticate_user(user_info)
         
         if success:
@@ -768,14 +770,14 @@ def oauth_callback():
             flask.session['swaccha_session_id'] = session_data['session_id']
             flask.session['user_data'] = session_data
             
-            logger.info(f"âœ… OAuth login successful for: {user_info.get('email')}")
+            logger.info(f"Ã¢Å“â€¦ OAuth login successful for: {user_info.get('email')}")
             return redirect('/dashboard')
         else:
-            logger.warning(f"âŒ User authorization failed: {message}")
+            logger.warning(f"Ã¢ÂÅ’ User authorization failed: {message}")
             return redirect(f'/login?error=unauthorized&message={urllib.parse.quote(message)}')
             
     except Exception as e:
-        logger.error(f"âŒ OAuth callback critical error: {e}")
+        logger.error(f"Ã¢ÂÅ’ OAuth callback critical error: {e}")
         return redirect('/login?error=oauth_callback_error')
 
 @server.route('/debug/oauth')
@@ -800,7 +802,7 @@ def debug_oauth():
         <!DOCTYPE html>
         <html>
         <head>
-            <title>ðŸ”§ OAuth Debug Center</title>
+            <title>Ã°Å¸â€Â§ OAuth Debug Center</title>
             <style>
                 body {{ 
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
@@ -843,15 +845,15 @@ def debug_oauth():
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>ðŸ”§ OAuth Debug Center</h1>
+                    <h1>Ã°Å¸â€Â§ OAuth Debug Center</h1>
                     <p>Complete OAuth configuration and testing dashboard</p>
                 </div>
                 
                 <div class="section">
-                    <h2>ðŸš¦ System Status</h2>
+                    <h2>Ã°Å¸Å¡Â¦ System Status</h2>
                     
                     <div class="status {'good' if debug_info.get('oauth_configured') else 'bad'}">
-                        <div class="icon">{'âœ…' if debug_info.get('oauth_configured') else 'âŒ'}</div>
+                        <div class="icon">{'Ã¢Å“â€¦' if debug_info.get('oauth_configured') else 'Ã¢ÂÅ’'}</div>
                         <div class="details">
                             <div class="label">OAuth Configuration</div>
                             <div class="desc">
@@ -863,25 +865,25 @@ def debug_oauth():
                 
                 <div class="grid">
                     <div class="section">
-                        <h2>ðŸ§ª Quick Tests</h2>
-                        <a href="/oauth/login" class="btn success">ðŸ”— Test OAuth Flow</a>
+                        <h2>Ã°Å¸Â§Âª Quick Tests</h2>
+                        <a href="/oauth/login" class="btn success">Ã°Å¸â€â€” Test OAuth Flow</a>
                         <p><em>Tests the complete OAuth login process</em></p>
                         
-                        <a href="/login" class="btn">ðŸ“‹ Login Page</a>
+                        <a href="/login" class="btn">Ã°Å¸â€œâ€¹ Login Page</a>
                         <p><em>Go to the main login page</em></p>
                         
-                        <a href="/" class="btn">ðŸ  Dashboard</a>
+                        <a href="/" class="btn">Ã°Å¸Â  Dashboard</a>
                         <p><em>Return to main dashboard</em></p>
                     </div>
                 </div>
                 
                 <div class="section">
-                    <h2>âš™ï¸ Configuration Details</h2>
+                    <h2>Ã¢Å¡â„¢Ã¯Â¸Â Configuration Details</h2>
                     <pre>{json.dumps(debug_info, indent=2, default=str)}</pre>
                 </div>
                 
                 <div class="section">
-                    <h2>ðŸ–¥ï¸ System Information</h2>
+                    <h2>Ã°Å¸â€“Â¥Ã¯Â¸Â System Information</h2>
                     <pre>{json.dumps(system_info, indent=2, default=str)}</pre>
                 </div>
             </div>
@@ -894,9 +896,9 @@ def debug_oauth():
         logger.error(f"Debug page error: {e}")
         return f"""
         <html><body style="font-family: monospace; background: #1a1a1a; color: #fff; padding: 40px;">
-            <h1>âŒ Debug Error</h1>
+            <h1>Ã¢ÂÅ’ Debug Error</h1>
             <p>Error loading debug info: {str(e)}</p>
-            <p><a href="/" style="color: #3182CE;">â† Back to Dashboard</a></p>
+            <p><a href="/" style="color: #3182CE;">Ã¢â€ Â Back to Dashboard</a></p>
         </body></html>
         """
 
@@ -991,6 +993,923 @@ app.layout = html.Div([
     )
 ])
 
+# Replace your existing site route handler in main.py with this improved version
+
+from datetime import datetime
+import traceback
+
+@server.route('/site/')
+def handle_site_list():
+    """Handle site list page - no authentication required"""
+    print(f"SITE LIST REQUESTED")
+    
+    try:
+        # Import your site functions
+        from site_dashboard import get_sites_from_api
+        sites = get_sites_from_api()
+        
+        sites_html = ""
+        for site in sites:
+            sites_html += f"""
+            <div class="col-md-4 mb-3">
+                <div class="site-card">
+                    <h5>{site.title()}</h5>
+                    <p>Andhra Pradesh District</p>
+                    <a href="/site/{site}" class="btn-primary">View Dashboard</a>
+                    <a href="/site/{site}/api/data" class="btn-secondary">API Data</a>
+                </div>
+            </div>
+            """
+        
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Site List - Swachha Dashboard</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                body {{ 
+                    font-family: 'Inter', sans-serif;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    min-height: 100vh;
+                    padding: 20px;
+                }}
+                .container {{
+                    background: white;
+                    border-radius: 12px;
+                    padding: 2rem;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }}
+                .site-card {{
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    padding: 1.5rem;
+                    margin-bottom: 1rem;
+                    transition: transform 0.2s;
+                }}
+                .site-card:hover {{
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                }}
+                .btn-primary, .btn-secondary {{
+                    background: #3b82f6;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    color: white;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin: 3px;
+                }}
+                .btn-secondary {{ background: #6b7280; }}
+                .btn-primary:hover {{ background: #2563eb; color: white; text-decoration: none; }}
+                .btn-secondary:hover {{ background: #4b5563; color: white; text-decoration: none; }}
+                .alert-success {{
+                    background: #d4edda;
+                    border: 1px solid #c3e6cb;
+                    color: #155724;
+                    padding: 1rem;
+                    border-radius: 8px;
+                    margin-bottom: 2rem;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Available Sites ({len(sites)} total)</h1>
+                
+                <div class="alert-success">
+                    <strong>âœ… Public Access Working!</strong> No login required for site data.
+                </div>
+                
+                <a href="/" class="btn-primary mb-3">â† Back to Main Dashboard</a>
+                
+                <div class="row">
+                    {sites_html}
+                </div>
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>
+        """
+        
+        response = flask.make_response(html_content)
+        response.headers['Content-Type'] = 'text/html; charset=utf-8'
+        response.headers['Cache-Control'] = 'no-cache'
+        return response
+        
+    except Exception as e:
+        print(f"ERROR in site list: {e}")
+        return f"<html><body><h1>Error loading sites</h1><p>{str(e)}</p></body></html>", 500
+
+@server.route('/site/<site_name>')
+def handle_individual_site(site_name):
+    """Handle individual site dashboard - using your exact HTML template"""
+    print(f"SITE DASHBOARD REQUESTED: {site_name}")
+    
+    try:
+        # Import your site processing function
+        from site_dashboard import process_site_data, get_sites_from_api
+        
+        # Validate site exists
+        available_sites = get_sites_from_api()
+        if site_name not in available_sites:
+            return f"<html><body><h1>Site Not Found</h1><p>Site '{site_name}' not found. Available: {', '.join(available_sites)}</p></body></html>", 404
+        
+        # Get REAL site data
+        target_date = datetime.now().strftime('%Y-%m-%d')
+        site_data = process_site_data(site_name, target_date)
+        
+        print(f"LOADED SITE DATA FOR {site_name}: {site_data.get('total_trips', 0)} trips")
+        
+        # Your exact HTML template
+        html_template = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }} Dashboard - Haritha Weighbridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #eb9534 0%, #DD6B20 100%);
+            --secondary-gradient: linear-gradient(135deg, #38A169 0%, #2D7D32 100%);
+            --success-gradient: linear-gradient(135deg, #38A169 0%, #2F855A 100%);
+            --warning-gradient: linear-gradient(135deg, #DD6B20 0%, #C05621 100%);
+            --info-gradient: linear-gradient(135deg, #3182CE 0%, #2C5282 100%);
+            --purple-gradient: linear-gradient(135deg, #805AD5 0%, #6B46C1 100%);
+            
+            --primary-bg: #F8F9FA;
+            --secondary-bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --card-hover: #F1F5F9;
+            --border-color: #E2E8F0;
+            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.16);
+            
+            --text-primary: #1A202C;
+            --text-secondary: #4A5568;
+            --text-muted: #718096;
+            --text-on-color: #FFFFFF;
+            
+            --accent-orange: #eb9534;
+            --accent-green: #38A169;
+            --accent-blue: #3182CE;
+            --accent-purple: #805AD5;
+            --accent-red: #E53E3E;
+            --accent-teal: #319795;
+            --accent-pink: #D53F8C;
+            --accent-indigo: #5A67D8;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .dashboard-header {
+            background: var(--primary-gradient);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path d="M0,100 C50,150 100,50 200,100 C300,150 400,50 500,100 C600,150 700,50 800,100 C900,150 950,50 1000,100 L1000,200 L0,200 Z" fill="rgba(255,255,255,0.2)"/></svg>') repeat-x;
+            background-size: 1000px 200px;
+            opacity: 0.4;
+        }
+        
+        .site-header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .status-active {
+            background: var(--success-gradient);
+            border-color: var(--accent-green);
+        }
+        
+        .status-inactive {
+            background: var(--warning-gradient);
+            border-color: var(--accent-orange);
+        }
+        
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            background: var(--card-hover);
+            border-color: var(--accent-orange);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+        
+        .metric-card:nth-child(1) { border-left: 4px solid var(--accent-orange); }
+        .metric-card:nth-child(2) { border-left: 4px solid var(--accent-green); }
+        .metric-card:nth-child(3) { border-left: 4px solid var(--accent-blue); }
+        .metric-card:nth-child(4) { border-left: 4px solid var(--accent-purple); }
+        
+        .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-card:nth-child(1) .metric-value { color: var(--accent-orange); }
+        .metric-card:nth-child(2) .metric-value { color: var(--accent-green); }
+        .metric-card:nth-child(3) .metric-value { color: var(--accent-blue); }
+        .metric-card:nth-child(4) .metric-value { color: var(--accent-purple); }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-sublabel {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin: 0 auto 0.5rem auto;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 8;
+        }
+        
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+        .chart-container {
+            height: 300px;
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .material-item {
+            background: linear-gradient(135deg, rgba(235, 149, 52, 0.05) 0%, rgba(235, 149, 52, 0.02) 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--accent-orange);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(235, 149, 52, 0.1);
+        }
+        
+        .material-item:hover {
+            background: linear-gradient(135deg, rgba(235, 149, 52, 0.08) 0%, rgba(235, 149, 52, 0.05) 100%);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .material-item:nth-child(odd) {
+            border-left-color: var(--accent-green);
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.05) 0%, rgba(56, 161, 105, 0.02) 100%);
+            border: 1px solid rgba(56, 161, 105, 0.1);
+        }
+        
+        .material-item:nth-child(odd):hover {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.08) 0%, rgba(56, 161, 105, 0.05) 100%);
+        }
+        
+        .vehicle-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .vehicle-card:hover {
+            background: var(--card-hover);
+            border-color: var(--accent-blue);
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+        
+        .vehicle-card:nth-child(odd) {
+            border-left: 4px solid var(--accent-teal);
+        }
+        
+        .vehicle-card:nth-child(even) {
+            border-left: 4px solid var(--accent-purple);
+        }
+        
+        .alert-card {
+            background: linear-gradient(135deg, rgba(235, 149, 52, 0.08) 0%, rgba(221, 107, 32, 0.05) 100%);
+            border: 2px solid rgba(235, 149, 52, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .back-btn {
+            background: var(--secondary-gradient);
+            border: 2px solid var(--accent-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+            font-weight: 500;
+        }
+        
+        .back-btn:hover {
+            background: var(--warning-gradient);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--accent-orange);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .section-title:nth-of-type(1) .section-icon { background: var(--primary-gradient); }
+        .section-title:nth-of-type(2) .section-icon { background: var(--info-gradient); }
+        .section-title:nth-of-type(3) .section-icon { background: var(--purple-gradient); }
+        .section-title:nth-of-type(4) .section-icon { background: var(--secondary-gradient); }
+        
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+        
+        .info-badge:nth-child(3) {
+            background: linear-gradient(135deg, rgba(56, 161, 105, 0.2) 0%, rgba(56, 161, 105, 0.1) 100%);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .info-badge:nth-child(4) {
+            background: linear-gradient(135deg, rgba(49, 151, 149, 0.2) 0%, rgba(49, 151, 149, 0.1) 100%);
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 1.5rem 0;
+            }
+            
+            .metric-value {
+                font-size: 1.875rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .metric-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="site-header-content">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-5 fw-bold mb-2">{{ site_name }} Dashboard</h1>
+                        <div class="info-badge mb-2">
+                            <i class="fas fa-building me-2"></i>
+                            Contractor: {{ contractor }}
+                        </div>
+                        <div class="info-badge">
+                            <i class="fas fa-layer-group me-2"></i>
+                            Cluster: {{ cluster }}
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="mb-3">
+                            <span class="status-indicator status-{{ status_class }}">
+                                <i class="fas fa-circle me-2" style="font-size: 0.5rem;"></i>
+                                {{ status }}
+                            </span>
+                        </div>
+                        <a href="/site/" class="back-btn">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Sites
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Project Progress Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    Project Progress
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ total_quantity_given }}</div>
+                    <div class="metric-label">Total Quantity Given</div>
+                    <div class="metric-sublabel">MT allocated for remediation</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ total_remediated }}</div>
+                    <div class="metric-label">Total Remediated</div>
+                    <div class="metric-sublabel">MT processed to date</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card text-center">
+                    <div class="progress-circle mx-auto mb-3">
+                        <svg class="progress-ring" viewBox="0 0 100 100">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#eb9534;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#DD6B20;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress-ring-fill" cx="50" cy="50" r="45" 
+                                    style="stroke-dashoffset: {{ progress_offset }};"></circle>
+                        </svg>
+                        <div class="progress-text">{{ completion_percentage }}%</div>
+                    </div>
+                    <div class="metric-label">Completion Rate</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ target_quantity_per_day }} MT</div>
+                    <div class="metric-label">Target Per Day</div>
+                    <div class="metric-sublabel">Daily quantity target</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Operations Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    Today's Operations
+                </h2>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="metric-card">
+                <div class="metric-value">{{ total_trips }}</div>
+                <div class="metric-label">Total Trips Today</div>
+                <div class="metric-sublabel">Vehicle movements processed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ total_inward }} MT</div>
+                <div class="metric-label">Inward Material</div>
+                <div class="metric-sublabel">Legacy/MSW received</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ total_outward }} MT</div>
+                <div class="metric-label">Outward Material</div>
+                <div class="metric-sublabel">Processed material dispatched</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ total_net_weight }} MT</div>
+                <div class="metric-label">Total Weight Processed</div>
+                <div class="metric-sublabel">{{ avg_weight_per_trip }} MT average per trip</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Material Breakdown -->
+            <div class="col-lg-6 mb-4">
+                <h3 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    Material Analysis
+                </h3>
+                
+                <div class="metric-card">
+                    <!-- Material breakdown content first -->
+                    
+                    <!-- Inward/Outward flow moved to bottom -->
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="h4 text-success mb-1">{{ inward_percentage }}%</div>
+                                <div class="small text-muted">Inward Flow</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="h4 text-info mb-1">{{ outward_percentage }}%</div>
+                                <div class="small text-muted">Outward Flow</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Recent Vehicles -->
+            <div class="col-lg-6 mb-4">
+                <h3 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    Recent Vehicles
+                </h3>
+                
+                <div style="max-height: 500px; overflow-y: auto;">
+                    {{ recent_vehicles_html }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        {{ alerts_html }}
+
+        <!-- System Info -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="metric-card">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <i class="fas fa-database fa-2x text-info mb-2 d-block"></i>
+                            <div class="fw-bold">{{ todays_record_count }}</div>
+                            <small class="text-muted">Records Today</small>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-clock fa-2x text-warning mb-2 d-block"></i>
+                            <div class="fw-bold">{{ last_updated }}</div>
+                            <small class="text-muted">Last Updated</small>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-calendar fa-2x text-success mb-2 d-block"></i>
+                            <div class="fw-bold">{{ target_date }}</div>
+                            <small class="text-muted">Data Date</small>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-server fa-2x text-primary mb-2 d-block"></i>
+                            <div class="fw-bold">{{ total_historical_records }}</div>
+                            <small class="text-muted">Total Records</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-refresh data every 5 minutes
+        setInterval(refreshData, 300000);
+        
+        function refreshData() {
+            console.log('Refreshing dashboard data...');
+            fetch('/site/{{ site_name }}/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    updateDashboard(data);
+                    console.log('Data refreshed successfully');
+                })
+                .catch(error => {
+                    console.error('Error refreshing data:', error);
+                });
+        }
+        
+        function updateDashboard(data) {
+            // Update progress circle
+            const completionPercentage = data.completion_percentage || 0;
+            const progressFill = document.querySelector('.progress-ring-fill');
+            if (progressFill) {
+                const offset = 283 - (283 * completionPercentage / 100);
+                progressFill.style.strokeDashoffset = offset;
+            }
+            
+            const progressText = document.querySelector('.progress-text');
+            if (progressText) {
+                progressText.textContent = completionPercentage.toFixed(1) + '%';
+            }
+        }
+        
+        // Add smooth scroll and interaction effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress circle on load
+            setTimeout(() => {
+                const progressFill = document.querySelector('.progress-ring-fill');
+                if (progressFill) {
+                    progressFill.style.transition = 'stroke-dashoffset 2s ease-in-out';
+                }
+            }, 500);
+            
+            // Add hover effects for cards
+            document.querySelectorAll('.metric-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>'''
+        
+        # Helper functions to format dynamic content
+        def format_material_breakdown():
+            material_breakdown = site_data.get('material_breakdown', {})
+            if not material_breakdown:
+                return '''
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fa-2x mb-3 d-block"></i>
+                    No material data available
+                </div>
+                '''
+            
+            items = []
+            for material, data in material_breakdown.items():
+                items.append(f'''
+                <div class="material-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold">{material}</div>
+                            <small class="text-muted">{data.get("count", 0)} trips</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">{(data.get("weight", 0)/1000):.1f} MT</div>
+                        </div>
+                    </div>
+                </div>
+                ''')
+            return ''.join(items)
+        
+        def format_recent_vehicles():
+            recent_vehicles = site_data.get('recent_vehicles', [])
+            if not recent_vehicles:
+                return '''
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-road fa-2x mb-3 d-block"></i>
+                    No recent vehicle activity
+                </div>
+                '''
+            
+            vehicles = []
+            for vehicle in recent_vehicles:
+                vehicles.append(f'''
+                <div class="vehicle-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="fw-semibold mb-1">{vehicle.get("vehicle_no", "N/A")}</div>
+                            <div class="small text-muted">Ticket: {vehicle.get("ticket_no", "N/A")}</div>
+                            <div class="small text-info">{vehicle.get("time", "N/A")}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">{(vehicle.get("weight", 0)/1000):.1f} MT</div>
+                            <span class="badge" style="background: var(--primary-gradient); font-size: 0.7rem;">
+                                {vehicle.get("material", "N/A")}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                ''')
+            return ''.join(vehicles)
+        
+        def format_alerts():
+            alerts = site_data.get('alerts', [])
+            if not alerts:
+                return ''
+            
+            alert_items = ''.join([f'<div class="alert-card">{alert}</div>' for alert in alerts])
+            return f'''
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3 class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        System Status
+                    </h3>
+                    {alert_items}
+                </div>
+            </div>
+            '''
+        
+        # Prepare template data with safe defaults
+        template_data = {
+            'site_name': site_name.title(),
+            'contractor': site_data.get('contractor', 'Not specified'),
+            'cluster': site_data.get('cluster', 'Not specified'),
+            'status': site_data.get('status', 'Unknown'),
+            'status_class': 'active' if site_data.get('status') == 'Active' else 'inactive',
+            'total_quantity_given': f"{site_data.get('total_quantity_given', 0):,}",
+            'total_remediated': f"{site_data.get('total_remediated', 0):,}",
+            'completion_percentage': f"{site_data.get('completion_percentage', 0):.1f}",
+            'progress_offset': site_data.get('progress_offset', 283),
+            'target_quantity_per_day': f"{site_data.get('target_quantity_per_day', 0):.1f}",
+            'total_trips': site_data.get('total_trips', 0),
+            'total_inward': site_data.get('total_inward', 0),
+            'total_outward': site_data.get('total_outward', 0),
+            'total_net_weight': site_data.get('total_net_weight', 0),
+            'avg_weight_per_trip': site_data.get('avg_weight_per_trip', 0),
+            'inward_percentage': f"{site_data.get('inward_percentage', 0):.1f}",
+            'outward_percentage': f"{site_data.get('outward_percentage', 0):.1f}",
+            'todays_record_count': site_data.get('todays_record_count', 0),
+            'last_updated': site_data.get('last_updated', 'Unknown'),
+            'target_date': target_date,
+            'total_historical_records': site_data.get('total_historical_records', 0),
+            'material_breakdown_html': format_material_breakdown(),
+            'recent_vehicles_html': format_recent_vehicles(),
+            'alerts_html': format_alerts(),
+        }
+        
+        # Simple template replacement
+        html_content = html_template
+        for key, value in template_data.items():
+            placeholder = f'{{{{ {key} }}}}'
+            html_content = html_content.replace(placeholder, str(value))
+        
+        response = flask.make_response(html_content)
+        response.headers['Content-Type'] = 'text/html; charset=utf-8'
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        
+        print(f"RETURNING BEAUTIFUL UI HTML FOR: {site_name}")
+        return response
+        
+    except Exception as e:
+        print(f"ERROR loading site data for {site_name}: {e}")
+        print(f"TRACEBACK: {traceback.format_exc()}")
+        return f"""
+        <html><body style="padding: 2rem; font-family: monospace;">
+            <h1>Error Loading Site Data</h1>
+            <p><strong>Site:</strong> {site_name}</p>
+            <p><strong>Error:</strong> {str(e)}</p>
+            <p><a href="/site/">â† Back to Site List</a></p>
+            <pre>{traceback.format_exc()}</pre>
+        </body></html>
+        """, 500
+
+# API endpoints should be handled by your site_dashboard blueprint
+# Make sure your blueprint is registered AFTER these routes
+# so that /site/<name>/api/data goes to the blueprint, not the catch-all above
+
 # 1. Page routing and authentication
 # Find your route_and_authenticate function and add this case
 
@@ -1003,99 +1922,43 @@ app.layout = html.Div([
     prevent_initial_call=False
 )
 def route_and_authenticate(pathname, search):
-    """Core routing and authentication logic - FIXED: No infinite loop"""
+    """Core routing - FIXED: Flask routes get priority"""
     if pathname:
         pathname = urllib.parse.unquote(pathname)
     
-    print(f"DEBUG: Route called - pathname: {pathname}, search: {search}")
+    print(f"ROUTE DEBUG: {pathname}")
     
-    # Parse parameters
+    # CRITICAL: Let Flask handle these routes completely
+    flask_prefixes = ['/site/', '/legacy/', '/oauth/', '/debug/', '/test/', '/api/', '/_ah/', '/dashboard/csv-', '/dashboard/filtered-']
+    
+    if pathname and any(pathname.startswith(prefix) for prefix in flask_prefixes):
+        print(f"FLASK ROUTE: {pathname} - Dash will not interfere")
+        raise PreventUpdate
+    
+    # Handle logout
     params = {}
     if search:
         params = dict(urllib.parse.parse_qsl(search.lstrip('?')))
-
-    # Handle logout FIRST
+    
     if params.get('logout') == 'true':
-        print("DEBUG: Logout detected - clearing all session data")
         flask.session.clear()
-        if GOOGLE_AUTH_AVAILABLE and google_auth_manager:
-            try:
-                session_id = flask.session.get('swaccha_session_id')
-                if session_id:
-                    google_auth_manager.logout(session_id)
-            except Exception as e:
-                print(f"DEBUG: OAuth logout error: {e}")
         return 'public_landing', False, {}, 'Logged out successfully.'
-
-    # CRITICAL FIX: Let Flask handle site routes - DON'T interfere
-    if pathname and pathname.startswith('/site/'):
-        print(f"DEBUG: Site route detected: {pathname} - letting Flask handle it")
-        raise PreventUpdate  # This prevents Dash from interfering
-
-    # Session validation (rest of your existing code)
+    
+    # Session check
     session_id = flask.session.get('swaccha_session_id')
     user_data = flask.session.get('user_data', {})
-    oauth_user_info = flask.session.get('oauth_user_info', {})
-    is_authenticated = False
+    is_authenticated = bool(session_id)
     
-    print(f"DEBUG: Session check - session_id: {'Yes' if session_id else 'No'}, user_data: {'Yes' if user_data else 'No'}")
-    
-    if session_id:
-        if session_id.startswith('stable_session_'):
-            is_authenticated = True
-            print("DEBUG: Demo session detected - authenticated")
-        elif GOOGLE_AUTH_AVAILABLE and google_auth_manager:
-            try:
-                session_data = google_auth_manager.validate_session(session_id)
-                if session_data:
-                    is_authenticated = True
-                    user_data = {
-                        'name': oauth_user_info.get('name', 'Google User'),
-                        'email': oauth_user_info.get('email', 'user@gmail.com'),
-                        'picture': oauth_user_info.get('picture', '/assets/img/default-avatar.png'),
-                        'role': 'administrator',
-                        'auth_method': 'google_oauth'
-                    }
-                    flask.session['user_data'] = user_data
-                else:
-                    flask.session.clear()
-                    user_data = {}
-            except Exception as e:
-                print(f"DEBUG: OAuth validation error: {e}")
-                flask.session.clear()
-                user_data = {}
-    
-    print(f"DEBUG: Final auth state - authenticated: {is_authenticated}")
-    
-    # Handle other Flask routes
-    if pathname == '/legacy/report' or pathname.startswith('/legacy/'):
-        if is_authenticated:
-            print(f"DEBUG: Flask route {pathname} - letting Flask handle it")
-            raise PreventUpdate
-        else:
-            return 'login', False, {}, 'Please log in to access this page.'
-    
-    # Your existing routing logic for Dash pages
-    elif not pathname or pathname == '/':
+    # Dash-only routes
+    if not pathname or pathname == '/':
         return 'public_landing', is_authenticated, user_data, ''
     elif pathname == '/login':
-        error = params.get('error', '')
-        error_messages = {
-            'oauth_not_available': 'Google OAuth not configured. Use demo login.',
-            'oauth_failed': 'OAuth setup failed. Use demo login.',
-            'unauthorized': 'You are not authorized. Contact administrator.',
-            'invalid_pin': 'Invalid PIN. Try: 1234, 5678, or 9999',
-            'missing_credentials': 'Please enter both username and password.',
-            'invalid_credentials': 'Invalid username or password. Try: admin/password'
-        }
-        return 'login', is_authenticated, user_data, error_messages.get(error, error)
+        return 'login', is_authenticated, user_data, params.get('error', '')
     elif pathname == '/dashboard':
         if is_authenticated:
             return 'admin_dashboard', True, user_data, ''
         else:
-            return 'unauthorized_access', False, {}, 'Please log in to access dashboard.'
-    elif pathname.startswith('/oauth/') or pathname.startswith('/debug/'):
-        raise PreventUpdate
+            return 'unauthorized_access', False, {}, 'Please log in.'
     else:
         return 'public_landing', is_authenticated, user_data, ''
     
@@ -1177,12 +2040,67 @@ def setup_site_dashboard(server):
     # Register the blueprint
     server.register_blueprint(site_dashboard_bp)
     
-    print("âœ… Site Dashboard Blueprint registered")
-    print("ðŸ“Š Available routes:")
+    print("Site Dashboard Blueprint registered")
+    print(" Available routes:")
     print("   - Site List: http://localhost:8050/site/")
     print("   - Site Dashboard: http://localhost:8050/site/{site_name}")
     print("   - Site Analytics: http://localhost:8050/site/{site_name}/analytics")
 
+# Add these routes to your main.py for debugging
+
+@server.route('/_ah/health')
+def health_check():
+    """App Engine health check"""
+    return {'status': 'healthy', 'timestamp': time.time()}, 200
+
+@server.route('/debug/routes')
+def debug_routes():
+    """Show all registered Flask routes"""
+    routes = []
+    for rule in server.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': list(rule.methods),
+            'rule': str(rule),
+            'blueprint': getattr(rule, 'blueprint', None)
+        })
+    return flask.jsonify({
+        'total_routes': len(routes),
+        'routes': routes,
+        'blueprints': list(server.blueprints.keys()),
+        'environment': os.getenv('GAE_ENV', 'local')
+    })
+
+@server.route('/test/routing')
+def test_routing():
+    """Test if Flask routing is working"""
+    return flask.jsonify({
+        'message': 'Flask routing is working!',
+        'request_url': flask.request.url,
+        'request_path': flask.request.path,
+        'method': flask.request.method,
+        'host': flask.request.host,
+        'environment': os.getenv('GAE_ENV', 'local')
+    })
+
+@server.route('/test/site-redirect')
+def test_site_redirect():
+    """Test redirect to site route"""
+    return flask.redirect('/site/visag')
+
+# Add logging to see what's happening with routes
+@server.before_request
+def log_request():
+    """Log every request for debugging"""
+    print(f"REQUEST: {flask.request.method} {flask.request.url}")
+    print(f"PATH: {flask.request.path}")
+    print(f"ENDPOINT: {flask.request.endpoint}")
+
+@server.after_request  
+def log_response(response):
+    """Log response info"""
+    print(f"RESPONSE: {response.status_code} for {flask.request.path}")
+    return response
 
 def setup_legacy_report(server):
     """Setup legacy report with Bootstrap"""
@@ -1201,9 +2119,9 @@ def setup_legacy_report(server):
             return redirect('/login')
         return redirect('/legacy/report')
     
-    print("âœ… Legacy Report Blueprint registered")
-    print("âœ… Bootstrap initialized")
-    print("ðŸ“Š Available at: /legacy/report")
+    print("Ã¢Å“â€¦ Legacy Report Blueprint registered")
+    print("Ã¢Å“â€¦ Bootstrap initialized")
+    print("Ã°Å¸â€œÅ  Available at: /legacy/report")
 
 def start_streamlit_server():
     """Start Streamlit server in background thread"""
@@ -1216,9 +2134,9 @@ def start_streamlit_server():
             "--server.address=0.0.0.0",
             "--server.enableCORS=false"
         ])
-        print("âœ… Streamlit legacy-report started on http://localhost:8051")
+        print("Ã¢Å“â€¦ Streamlit legacy-report started on http://localhost:8051")
     except Exception as e:
-        print(f"âŒ Failed to start Streamlit: {e}")
+        print(f"Ã¢ÂÅ’ Failed to start Streamlit: {e}")
 
 @callback(
     Output('url', 'pathname', allow_duplicate=True),
@@ -1261,7 +2179,7 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
             print("DEBUG: Missing credentials")
             # Show error message
             return html.Div([
-                html.Div("âŒ Please enter both username and password", 
+                html.Div("Ã¢ÂÅ’ Please enter both username and password", 
                         style={'color': 'red', 'textAlign': 'center', 'padding': '1rem'}),
                 build_login_layout(DEFAULT_THEME, 'missing_credentials')
             ])
@@ -1274,13 +2192,13 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
             # Return success page with immediate refresh
             return html.Div([
                 html.Div([
-                    html.H1("âœ… Login Successful!", 
+                    html.H1("Ã¢Å“â€¦ Login Successful!", 
                            style={'color': 'green', 'textAlign': 'center', 'marginBottom': '1rem'}),
                     html.P(f"Welcome, {username}!", 
                            style={'textAlign': 'center', 'fontSize': '1.2rem', 'marginBottom': '1rem'}),
                     html.P("Loading your dashboard...", 
                            style={'textAlign': 'center', 'marginBottom': '2rem'}),
-                    html.Div("ðŸ”„", style={'textAlign': 'center', 'fontSize': '3rem'})
+                    html.Div("Ã°Å¸â€â€ž", style={'textAlign': 'center', 'fontSize': '3rem'})
                 ], style={
                     'padding': '3rem',
                     'backgroundColor': '#f0f9ff',
@@ -1295,7 +2213,7 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
         else:
             print(f"DEBUG: Invalid credentials for {username}")
             return html.Div([
-                html.Div("âŒ Invalid username or password", 
+                html.Div("Ã¢ÂÅ’ Invalid username or password", 
                         style={'color': 'red', 'textAlign': 'center', 'padding': '1rem'}),
                 build_login_layout(DEFAULT_THEME, 'invalid_credentials')
             ])
@@ -1307,13 +2225,13 @@ def handle_login_with_refresh(username_clicks, demo_clicks, username, password):
         
         return html.Div([
             html.Div([
-                html.H1("âœ… Demo Login Successful!", 
+                html.H1("Ã¢Å“â€¦ Demo Login Successful!", 
                        style={'color': 'green', 'textAlign': 'center', 'marginBottom': '1rem'}),
                 html.P("Welcome, Demo User!", 
                        style={'textAlign': 'center', 'fontSize': '1.2rem', 'marginBottom': '1rem'}),
                 html.P("Loading legacy report dashboard...", 
                        style={'textAlign': 'center', 'marginBottom': '2rem'}),
-                html.Div("ðŸ”„", style={'textAlign': 'center', 'fontSize': '3rem'})
+                html.Div("Ã°Å¸â€â€ž", style={'textAlign': 'center', 'fontSize': '3rem'})
             ], style={
                 'padding': '3rem',
                 'backgroundColor': '#f0f9ff',
@@ -1416,14 +2334,14 @@ def create_logout_success_handler():
      State('username-input', 'value'),
      State('password-input', 'value'),
      State('current-page', 'data'),
-     State('url', 'pathname')],  # âœ… ADD: Current pathname to prevent loops
+     State('url', 'pathname')],  # Ã¢Å“â€¦ ADD: Current pathname to prevent loops
     prevent_initial_call=True
 )
 def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks, 
                                 viewer_clicks, pin_clicks, manual_clicks, 
                                 username_password_clicks, back_clicks,
                                 access_pin, manual_email, username, password,
-                                current_page, current_pathname):  # âœ… ADD: current_pathname
+                                current_page, current_pathname):  # Ã¢Å“â€¦ ADD: current_pathname
     """Handle all login actions with DIRECT redirect to Flask route - FIXED to prevent loops"""
     if not ctx.triggered or current_page != 'login':
         raise PreventUpdate
@@ -1434,14 +2352,14 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
     if triggered_value in [None, 0]:
         raise PreventUpdate
     
-    # âœ… PREVENT LOOPS: Check if already on target page
+    # Ã¢Å“â€¦ PREVENT LOOPS: Check if already on target page
     if current_pathname == '/legacy/report':
         print("DEBUG: Already on legacy report page, preventing loop")
         raise PreventUpdate
     
     print(f"DEBUG: Enhanced login action - {button_id} (value: {triggered_value})")
     
-    # âœ… ADD: Debouncing - only process if click count is reasonable
+    # Ã¢Å“â€¦ ADD: Debouncing - only process if click count is reasonable
     if triggered_value > 10:  # Prevent excessive clicking
         print("DEBUG: Too many clicks detected, ignoring")
         raise PreventUpdate
@@ -1450,7 +2368,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
     if button_id == 'back-to-public-btn':
         return '/'
     
-    # âœ… USERNAME/PASSWORD LOGIN
+    # Ã¢Å“â€¦ USERNAME/PASSWORD LOGIN
     elif button_id == 'username-password-login-btn':
         if not username or not password:
             print("DEBUG: Missing credentials")
@@ -1459,31 +2377,31 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
         if validate_user_credentials(username, password):
             role = get_user_role_by_username(username)
             create_demo_session(username, f"User {username}", role)
-            print(f"DEBUG: Username/password login successful for {username} â†’ REDIRECTING to /legacy/report")
+            print(f"DEBUG: Username/password login successful for {username} Ã¢â€ â€™ REDIRECTING to /legacy/report")
             return '/legacy/report'
         else:
             print(f"DEBUG: Invalid credentials for {username}")
             return '/login?error=invalid_credentials'
     
-    # âœ… OTHER LOGIN METHODS
+    # Ã¢Å“â€¦ OTHER LOGIN METHODS
     elif button_id == 'demo-login-btn':
         create_demo_session('demo_user', 'Demo User', 'administrator')
-        print("DEBUG: Demo login successful â†’ REDIRECTING to /legacy/report")
+        print("DEBUG: Demo login successful Ã¢â€ â€™ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'admin-account-btn':
         create_demo_session('admin', 'Administrator', 'administrator')
-        print("DEBUG: Admin login successful â†’ REDIRECTING to /legacy/report")
+        print("DEBUG: Admin login successful Ã¢â€ â€™ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'dev-account-btn':
         create_demo_session('developer', 'Developer', 'administrator')
-        print("DEBUG: Developer login successful â†’ REDIRECTING to /legacy/report")
+        print("DEBUG: Developer login successful Ã¢â€ â€™ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'viewer-account-btn':
         create_demo_session('viewer', 'Viewer', 'viewer')
-        print("DEBUG: Viewer login successful â†’ REDIRECTING to /legacy/report")
+        print("DEBUG: Viewer login successful Ã¢â€ â€™ REDIRECTING to /legacy/report")
         return '/legacy/report'
     
     elif button_id == 'pin-login-btn':
@@ -1495,7 +2413,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
         if access_pin in pins:
             user_id, name, role = pins[access_pin]
             create_demo_session(user_id, name, role)
-            print(f"DEBUG: PIN login successful for {name} â†’ REDIRECTING to /legacy/report")
+            print(f"DEBUG: PIN login successful for {name} Ã¢â€ â€™ REDIRECTING to /legacy/report")
             return '/legacy/report'
         else:
             return '/login?error=invalid_pin'
@@ -1504,7 +2422,7 @@ def handle_login_actions_enhanced(demo_clicks, admin_clicks, dev_clicks,
         if manual_email and '@' in manual_email:
             role = 'administrator' if 'swaccha' in manual_email.lower() else 'viewer'
             create_demo_session('manual_user', f'User ({manual_email})', role)
-            print(f"DEBUG: Email login successful for {manual_email} â†’ REDIRECTING to /legacy/report")
+            print(f"DEBUG: Email login successful for {manual_email} Ã¢â€ â€™ REDIRECTING to /legacy/report")
             handle_login_with_refresh
         else:
             return '/login?error=invalid_email'
@@ -1579,8 +2497,8 @@ error_messages = {
     'oauth_failed': 'OAuth setup failed. Use demo login.',
     'unauthorized': 'You are not authorized. Contact administrator.',
     'invalid_pin': 'Invalid PIN. Try: 1234, 5678, or 9999',
-    'missing_credentials': 'Please enter both username and password.',    # âœ… ADD
-    'invalid_credentials': 'Invalid username or password. Try: admin/password'  # âœ… ADD
+    'missing_credentials': 'Please enter both username and password.',    # Ã¢Å“â€¦ ADD
+    'invalid_credentials': 'Invalid username or password. Try: admin/password'  # Ã¢Å“â€¦ ADD
 }
 
 # 6. Admin dashboard actions - NO LOGOUT (handled by JavaScript)
@@ -1665,7 +2583,7 @@ def kadapa_rayachoti_layout():
         html.Div([
             # Card 1 - Machine Capacity
             html.Div([
-                html.Div("âš™ï¸", className="card-icon"),
+                html.Div("Ã¢Å¡â„¢Ã¯Â¸Â", className="card-icon"),
                 html.Div("Machine Capacity", className="card-title"),
                 html.Div("1,200 MT/day", className="card-value"),
                 html.Div("Daily processing capability", className="card-description")
@@ -1673,7 +2591,7 @@ def kadapa_rayachoti_layout():
             
             # Card 2 - Given Quantity
             html.Div([
-                html.Div("ðŸ“¦", className="card-icon"),
+                html.Div("Ã°Å¸â€œÂ¦", className="card-icon"),
                 html.Div("Given Quantity", className="card-title"),
                 html.Div("94,604 MT", className="card-value"),
                 html.Div("Total material to process", className="card-description")
@@ -1681,7 +2599,7 @@ def kadapa_rayachoti_layout():
             
             # Card 3 - Cumulative
             html.Div([
-                html.Div("ðŸ“Š", className="card-icon"),
+                html.Div("Ã°Å¸â€œÅ ", className="card-icon"),
                 html.Div("Cumulative", className="card-title"),
                 html.Div("31,344 MT", className="card-value"),
                 html.Div("Processed to date", className="card-description")
@@ -1689,7 +2607,7 @@ def kadapa_rayachoti_layout():
             
             # Card 4 - Remaining
             html.Div([
-                html.Div("â³", className="card-icon"),
+                html.Div("Ã¢ÂÂ³", className="card-icon"),
                 html.Div("Remaining", className="card-title"),
                 html.Div("63,260 MT", className="card-value"),
                 html.Div("Material left to process", className="card-description")
@@ -1697,7 +2615,7 @@ def kadapa_rayachoti_layout():
             
             # Card 5 - Yesterday's Processing
             html.Div([
-                html.Div("ðŸ“…", className="card-icon"),
+                html.Div("Ã°Å¸â€œâ€¦", className="card-icon"),
                 html.Div("Processed Yesterday", className="card-title"),
                 html.Div("1,564 MT", className="card-value"),
                 html.Div("Previous day's progress", className="card-description")
@@ -2090,10 +3008,10 @@ def create_demo_session(user_id, name, role):
 
 # Configure upload settings and register dashboard routes
 
-# âœ… FIXED: Register routes WITH custom dashboard routes (no conflicts)
+# Ã¢Å“â€¦ FIXED: Register routes WITH custom dashboard routes (no conflicts)
 register_custom_dashboard_routes(server)  # Custom routes for dashboard functionality
 
-# âœ… KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
+# Ã¢Å“â€¦ KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
 # This handles the /dashboard route without conflicts
 # upload_dir = Path('/tmp/uploads')
 # upload_dir.mkdir(exist_ok=True)
@@ -2102,26 +3020,26 @@ register_custom_dashboard_routes(server)  # Custom routes for dashboard function
 
 if __name__ == '__main__':
     try:
-        print("ðŸš€ Starting Enhanced Flask Application...")
+        print("Ã°Å¸Å¡â‚¬ Starting Enhanced Flask Application...")
         
         # Setup legacy report (ADD THIS LINE)
         setup_legacy_report(server)
         setup_site_dashboard(server)
         # Register existing callbacks
-        logger.info("âœ… Unified callbacks registered successfully")
-        logger.info("âœ… Simple Legacy report integrated")
+        logger.info("Ã¢Å“â€¦ Unified callbacks registered successfully")
+        logger.info("Ã¢Å“â€¦ Simple Legacy report integrated")
         
-        print("ðŸŒ Application URLs:")
+        print("Ã°Å¸Å’Â Application URLs:")
         print("   - Main App: http://localhost:8050")
         print("   - Login: http://localhost:8050/login")
-        print("   - Legacy Report: http://localhost:8050/legacy-report â†’ /legacy/report")
+        print("   - Legacy Report: http://localhost:8050/legacy-report Ã¢â€ â€™ /legacy/report")
         print("   - Direct Access: http://localhost:8050/legacy/report")
         
         # Start the main Flask/Dash app
         app.run(debug=True, host='0.0.0.0', port=8050)
         
     except Exception as e:
-        logger.error(f"âŒ Failed to start enhanced app: {e}")
+        logger.error(f" Failed to start enhanced app: {e}")
         import traceback
         logger.error(traceback.format_exc())
     finally:
