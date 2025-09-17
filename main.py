@@ -2119,9 +2119,9 @@ def setup_legacy_report(server):
             return redirect('/login')
         return redirect('/legacy/report')
     
-    print("Ã¢Å“â€¦ Legacy Report Blueprint registered")
-    print("Ã¢Å“â€¦ Bootstrap initialized")
-    print("Ã°Å¸â€œÅ  Available at: /legacy/report")
+    print("Legacy Report Blueprint registered")
+    print("Bootstrap initialized")
+    print("Available at: /legacy/report")
 
 def start_streamlit_server():
     """Start Streamlit server in background thread"""
@@ -2134,9 +2134,9 @@ def start_streamlit_server():
             "--server.address=0.0.0.0",
             "--server.enableCORS=false"
         ])
-        print("Ã¢Å“â€¦ Streamlit legacy-report started on http://localhost:8051")
+        print("Streamlit legacy-report started on http://localhost:8051")
     except Exception as e:
-        print(f"Ã¢ÂÅ’ Failed to start Streamlit: {e}")
+        print(f"Failed to start Streamlit: {e}")
 
 @callback(
     Output('url', 'pathname', allow_duplicate=True),

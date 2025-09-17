@@ -1,4 +1,3 @@
-<!-- templates/legacy_report/simple_dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +11,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <!-- Sortable JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     
     <style>
         /* Your exact color scheme */
@@ -54,7 +51,7 @@
         
         .container-fluid {
             background: var(--primary-bg);
-            min-height: 10vh;
+            min-height: 100vh;
             padding: 20px;
         }
         
@@ -88,6 +85,7 @@
             text-align: center;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         
         .metric-card:hover {
@@ -155,6 +153,7 @@
             margin-bottom: 2rem;
             text-align: center;
             border: 1px solid var(--border-light);
+            position: relative;
         }
         
         .welcome-header h1 {
@@ -193,52 +192,65 @@
             color: var(--text-inverse);
         }
         
-        /* Column Management Modal */
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            color: var(--text-primary);
-        }
-        
-        .modal-header {
-            background: var(--accent-bg);
-            border-bottom: 1px solid var(--border-medium);
-        }
-        
-        .modal-title {
-            color: var(--text-primary);
-        }
-        
-        .btn-close {
-            filter: invert(1);
-        }
-        
-        .column-item {
-            background: var(--surface-bg);
-            border: 1px solid var(--border-medium);
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin: 0.25rem 0;
-            cursor: move;
+        /* API Status Indicator */
+        .api-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            transition: all 0.2s ease;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
         }
         
-        .column-item:hover {
-            background: var(--accent-bg);
-            border-color: var(--brand-primary);
+        .api-status.connected {
+            background: rgba(56, 161, 105, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
         }
         
-        .column-item.disabled {
-            opacity: 0.6;
-            background: var(--border-light);
+        .api-status.disconnected {
+            background: rgba(229, 62, 62, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
         }
         
-        .drag-handle {
-            color: var(--text-muted);
-            margin-right: 0.5rem;
+        .api-status.loading {
+            background: rgba(235, 149, 52, 0.2);
+            color: var(--brand-primary);
+            border: 1px solid var(--brand-primary);
+        }
+        
+        /* Loading states */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 27, 42, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        
+        .loading-spinner {
+            border: 3px solid var(--border-light);
+            border-top: 3px solid var(--brand-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* Light table styling */
@@ -280,16 +292,6 @@
             background: #e3f2fd;
         }
         
-        .badge-success {
-            background-color: var(--success);
-            color: var(--text-inverse);
-        }
-        
-        .badge-secondary {
-            background-color: var(--text-muted);
-            color: var(--text-inverse);
-        }
-        
         /* DataTables dark theme */
         .dataTables_wrapper {
             color: var(--text-primary);
@@ -312,28 +314,35 @@
         }
 
         /* Enhanced card styling with color coding */
-        .metric-card.legacy-msw {
-            border-left: 4px solid #e74c3c;
+        .metric-card.total-records {
+            border-left: 4px solid var(--brand-primary);
         }
 
-        .metric-card.legacy-msw .metric-value {
-            color: #e74c3c;
-        }
-
-        .metric-card.other-output {
+        .metric-card.total-weight {
             border-left: 4px solid var(--success);
         }
 
-        .metric-card.other-output .metric-value {
-            color: var(--success);
+        .metric-card.input-weight {
+            border-left: 4px solid var(--error);
         }
 
-        .metric-card.vehicle-count {
-            border-left: 4px solid var(--info);
+        .metric-card.output-weight {
+            border-left: 4px solid var(--warning);
         }
 
-        .metric-card.vehicle-count .metric-value {
-            color: var(--info);
+        /* Site selector enhancement */
+        .site-selector {
+            background: var(--accent-bg);
+            border: 2px solid var(--brand-primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .site-selector select {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--brand-primary);
         }
         
         /* Responsive */
@@ -341,6 +350,173 @@
             .container-fluid { padding: 10px; }
             .welcome-header { padding: 1.5rem; }
             .welcome-header h1 { font-size: 2rem; }
+            .api-status { position: static; margin-top: 1rem; }
+        }
+
+        /* Real-time update indicator */
+        .last-updated {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Enhanced column management and table styling */
+        .column-item {
+            background: var(--surface-bg);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .column-item:hover {
+            border-color: var(--brand-primary);
+            background: rgba(235, 149, 52, 0.1);
+        }
+
+        .column-item.selected {
+            border-color: var(--brand-primary);
+            background: rgba(235, 149, 52, 0.15);
+        }
+
+        .selected-column-item {
+            background: var(--surface-bg);
+            border: 1px solid var(--brand-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            cursor: move;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .selected-column-item:hover {
+            background: rgba(235, 149, 52, 0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .selected-column-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .drag-handle {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: move;
+        }
+
+        .column-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .column-controls .btn {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+        }
+
+        /* Enhanced table styling for dynamic columns */
+        .table-responsive {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            background: #ffffff;
+            color: #333333;
+            margin-bottom: 0;
+            table-layout: auto;
+            width: 100%;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            color: #495057;
+            border-color: #dee2e6;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 12px 8px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .table td {
+            background: #ffffff;
+            color: #495057;
+            border-color: #dee2e6;
+            padding: 10px 8px;
+            vertical-align: middle;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Dynamic column width scaling */
+        .table.cols-1-5 th, .table.cols-1-5 td { min-width: 150px; }
+        .table.cols-6-10 th, .table.cols-6-10 td { min-width: 120px; }
+        .table.cols-11-15 th, .table.cols-11-15 td { min-width: 100px; }
+
+        /* Sortable styling */
+        .sortable-ghost {
+            opacity: 0.4;
+        }
+
+        .sortable-chosen {
+            background: rgba(235, 149, 52, 0.2) !important;
+        }
+
+        .sortable-drag {
+            background: var(--brand-primary) !important;
+            color: white !important;
+            transform: rotate(5deg);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal enhancements */
+        .modal-lg {
+            max-width: 900px;
+        }
+
+        .column-section {
+            background: var(--accent-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-light);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            color: var(--brand-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .column-counter {
+            background: var(--brand-primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -354,262 +530,355 @@
                 Weighbridge Data Report - स्वच्छ आंध्र प्रदेश
             </a>
             
-            <!-- Navbar toggle for mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav me-auto">
-                    <a class="nav-link" href="/" style="color: var(--text-primary);">
-                        <i class="fas fa-home me-1"></i>Home
-                    </a>
-                    <a class="nav-link" href="/analytics" style="color: var(--text-primary);">
-                        <i class="fas fa-chart-bar me-1"></i>Analytics
-                    </a>
-                </div>
-                
-                <!-- User info and logout -->
-                <div class="navbar-nav">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" 
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false" 
-                           style="color: var(--text-primary);">
-                            <i class="fas fa-user-circle me-2" style="color: var(--brand-primary);"></i>
-                            <span>{{ user_name }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" style="background: var(--card-bg); border: 1px solid var(--border-light);">
-                            <li>
-                                <span class="dropdown-item-text" style="color: var(--text-secondary);">
-                                    <i class="fas fa-clock me-1"></i>
-                                    Last updated: {{ current_time }}
-                                </span>
-                            </li>
-                            <li><hr class="dropdown-divider" style="border-color: var(--border-light);"></li>
-                            <li>
-                                <button class="dropdown-item" onclick="confirmLogout()" 
-                                        style="color: var(--error); background: none; border: none; width: 100%; text-align: left;">
-                                    <i class="fas fa-sign-out-alt me-2"></i>
-                                    Logout
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Quick logout button (always visible) -->
-                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="confirmLogout()" 
-                            style="border-color: var(--error); color: var(--error);">
-                        <i class="fas fa-sign-out-alt me-1"></i>
-                        <span class="d-none d-md-inline">Logout</span>
-                    </button>
-                </div>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-outline-primary btn-sm" onclick="refreshData()" id="refresh-btn">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    <span class="d-none d-md-inline">Refresh</span>
+                </button>
             </div>
         </div>
     </nav>
     
     <div class="container-fluid">
-        <!-- Welcome Header -->
+        <!-- Welcome Header with API Status -->
         <div class="welcome-header">
-            <h1>Hello {{ user_name }}!</h1>
+            <h1>Weighbridge Dashboard</h1>
             <small style="color: var(--text-secondary);">
-                Weighbridge Data Analysis Dashboard
+                Real-time Data Analysis with Enhanced Filtering
             </small>
+            
+            <!-- API Status Indicator -->
+            <div class="api-status loading" id="api-status">
+                <i class="fas fa-circle pulse"></i>
+                <span id="api-status-text">Connecting to API...</span>
+            </div>
         </div>
 
-        <!-- Enhanced Dynamic Cards with Material Type Logic -->
+        <!-- Quick Site Selector -->
+        <div class="site-selector">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <label class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Quick Site Selection</label>
+                    <select class="form-select" id="quick-site-selector" onchange="loadSiteData()">
+                        <option value="">Select a Site for Details</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div id="current-view" style="color: var(--brand-primary); font-weight: 600;">All Sites</div>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-outline-info btn-sm" onclick="viewAllSites()">
+                        <i class="fas fa-globe me-1"></i>View All Sites
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Cards -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <div class="metric-card">
+                <div class="metric-card total-records">
                     <i class="fas fa-list fa-2x mb-2" style="color: var(--brand-primary);"></i>
-                    <div class="metric-value">{{ cards_data.total_records }}</div>
+                    <div class="metric-value" id="total-records">Loading...</div>
                     <div class="metric-label">Total Records</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="metric-card legacy-msw">
-                    <i class="fas fa-trash fa-2x mb-2" style="color: #e74c3c;"></i>
-                    <div class="metric-value">{{ cards_data.total_msw_received }}</div>
-                    <div class="metric-label">Legacy/MSW Total (MT)</div>
-                    <small class="text-muted">Material: Legacy/MSW</small>
+                <div class="metric-card total-weight">
+                    <i class="fas fa-weight-hanging fa-2x mb-2" style="color: var(--success);"></i>
+                    <div class="metric-value" id="total-weight">Loading...</div>
+                    <div class="metric-label">Total Weight (MT)</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="metric-card other-output">
-                    <i class="fas fa-recycle fa-2x mb-2" style="color: var(--success);"></i>
-                    <div class="metric-value">{{ cards_data.total_output }}</div>
-                    <div class="metric-label">Other Materials (MT)</div>
-                    <small class="text-muted">Non-Legacy/MSW</small>
+                <div class="metric-card input-weight">
+                    <i class="fas fa-arrow-down fa-2x mb-2" style="color: var(--error);"></i>
+                    <div class="metric-value" id="input-weight">Loading...</div>
+                    <div class="metric-label">Input (Legacy/MSW) MT</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="metric-card vehicle-count">
-                    <i class="fas fa-truck fa-2x mb-2" style="color: var(--info);"></i>
-                    <div class="metric-value">{{ cards_data.unique_vehicles }}</div>
-                    <div class="metric-label">Number of Vehicles</div>
-                    <small class="text-muted">Unique Vehicle Count</small>
+                <div class="metric-card output-weight">
+                    <i class="fas fa-arrow-up fa-2x mb-2" style="color: var(--warning);"></i>
+                    <div class="metric-value" id="output-weight">Loading...</div>
+                    <div class="metric-label">Output (Other) MT</div>
                 </div>
             </div>
         </div>
 
-        <!-- Filters and Controls -->
+        <!-- Filters -->
         <div class="card filter-section">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-2">
-                    <label class="form-label">Agency</label>
-                    <select class="form-select" id="agency-filter">
-                        <option value="">All Agencies</option>
-                        {% for agency in agencies %}
-                        <option value="{{ agency }}" {% if current_filters.get('agency') == agency %}selected{% endif %}>
-                            {{ agency }}
-                        </option>
-                        {% endfor %}
-                    </select>
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-filter me-2"></i>Filter Options
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-2">
+                        <label class="form-label">Agency</label>
+                        <select class="form-select" id="agency-filter">
+                            <option value="">All Agencies</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Site</label>
+                        <select class="form-select" id="site-filter">
+                            <option value="">All Sites</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start-date">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="end-date">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Start Hour</label>
+                        <select class="form-select" id="start-hour">
+                            <option value="">Any Time</option>
+                            <option value="00:00">12:00 AM</option>
+                            <option value="01:00">01:00 AM</option>
+                            <option value="02:00">02:00 AM</option>
+                            <option value="03:00">03:00 AM</option>
+                            <option value="04:00">04:00 AM</option>
+                            <option value="05:00">05:00 AM</option>
+                            <option value="06:00">06:00 AM</option>
+                            <option value="07:00">07:00 AM</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                            <option value="19:00">07:00 PM</option>
+                            <option value="20:00">08:00 PM</option>
+                            <option value="21:00">09:00 PM</option>
+                            <option value="22:00">10:00 PM</option>
+                            <option value="23:00">11:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">End Hour</label>
+                        <select class="form-select" id="end-hour">
+                            <option value="">Any Time</option>
+                            <option value="01:00">01:00 AM</option>
+                            <option value="02:00">02:00 AM</option>
+                            <option value="03:00">03:00 AM</option>
+                            <option value="04:00">04:00 AM</option>
+                            <option value="05:00">05:00 AM</option>
+                            <option value="06:00">06:00 AM</option>
+                            <option value="07:00">07:00 AM</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                            <option value="19:00">07:00 PM</option>
+                            <option value="20:00">08:00 PM</option>
+                            <option value="21:00">09:00 PM</option>
+                            <option value="22:00">10:00 PM</option>
+                            <option value="23:00">11:00 PM</option>
+                            <option value="23:59">11:59 PM</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">Cluster</label>
-                    <select class="form-select" id="cluster-filter">
-                        <option value="">All Clusters</option>
-                        {% for cluster in clusters %}
-                        <option value="{{ cluster }}" {% if current_filters.get('cluster') == cluster %}selected{% endif %}>
-                            {{ cluster }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Site</label>
-                    <select class="form-select" id="site-filter">
-                        <option value="">All Sites</option>
-                        {% for site in sites %}
-                        <option value="{{ site }}" {% if current_filters.get('site') == site %}selected{% endif %}>
-                            {{ site }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Start Date</label>
-                    <input type="date" class="form-control" id="start-date-filter" 
-                           value="{{ current_filters.get('start_date', '') }}">
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">End Date</label>
-                    <input type="date" class="form-control" id="end-date-filter" 
-                           value="{{ current_filters.get('end_date', '') }}">
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-primary w-100" onclick="applyFilters()">
-                        <i class="fas fa-filter me-1"></i>Filter
-                    </button>
+                
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-2">
+                        <label class="form-label">Limit</label>
+                        <select class="form-select" id="limit">
+                            <option value="50">50 Records</option>
+                            <option value="100">100 Records</option>
+                            <option value="250">250 Records</option>
+                            <option value="500">500 Records</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" onclick="applyFilters()">
+                            <i class="fas fa-filter me-1"></i>Apply Filters
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                            <i class="fas fa-times me-1"></i>Clear
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-info w-100" onclick="setToday()">
+                            <i class="fas fa-calendar-day me-1"></i>Today
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-warning w-100" onclick="setWorkingHours()">
+                            <i class="fas fa-business-time me-1"></i>Working Hours
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Column Management and Export Controls -->
+        <!-- Data Table with Column Management -->
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
                     <i class="fas fa-table me-2"></i>
-                    Weighbridge Data ({{ total_records }} records)
+                    Weighbridge Data (<span id="records-count">0</span> records)
                 </h5>
                 <div>
-                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#columnModal">
+                    <button class="btn btn-outline-info btn-sm me-2" onclick="openColumnManager()" data-bs-toggle="modal" data-bs-target="#columnModal">
                         <i class="fas fa-columns me-1"></i>Manage Columns
                     </button>
-                    <button class="btn btn-success btn-sm" onclick="exportToPDF()">
-                        <i class="fas fa-file-pdf me-1"></i>Export PDF
-                    </button>
+                    <small id="last-updated" class="text-muted me-3"></small>
                 </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover mb-0" id="data-table">
-                        <thead>
-                            <tr>
-                                {% for col in display_columns %}
-                                <th>{{ col.replace('_', ' ').title() }}</th>
-                                {% endfor %}
-                            </tr>
+                        <thead id="table-header">
+                            <!-- Dynamic headers will be inserted here -->
                         </thead>
-                        <tbody>
-                            {% for record in records %}
+                        <tbody id="table-body">
                             <tr>
-                                {% for col in display_columns %}
-                                <td>
-                                    {% if col == 'record_status' %}
-                                        {% if record[col] == 'complete' %}
-                                            <span class="badge badge-success">Complete</span>
-                                        {% else %}
-                                            <span class="badge badge-secondary">{{ record[col] }}</span>
-                                        {% endif %}
-                                    {% elif col == 'material' and record[col] == 'Legacy/MSW' %}
-                                        <span class="badge" style="background-color: #e74c3c; color: white;">{{ record[col] }}</span>
-                                    {% elif record[col].__class__.__name__ == 'Timestamp' %}
-                                        {{ record[col].strftime('%Y-%m-%d') }}
-                                    {% else %}
-                                        {{ record[col] }}
-                                    {% endif %}
-                                </td>
-                                {% endfor %}
+                                <td colspan="100%" class="text-center">Loading data...</td>
                             </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Status Info -->
-        <div class="alert" style="background: rgba(56, 161, 105, 0.1); border: 1px solid var(--success); color: var(--text-primary);">
-            <h5><i class="fas fa-info-circle me-2"></i>Enhanced Weighbridge Features</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-0">✅ Material-based weight segregation</p>
-                    <p class="mb-0">✅ Unique vehicle counting</p>
-                </div>
-                <div class="col-md-6">
-                    <p class="mb-0">✅ Real-time filtering by agency, site, date</p>
-                    <p class="mb-0">✅ PDF export with weighbridge data</p>
+        <!-- Enhanced Column Management Modal -->
+        <div class="modal fade" id="columnModal" tabindex="-1" aria-labelledby="columnModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="background: var(--card-bg); border: 1px solid var(--border-light);">
+                    <div class="modal-header" style="background: var(--accent-bg); border-bottom: 1px solid var(--border-medium);">
+                        <h5 class="modal-title" id="columnModalLabel" style="color: var(--text-primary);">
+                            <i class="fas fa-columns me-2"></i>Table Column Manager
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background: var(--card-bg); color: var(--text-primary); padding: 24px;">
+                        <div class="row g-4">
+                            <!-- Available Columns Section -->
+                            <div class="col-md-6">
+                                <div class="column-section">
+                                    <div class="section-header">
+                                        <div class="section-title">
+                                            <i class="fas fa-list-check me-2"></i>Available Columns
+                                        </div>
+                                        <span class="column-counter" id="available-count">15</span>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <button class="btn btn-sm btn-success me-2" onclick="selectAllColumns()">
+                                            <i class="fas fa-check-double me-1"></i>Select All
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="deselectAllColumns()">
+                                            <i class="fas fa-times me-1"></i>Clear All
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <input type="text" class="form-control form-control-sm" 
+                                               placeholder="Search columns..." 
+                                               id="column-search"
+                                               style="background: var(--card-bg); border: 1px solid var(--border-medium); color: var(--text-primary);">
+                                    </div>
+                                    
+                                    <div id="column-checkboxes" class="overflow-auto" style="max-height: 350px;">
+                                        <!-- Column checkboxes will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Selected Columns Section -->
+                            <div class="col-md-6">
+                                <div class="column-section">
+                                    <div class="section-header">
+                                        <div class="section-title">
+                                            <i class="fas fa-arrows-up-down me-2"></i>Column Order
+                                        </div>
+                                        <span class="column-counter" id="selected-count">7</span>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-hand-paper me-1"></i>
+                                            Drag to reorder columns
+                                        </small>
+                                    </div>
+                                    
+                                    <div id="selected-columns" class="overflow-auto" style="max-height: 400px;">
+                                        <!-- Selected columns will be shown here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="background: var(--accent-bg); border-top: 1px solid var(--border-medium);">
+                        <div class="d-flex justify-content-between w-100">
+                            <div>
+                                <button type="button" class="btn btn-outline-warning" onclick="resetToDefault()">
+                                    <i class="fas fa-undo me-1"></i>Reset Default
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-1"></i>Cancel
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="applyColumnSettings()">
+                                    <i class="fas fa-check me-1"></i>Apply Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Column Management Modal -->
-    <div class="modal fade" id="columnModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-columns me-2"></i>
-                        Manage Columns
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="text-muted mb-3">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Check columns to show/hide. Drag to reorder.
-                    </p>
-                    <div id="column-list">
-                        {% for col_meta in column_metadata %}
-                        <div class="column-item" data-column="{{ col_meta.name }}">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-grip-vertical drag-handle"></i>
-                                <input type="checkbox" class="form-check-input me-2" 
-                                       {% if col_meta.name in visible_columns %}checked{% endif %}>
-                                <span>{{ col_meta.display_name }}</span>
-                            </div>
-                            <small class="text-muted">{{ col_meta.type }}</small>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveColumnPreferences()">
-                        <i class="fas fa-save me-1"></i>Save Changes
+        <!-- API URL Display for Testing -->
+        <div class="card mb-3" style="background: var(--accent-bg); border: 1px solid var(--brand-primary);">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-link me-2"></i>Current API Endpoint (for testing)</h6>
+            </div>
+            <div class="card-body">
+                <code id="current-url" style="color: var(--brand-primary); word-break: break-all; font-size: 0.9em;">
+                    Loading...
+                </code>
+                <div class="mt-2">
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyURL()">
+                        <i class="fas fa-copy me-1"></i>Copy URL
                     </button>
+                    <button class="btn btn-sm btn-outline-info" onclick="testCurrentURL()">
+                        <i class="fas fa-play me-1"></i>Test in Browser
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Info -->
+        <div class="alert" id="status-info" style="background: rgba(56, 161, 105, 0.1); border: 1px solid var(--success); color: var(--text-primary);">
+            <h6><i class="fas fa-info-circle me-2"></i>Dashboard Status</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <small>API Connection: <span id="connection-status">Checking...</span></small>
+                </div>
+                <div class="col-md-6">
+                    <small>Last Update: <span id="last-sync">Loading...</span></small>
                 </div>
             </div>
         </div>
@@ -622,143 +891,990 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        function confirmLogout() {
-            if (confirm('Are you sure you want to logout and return to the main page?')) {
-                showLogoutMessage();
-                setTimeout(function() {
-                    window.location.href = '/legacy/logout';
-                }, 1000);
-            }
-        }
+        // =================================
+        // SIMPLIFIED API LOGIC
+        // =================================
         
-        function showLogoutMessage() {
-            const logoutMessage = document.createElement('div');
-            logoutMessage.innerHTML = `
-                <div class="alert alert-info alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3" 
-                     style="z-index: 9999; background: var(--info); color: white; border: none;">
+        const API_URL = 'https://weighbridge-api-mzfbv433ja-as.a.run.app';
+        let dataTable = null;
+        
+        // =================================
+        // COLUMN MANAGEMENT SYSTEM
+        // =================================
+        
+        // All available API fields with display names
+        const ALL_COLUMNS = {
+            'date': { name: 'Date', type: 'date' },
+            'time': { name: 'Time', type: 'text' },
+            'site_name': { name: 'Site Name', type: 'text' },
+            'agency_name': { name: 'Agency Name', type: 'text' },
+            'cluster': { name: 'Cluster', type: 'text' },
+            'material': { name: 'Material', type: 'text' },
+            'ticket_no': { name: 'Ticket No', type: 'text' },
+            'vehicle_no': { name: 'Vehicle No', type: 'text' },
+            'transfer_party_name': { name: 'Transfer Party', type: 'text' },
+            'first_weight': { name: 'First Weight', type: 'weight' },
+            'second_weight': { name: 'Second Weight', type: 'weight' },
+            'net_weight': { name: 'Net Weight', type: 'weight' },
+            'record_status': { name: 'Status', type: 'status' },
+            'user_name': { name: 'User Name', type: 'text' },
+            'site_incharge': { name: 'Site Incharge', type: 'text' }
+        };
+
+        // Default selected columns (what shows initially)
+        let selectedColumns = ['date', 'time', 'site_name', 'agency_name', 'vehicle_no', 'net_weight', 'record_status'];
+
+        function openColumnManager() {
+            console.log('🔧 Opening enhanced column manager...');
+            
+            // Populate available columns with enhanced styling
+            const checkboxContainer = document.getElementById('column-checkboxes');
+            checkboxContainer.innerHTML = '';
+            
+            Object.keys(ALL_COLUMNS).forEach(columnKey => {
+                const column = ALL_COLUMNS[columnKey];
+                const isSelected = selectedColumns.includes(columnKey);
+                
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = `column-item ${isSelected ? 'selected' : ''}`;
+                checkboxItem.setAttribute('data-column', columnKey);
+                
+                checkboxItem.innerHTML = `
                     <div class="d-flex align-items-center">
-                        <i class="fas fa-sign-out-alt me-2"></i>
-                        <div>
-                            <strong>Logging out...</strong>
-                            <br><small>Returning to main page</small>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" 
+                                   id="col-${columnKey}" 
+                                   ${isSelected ? 'checked' : ''}
+                                   onchange="toggleColumn('${columnKey}')">
+                            <label class="form-check-label flex-grow-1" for="col-${columnKey}">
+                                <div class="fw-semibold">${column.name}</div>
+                                <small class="text-muted">${columnKey} • ${column.type}</small>
+                            </label>
                         </div>
                     </div>
-                </div>
-            `;
-            document.body.appendChild(logoutMessage);
+                `;
+                
+                checkboxContainer.appendChild(checkboxItem);
+            });
             
-            setTimeout(function() {
-                if (logoutMessage.parentNode) {
-                    logoutMessage.remove();
-                }
-            }, 3000);
+            // Add search functionality
+            const searchInput = document.getElementById('column-search');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = checkboxContainer.querySelectorAll('.column-item');
+                
+                items.forEach(item => {
+                    const columnKey = item.getAttribute('data-column');
+                    const column = ALL_COLUMNS[columnKey];
+                    const matches = column.name.toLowerCase().includes(searchTerm) || 
+                                   columnKey.toLowerCase().includes(searchTerm);
+                    item.style.display = matches ? 'block' : 'none';
+                });
+            });
+            
+            // Populate selected columns with drag-and-drop
+            updateSelectedColumnsList();
+            updateColumnCounts();
         }
 
-        // Initialize DataTable
+        function updateSelectedColumnsList() {
+            const selectedContainer = document.getElementById('selected-columns');
+            selectedContainer.innerHTML = '';
+            
+            selectedColumns.forEach((columnKey, index) => {
+                const column = ALL_COLUMNS[columnKey];
+                if (!column) return;
+                
+                const item = document.createElement('div');
+                item.className = 'selected-column-item';
+                item.setAttribute('data-column', columnKey);
+                item.draggable = true;
+                
+                item.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-grip-vertical drag-handle me-3"></i>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold">${column.name}</div>
+                            <small class="text-muted">Position ${index + 1}</small>
+                        </div>
+                        <div class="column-controls">
+                            <button type="button" class="btn btn-sm btn-outline-danger" 
+                                    onclick="removeColumn('${columnKey}')"
+                                    title="Remove column">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add drag event listeners
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+                
+                selectedContainer.appendChild(item);
+            });
+        }
+
+        function updateColumnCounts() {
+            const availableCount = Object.keys(ALL_COLUMNS).length;
+            const selectedCount = selectedColumns.length;
+            
+            document.getElementById('available-count').textContent = availableCount;
+            document.getElementById('selected-count').textContent = selectedCount;
+        }
+
+        function toggleColumn(columnKey) {
+            const checkbox = document.getElementById(`col-${columnKey}`);
+            const columnItem = document.querySelector(`.column-item[data-column="${columnKey}"]`);
+            
+            if (checkbox.checked && !selectedColumns.includes(columnKey)) {
+                selectedColumns.push(columnKey);
+                columnItem.classList.add('selected');
+            } else if (!checkbox.checked && selectedColumns.includes(columnKey)) {
+                selectedColumns = selectedColumns.filter(col => col !== columnKey);
+                columnItem.classList.remove('selected');
+            }
+            
+            updateSelectedColumnsList();
+            updateColumnCounts();
+            console.log('📋 Updated selected columns:', selectedColumns);
+        }
+
+        function removeColumn(columnKey) {
+            selectedColumns = selectedColumns.filter(col => col !== columnKey);
+            
+            // Update checkbox
+            const checkbox = document.getElementById(`col-${columnKey}`);
+            const columnItem = document.querySelector(`.column-item[data-column="${columnKey}"]`);
+            
+            if (checkbox) checkbox.checked = false;
+            if (columnItem) columnItem.classList.remove('selected');
+            
+            updateSelectedColumnsList();
+            updateColumnCounts();
+        }
+
+        function selectAllColumns() {
+            selectedColumns = Object.keys(ALL_COLUMNS);
+            openColumnManager(); // Refresh the modal
+            console.log('✅ Selected all columns');
+        }
+
+        function deselectAllColumns() {
+            selectedColumns = [];
+            openColumnManager(); // Refresh the modal
+            console.log('❌ Deselected all columns');
+        }
+
+        function resetToDefault() {
+            selectedColumns = ['date', 'time', 'site_name', 'agency_name', 'vehicle_no', 'net_weight', 'record_status'];
+            openColumnManager(); // Refresh the modal
+            console.log('🔄 Reset to default columns');
+        }
+
+        // Drag and Drop functionality
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.outerHTML);
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            if (draggedElement !== this) {
+                const draggedColumnKey = draggedElement.getAttribute('data-column');
+                const targetColumnKey = this.getAttribute('data-column');
+                
+                const draggedIndex = selectedColumns.indexOf(draggedColumnKey);
+                const targetIndex = selectedColumns.indexOf(targetColumnKey);
+                
+                // Remove dragged item and insert at new position
+                selectedColumns.splice(draggedIndex, 1);
+                selectedColumns.splice(targetIndex, 0, draggedColumnKey);
+                
+                updateSelectedColumnsList();
+                console.log('🔄 Reordered columns via drag & drop:', selectedColumns);
+            }
+            
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedElement = null;
+        }
+
+        function applyColumnSettings() {
+            console.log('✅ Applying column settings:', selectedColumns);
+            
+            if (selectedColumns.length === 0) {
+                alert('Please select at least one column to display.');
+                return;
+            }
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('columnModal'));
+            if (modal) modal.hide();
+            
+            // Refresh the table with current data and new columns
+            const filters = getFilterValues();
+            loadData(filters);
+        }
+        // =================================
         $(document).ready(function() {
-            $('#data-table').DataTable({
-                pageLength: 25,
-                responsive: true,
-                order: [[0, 'asc']],
-                language: {
-                    search: "Search weighbridge records:",
-                    lengthMenu: "Show _MENU_ records per page"
-                }
-            });
-            
-            // Initialize sortable for column management
-            new Sortable(document.getElementById('column-list'), {
-                handle: '.drag-handle',
-                animation: 150,
-                ghostClass: 'bg-light'
-            });
-            
-            console.log('Enhanced Weighbridge Report loaded successfully!');
+            console.log('🚀 Starting dashboard...');
+            initDashboard();
         });
 
-        function applyFilters() {
-            const filters = {
-                agency: document.getElementById('agency-filter').value,
-                cluster: document.getElementById('cluster-filter').value,
-                site: document.getElementById('site-filter').value,
-                start_date: document.getElementById('start-date-filter').value,
-                end_date: document.getElementById('end-date-filter').value
-            };
-
-            const params = new URLSearchParams();
-            Object.keys(filters).forEach(key => {
-                if (filters[key]) {
-                    params.append(key, filters[key]);
-                }
-            });
-
-            window.location.href = '/legacy/report?' + params.toString();
-        }
-
-        function saveColumnPreferences() {
-            const columnItems = document.querySelectorAll('.column-item');
-            const visibleColumns = [];
-            const columnOrder = [];
+        function initDashboard() {
+            console.log('📊 Initializing dashboard...');
             
-            columnItems.forEach(item => {
-                const columnName = item.dataset.column;
-                const isChecked = item.querySelector('input[type="checkbox"]').checked;
-                
-                columnOrder.push(columnName);
-                if (isChecked) {
-                    visibleColumns.push(columnName);
-                }
-            });
-
-            fetch('/legacy/api/update-columns', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    visible_columns: visibleColumns,
-                    column_order: columnOrder
+            // Step 1: Check if API is working
+            checkAPI()
+                .then(() => {
+                    console.log('✅ API is working');
+                    
+                    // Step 2: Load dropdown options
+                    return loadDropdowns();
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    bootstrap.Modal.getInstance(document.getElementById('columnModal')).hide();
-                    location.reload();
-                } else {
-                    alert('Error saving column preferences');
+                .then(() => {
+                    console.log('✅ Dropdowns loaded');
+                    
+                    // Step 3: Load initial data
+                    return loadData();
+                })
+                .then(() => {
+                    console.log('✅ Initial data loaded');
+                    updateStatus('Ready', 'Connected');
+                })
+                .catch(error => {
+                    console.error('❌ Dashboard initialization failed:', error);
+                    showError('Failed to initialize dashboard: ' + error.message);
+                });
+        }
+
+        // =================================
+        // 2. API CHECK - Simple ping
+        // =================================
+        async function checkAPI() {
+            console.log('🔍 Checking API...');
+            
+            try {
+                const response = await fetch(`${API_URL}/`);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error saving column preferences');
+                
+                const data = await response.json();
+                console.log('📡 API Response:', data);
+                
+                setAPIStatus('connected', 'Connected');
+                return data;
+                
+            } catch (error) {
+                console.error('🚨 API Check failed:', error);
+                setAPIStatus('disconnected', 'Failed');
+                throw error;
+            }
+        }
+
+        // =================================
+        // 3. LOAD DROPDOWN OPTIONS
+        // =================================
+        async function loadDropdowns() {
+            console.log('📋 Loading dropdown options...');
+            
+            try {
+                // Load sites
+                const sitesResponse = await fetch(`${API_URL}/sites`);
+                if (sitesResponse.ok) {
+                    const sites = await sitesResponse.json();
+                    console.log('🏢 Sites loaded:', sites);
+                    populateDropdown('site-filter', sites);
+                    populateDropdown('quick-site-selector', sites);
+                }
+
+                // Load agencies
+                const agenciesResponse = await fetch(`${API_URL}/agencies`);
+                if (agenciesResponse.ok) {
+                    const agencies = await agenciesResponse.json();
+                    console.log('🏛️ Agencies loaded:', agencies);
+                    populateDropdown('agency-filter', agencies);
+                }
+
+                return true;
+
+            } catch (error) {
+                console.error('🚨 Failed to load dropdowns:', error);
+                // Don't fail the entire dashboard for this
+                return false;
+            }
+        }
+
+        function populateDropdown(elementId, options) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            // Keep the first "All" option
+            const firstOption = element.querySelector('option').outerHTML;
+            element.innerHTML = firstOption;
+
+            // Handle different response formats
+            let optionsList = [];
+            if (Array.isArray(options)) {
+                optionsList = options;
+            } else if (options.sites) {
+                optionsList = options.sites;
+            } else if (options.agencies) {
+                optionsList = options.agencies;
+            } else if (typeof options === 'object') {
+                optionsList = Object.values(options);
+            }
+
+            // Add options
+            optionsList.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                element.appendChild(optionElement);
             });
         }
 
-        function exportToPDF() {
-            const currentParams = new URLSearchParams(window.location.search);
-            const exportUrl = '/legacy/api/export-pdf?' + currentParams.toString();
+        // =================================
+        // 4. MAIN DATA LOADING FUNCTION (FIXED PAGINATION)
+        // =================================
+        async function loadData(filters = {}) {
+            console.log('📊 Loading data with filters:', filters);
             
-            const btn = event.target.closest('button');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Generating PDF...';
-            btn.disabled = true;
-            
-            const link = document.createElement('a');
-            link.href = exportUrl;
-            link.download = 'weighbridge_report.pdf';
-            link.click();
-            
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }, 2000);
+            try {
+                setAPIStatus('loading', 'Loading...');
+                
+                // Build URL with filters
+                const url = buildURL(filters);
+                console.log('🔗 Final URL:', url);
+                
+                // **DISPLAY THE URL FOR TESTING**
+                displayCurrentURL(url);
+                
+                // Show loading in table
+                showTableLoading();
+                
+                // Fetch data
+                console.log('🌐 Making API call...');
+                const response = await fetch(url);
+                console.log('📡 Response status:', response.status);
+                console.log('📡 Response OK:', response.ok);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('📦 === RAW API RESPONSE DEBUG ===');
+                console.log('📦 Full response:', data);
+                console.log('📦 Response keys:', Object.keys(data));
+                console.log('📦 Response type:', typeof data);
+                
+                // Check different possible response structures
+                let actualRecords = [];
+                let totalCount = 0;
+                
+                // Try different response structure possibilities
+                if (data.records && Array.isArray(data.records)) {
+                    // Format 1: { records: [...], pagination: {...} }
+                    actualRecords = data.records;
+                    totalCount = data.total || data.total_records || actualRecords.length;
+                    console.log('✅ Found records in data.records');
+                } else if (Array.isArray(data)) {
+                    // Format 2: Direct array response
+                    actualRecords = data;
+                    totalCount = actualRecords.length;
+                    console.log('✅ Direct array response');
+                } else if (data.data && Array.isArray(data.data)) {
+                    // Format 3: { data: [...], meta: {...} }
+                    actualRecords = data.data;
+                    totalCount = data.meta?.total || data.total || actualRecords.length;
+                    console.log('✅ Found records in data.data');
+                } else if (data.results && Array.isArray(data.results)) {
+                    // Format 4: { results: [...] }
+                    actualRecords = data.results;
+                    totalCount = data.count || data.total || actualRecords.length;
+                    console.log('✅ Found records in data.results');
+                } else {
+                    // Format 5: Check if the data itself might contain records in other keys
+                    console.warn('⚠️ Unknown response format, searching for array fields...');
+                    for (const key of Object.keys(data)) {
+                        if (Array.isArray(data[key]) && data[key].length > 0) {
+                            // Check if this array contains record-like objects
+                            const firstItem = data[key][0];
+                            if (typeof firstItem === 'object' && (firstItem.date || firstItem.site_name || firstItem.net_weight)) {
+                                actualRecords = data[key];
+                                totalCount = actualRecords.length;
+                                console.log(`✅ Found records in data.${key}`);
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                console.log('📦 === PROCESSED RESULTS ===');
+                console.log('📦 Actual records found:', actualRecords.length);
+                console.log('📦 Total count from API:', totalCount);
+                console.log('📦 First record sample:', actualRecords[0]);
+                console.log('📦 Last record sample:', actualRecords[actualRecords.length - 1]);
+                
+                // Log pagination info if present
+                if (data.pagination) {
+                    console.log('📄 Pagination info:', data.pagination);
+                }
+                if (data.meta) {
+                    console.log('📄 Meta info:', data.meta);
+                }
+                
+                // If we still don't have records, this is a problem
+                if (!actualRecords || actualRecords.length === 0) {
+                    console.error('❌ No records found in API response!');
+                    console.error('📦 Full response structure:', JSON.stringify(data, null, 2));
+                    throw new Error(`No records found. Expected array but got: ${typeof data}`);
+                }
+                
+                // **CRITICAL FIX**: If we get fewer records than expected, warn about it
+                if (actualRecords.length < 1000 && totalCount > actualRecords.length) {
+                    console.warn(`⚠️ PAGINATION ISSUE: Got ${actualRecords.length} records but API indicates ${totalCount} total records exist`);
+                    console.warn('⚠️ This might indicate pagination is not working properly');
+                }
+                
+                // Update metrics
+                console.log('📈 Updating metrics...');
+                updateMetrics(actualRecords);
+                
+                // Update table
+                console.log('📋 Updating table...');
+                updateTable(actualRecords);
+                
+                // Update status
+                setAPIStatus('connected', `${actualRecords.length} records (${totalCount} total)`);
+                updateStatus(`Last updated: ${new Date().toLocaleTimeString()}`, 'Connected');
+                
+                console.log('✅ Data loading complete');
+                return { records: actualRecords, total: totalCount, original: data };
+                
+            } catch (error) {
+                console.error('🚨 Failed to load data:', error);
+                console.error('🚨 Error details:', error.message);
+                setAPIStatus('disconnected', 'Error');
+                showError('Failed to load data: ' + error.message);
+                displayCurrentURL(buildURL(filters), true); // Show URL even on error
+                
+                // Show error in table
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="100%" class="text-center text-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Error: ${error.message}
+                            <br><small>Check console for details</small>
+                        </td>
+                    </tr>
+                `;
+                
+                throw error;
+            }
         }
 
-        // Auto-refresh every 5 minutes
-        setInterval(function() {
-            console.log('Auto-refresh check at', new Date().toLocaleTimeString());
-        }, 300000);
+        // =================================
+        // 5. BUILD URL WITH FILTERS
+        // =================================
+        function buildURL(filters = {}) {
+            let url = `${API_URL}/records`;
+            const params = [];
+            
+            // Add parameters in the specific order your API expects
+            if (filters.start_hour && filters.start_hour !== '') {
+                params.push(`start_hour=${filters.start_hour}`); // Don't encode the colon
+            }
+            
+            if (filters.end_hour && filters.end_hour !== '') {
+                params.push(`end_hour=${filters.end_hour}`); // Don't encode the colon
+            }
+            
+            if (filters.start_date && filters.start_date !== '') {
+                params.push(`start_date=${filters.start_date}`);
+            }
+            
+            if (filters.end_date && filters.end_date !== '') {
+                params.push(`end_date=${filters.end_date}`);
+            }
+            
+            if (filters.site_name && filters.site_name !== '') {
+                params.push(`site_name=${encodeURIComponent(filters.site_name)}`);
+            }
+            
+            if (filters.agency_name && filters.agency_name !== '') {
+                params.push(`agency_name=${encodeURIComponent(filters.agency_name)}`);
+            }
+            
+            if (filters.cluster && filters.cluster !== '') {
+                params.push(`cluster=${encodeURIComponent(filters.cluster)}`);
+            }
+            
+            // Always add a limit
+            const limit = filters.limit || '100';
+            params.push(`limit=${limit}`);
+            
+            // Build final URL - join with & but don't double-encode
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            console.log('🔧 Built URL params:', params);
+            console.log('🔗 Final URL:', url);
+            
+            return url;
+        }
+
+        // =================================
+        // 6. UPDATE METRICS CARDS
+        // =================================
+        function updateMetrics(records) {
+            console.log('📈 Updating metrics...');
+            
+            const totalRecords = records.length;
+            
+            // Calculate total weight
+            const totalWeight = records.reduce((sum, record) => {
+                const weight = parseFloat(record.net_weight) || 0;
+                return sum + weight;
+            }, 0);
+            
+            // Calculate Input weight (Legacy/MSW or MSW materials)
+            const inputWeight = records.reduce((sum, record) => {
+                const material = record.material?.toString().toLowerCase() || '';
+                const weight = parseFloat(record.net_weight) || 0;
+                
+                if (material.includes('legacy/msw') || material === 'msw') {
+                    return sum + weight;
+                }
+                return sum;
+            }, 0);
+            
+            // Calculate Output weight (all materials except Legacy/MSW or MSW)
+            const outputWeight = records.reduce((sum, record) => {
+                const material = record.material?.toString().toLowerCase() || '';
+                const weight = parseFloat(record.net_weight) || 0;
+                
+                if (!material.includes('legacy/msw') && material !== 'msw' && material !== '') {
+                    return sum + weight;
+                }
+                return sum;
+            }, 0);
+            
+            console.log('📊 Calculated metrics:', {
+                totalRecords,
+                totalWeight: totalWeight / 1000,
+                inputWeight: inputWeight / 1000,
+                outputWeight: outputWeight / 1000
+            });
+            
+            // Update display
+            document.getElementById('total-records').textContent = totalRecords.toLocaleString();
+            document.getElementById('total-weight').textContent = (totalWeight / 1000).toFixed(1);
+            document.getElementById('input-weight').textContent = (inputWeight / 1000).toFixed(1);
+            document.getElementById('output-weight').textContent = (outputWeight / 1000).toFixed(1);
+            
+            // Log material type breakdown for debugging
+            const materialBreakdown = records.reduce((breakdown, record) => {
+                const material = record.material?.toString() || 'Unknown';
+                const weight = parseFloat(record.net_weight) || 0;
+                
+                if (!breakdown[material]) {
+                    breakdown[material] = { count: 0, weight: 0 };
+                }
+                breakdown[material].count++;
+                breakdown[material].weight += weight;
+                
+                return breakdown;
+            }, {});
+            
+            console.log('📋 Material type breakdown:', materialBreakdown);
+        }
+
+        // =================================
+        // 7. UPDATE TABLE (DYNAMIC COLUMNS WITH AUTO-SCALING)
+        // =================================
+        function updateTable(records) {
+            console.log('📋 === UPDATE TABLE START ===');
+            console.log('📋 Selected columns:', selectedColumns);
+            console.log('📋 Records received:', records);
+            console.log('📋 Records length:', records ? records.length : 'no length');
+            
+            const thead = document.getElementById('table-header');
+            const tbody = document.getElementById('table-body');
+            const recordsCount = document.getElementById('records-count');
+            const tableElement = document.getElementById('data-table');
+            
+            if (!tbody || !thead) {
+                console.error('❌ Table elements not found!');
+                return;
+            }
+            
+            // Update count
+            const count = records ? records.length : 0;
+            recordsCount.textContent = count.toLocaleString();
+            console.log('📊 Updated records count to:', count);
+            
+            // DESTROY DataTable FIRST to avoid conflicts
+            if (dataTable) {
+                try {
+                    console.log('🗑️ Destroying existing DataTable...');
+                    dataTable.destroy();
+                    dataTable = null;
+                    console.log('✅ DataTable destroyed');
+                } catch (e) {
+                    console.warn('⚠️ DataTable destroy failed:', e);
+                }
+            }
+            
+            // Apply column-based CSS class for width scaling
+            const columnCount = selectedColumns.length;
+            tableElement.className = tableElement.className.replace(/cols-\d+-\d+/g, '');
+            
+            if (columnCount <= 5) {
+                tableElement.classList.add('cols-1-5');
+            } else if (columnCount <= 10) {
+                tableElement.classList.add('cols-6-10');  
+            } else {
+                tableElement.classList.add('cols-11-15');
+            }
+            
+            console.log('📏 Applied column scaling for', columnCount, 'columns');
+            
+            // Build dynamic table headers
+            console.log('📋 Building dynamic headers...');
+            thead.innerHTML = '';
+            const headerRow = document.createElement('tr');
+            
+            selectedColumns.forEach(columnKey => {
+                const column = ALL_COLUMNS[columnKey];
+                if (column) {
+                    const th = document.createElement('th');
+                    th.textContent = column.name;
+                    th.setAttribute('title', `${column.name} (${columnKey})`);
+                    headerRow.appendChild(th);
+                }
+            });
+            thead.appendChild(headerRow);
+            console.log('✅ Headers created for columns:', selectedColumns);
+            
+            // Clear existing rows
+            tbody.innerHTML = '';
+            
+            if (!records || !Array.isArray(records) || records.length === 0) {
+                console.log('📋 No records to display');
+                tbody.innerHTML = `<tr><td colspan="${selectedColumns.length}" class="text-center text-muted">No records found</td></tr>`;
+                return;
+            }
+            
+            console.log('📋 Processing', records.length, 'records...');
+            
+            // Create table content with dynamic columns
+            let tableHTML = '';
+            
+            records.forEach((record, index) => {
+                if (index < 3) { // Log first 3 records for debugging
+                    console.log(`📋 Record ${index + 1}:`, record);
+                }
+                
+                let rowHTML = '<tr>';
+                
+                selectedColumns.forEach(columnKey => {
+                    const column = ALL_COLUMNS[columnKey];
+                    if (column) {
+                        const value = record[columnKey];
+                        const formattedValue = formatColumnValue(value, column.type);
+                        rowHTML += `<td title="${value || 'N/A'}">${formattedValue}</td>`;
+                    }
+                });
+                
+                rowHTML += '</tr>';
+                tableHTML += rowHTML;
+            });
+            
+            // Insert all rows at once
+            tbody.innerHTML = tableHTML;
+            console.log('✅ All rows inserted into table');
+            console.log('📋 Table body children count:', tbody.children.length);
+            
+            // Wait a moment then reinitialize DataTable
+            setTimeout(() => {
+                try {
+                    console.log('📋 Initializing DataTable...');
+                    
+                    const dataTableConfig = {
+                        pageLength: 25,
+                        responsive: false, // Disable responsive for better column control
+                        order: [[0, 'desc']],
+                        destroy: true,
+                        scrollX: true, // Enable horizontal scrolling
+                        scrollCollapse: true,
+                        columnDefs: [
+                            { targets: '_all', className: 'text-center' }
+                        ],
+                        language: {
+                            search: "Search records:",
+                            lengthMenu: "Show _MENU_ records per page",
+                            info: "Showing _START_ to _END_ of _TOTAL_ records",
+                            emptyTable: "No records found with current filters"
+                        }
+                    };
+                    
+                    // Adjust settings based on column count
+                    if (columnCount > 10) {
+                        dataTableConfig.pageLength = 15; // Fewer rows for many columns
+                        dataTableConfig.fixedColumns = { leftColumns: 1 }; // Fix first column
+                    }
+                    
+                    dataTable = $('#data-table').DataTable(dataTableConfig);
+                    console.log('✅ DataTable initialized successfully with', columnCount, 'columns');
+                } catch (e) {
+                    console.error('❌ DataTable initialization failed:', e);
+                    console.log('📋 Continuing without DataTable functionality');
+                }
+            }, 100);
+            
+            console.log('📋 === UPDATE TABLE END ===');
+        }
+
+        // Format column values based on their type
+        function formatColumnValue(value, type) {
+            if (value === null || value === undefined || value === '') {
+                return '<span class="text-muted">N/A</span>';
+            }
+            
+            switch (type) {
+                case 'date':
+                    return formatDate(value);
+                    
+                case 'weight':
+                    return formatWeight(value);
+                    
+                case 'status':
+                    return formatStatus(value);
+                    
+                case 'text':
+                default:
+                    // Handle special materials with badges
+                    if (value === 'Legacy/MSW') {
+                        return `<span class="badge" style="background-color: #e74c3c; color: white;">${value}</span>`;
+                    }
+                    return value.toString();
+            }
+        }
+
+        // =================================
+        // 8. FILTER FUNCTIONS
+        // =================================
+        function applyFilters() {
+            console.log('🔍 Applying filters...');
+            
+            const filters = getFilterValues();
+            console.log('📋 Filter values:', filters);
+            
+            loadData(filters);
+        }
+
+        function getFilterValues() {
+            return {
+                agency_name: document.getElementById('agency-filter').value,
+                site_name: document.getElementById('site-filter').value,
+                start_date: document.getElementById('start-date').value,
+                end_date: document.getElementById('end-date').value,
+                start_hour: document.getElementById('start-hour').value,
+                end_hour: document.getElementById('end-hour').value,
+                limit: document.getElementById('limit').value
+            };
+        }
+
+        function clearFilters() {
+            console.log('🧹 Clearing filters...');
+            
+            document.getElementById('agency-filter').value = '';
+            document.getElementById('site-filter').value = '';
+            document.getElementById('start-date').value = '';
+            document.getElementById('end-date').value = '';
+            document.getElementById('start-hour').value = '';
+            document.getElementById('end-hour').value = '';
+            document.getElementById('limit').value = '100';
+            
+            loadData();
+        }
+
+        function setToday() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start-date').value = today;
+            document.getElementById('end-date').value = today;
+            applyFilters();
+        }
+
+        function setWorkingHours() {
+            document.getElementById('start-hour').value = '09:00';
+            document.getElementById('end-hour').value = '18:00';
+            applyFilters();
+        }
+
+        // =================================
+        // 9. SITE-SPECIFIC LOADING
+        // =================================
+        function loadSiteData() {
+            const selectedSite = document.getElementById('quick-site-selector').value;
+            
+            if (selectedSite) {
+                document.getElementById('current-view').textContent = `Site: ${selectedSite}`;
+                document.getElementById('site-filter').value = selectedSite;
+                loadData({ site_name: selectedSite });
+            } else {
+                viewAllSites();
+            }
+        }
+
+        function viewAllSites() {
+            document.getElementById('current-view').textContent = 'All Sites';
+            document.getElementById('quick-site-selector').value = '';
+            document.getElementById('site-filter').value = '';
+            loadData();
+        }
+
+        // =================================
+        // 10. UTILITY FUNCTIONS
+        // =================================
+        function refreshData() {
+            console.log('🔄 Refreshing data...');
+            const filters = getFilterValues();
+            loadData(filters);
+        }
+
+        function displayCurrentURL(url, isError = false) {
+            const urlElement = document.getElementById('current-url');
+            if (urlElement) {
+                urlElement.textContent = url;
+                urlElement.style.color = isError ? 'var(--error)' : 'var(--brand-primary)';
+            }
+            console.log('🔗 Current URL displayed:', url);
+        }
+
+        function copyURL() {
+            const urlElement = document.getElementById('current-url');
+            if (urlElement) {
+                navigator.clipboard.writeText(urlElement.textContent).then(() => {
+                    // Show success feedback
+                    const btn = event.target.closest('button');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                });
+            }
+        }
+
+        function testCurrentURL() {
+            const urlElement = document.getElementById('current-url');
+            if (urlElement) {
+                const url = urlElement.textContent;
+                console.log('🧪 Testing URL in browser:', url);
+                window.open(url, '_blank');
+            }
+        }
+
+        function setAPIStatus(status, message) {
+            const statusElement = document.getElementById('api-status');
+            const textElement = document.getElementById('api-status-text');
+            
+            statusElement.className = `api-status ${status}`;
+            textElement.textContent = message;
+        }
+
+        function updateStatus(lastUpdate, connectionStatus) {
+            const lastSync = document.getElementById('last-sync');
+            const connStatus = document.getElementById('connection-status');
+            
+            if (lastSync) lastSync.textContent = lastUpdate;
+            if (connStatus) connStatus.textContent = connectionStatus;
+        }
+
+        function showTableLoading() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Loading data...</td></tr>';
+        }
+
+        function showError(message) {
+            const statusInfo = document.getElementById('status-info');
+            statusInfo.style.background = 'rgba(229, 62, 62, 0.1)';
+            statusInfo.style.borderColor = 'var(--error)';
+            statusInfo.innerHTML = `
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>Error</h6>
+                <p class="mb-0">${message}</p>
+            `;
+        }
+
+        function formatDate(dateStr) {
+            try {
+                return new Date(dateStr).toLocaleDateString();
+            } catch {
+                return dateStr || '';
+            }
+        }
+
+        function formatWeight(weight) {
+            const num = parseFloat(weight);
+            return num ? num.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1}) : '0.0';
+        }
+
+        function formatStatus(status) {
+            const badge = status === 'complete' ? 
+                `<span class="badge bg-success">${status}</span>` : 
+                `<span class="badge bg-secondary">${status || 'unknown'}</span>`;
+            return badge;
+        }
+
+        // =================================
+        // 11. DEBUG FUNCTIONS
+        // =================================
+        function testAPI() {
+            console.log('🧪 Testing API manually...');
+            
+            // Test basic endpoint
+            fetch(`${API_URL}/records?limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('✅ Test successful:', data);
+                })
+                .catch(error => {
+                    console.error('❌ Test failed:', error);
+                });
+        }
+
+        // Expose functions for debugging
+        window.testAPI = testAPI;
+        window.loadData = loadData;
+        window.getFilterValues = getFilterValues;
     </script>
 </body>
 </html>
