@@ -1808,7 +1808,8 @@ def create_empty_card(card_number):
 
 
 def create_header_card_1(current_agency_display=None, agency_data=None, all_agencies_data=None):
-    """Create Header Card 1: Project Overview with quantity metrics including MT units and completion percentage"""
+    """Create Header Card 1: Project Overview with quantity metrics including MT units and completion percentage
+    Enhanced to include remediated_before_march31_2025 in both calculations"""
     
     # Calculate project-wide quantity metrics
     total_remediated = 0
@@ -1816,20 +1817,57 @@ def create_header_card_1(current_agency_display=None, agency_data=None, all_agen
     
     # Calculate based on all_agencies_data
     if all_agencies_data is not None and not all_agencies_data.empty:
-        # Calculate total remediated quantity across all agencies
-        if 'Cumulative Quantity remediated till date in MT' in all_agencies_data.columns:
-            total_remediated = all_agencies_data['Cumulative Quantity remediated till date in MT'].sum()
+        try:
+            # ENHANCED: Calculate total remediated quantity = current remediation + pre-March 31 work
+            remediated_current = 0
+            remediated_before_march = 0
+            
+            if 'Cumulative Quantity remediated till date in MT' in all_agencies_data.columns:
+                remediated_current = all_agencies_data['Cumulative Quantity remediated till date in MT'].fillna(0).sum()
+                logger.info(f"📊 Current remediation across all agencies: {remediated_current} MT")
+            
+            if 'remediated_before_march31_2025' in all_agencies_data.columns:
+                remediated_before_march = all_agencies_data['remediated_before_march31_2025'].fillna(0).sum()
+                logger.info(f"📊 Pre-March 31, 2025 remediation: {remediated_before_march} MT")
+            else:
+                logger.warning("⚠️ Column 'remediated_before_march31_2025' not found in data")
+            
+            # Total remediated = current + pre-March work
+            total_remediated = remediated_current + remediated_before_march
             total_remediated = int(round(total_remediated, 0))
+            logger.info(f"📊 Total remediated (current + pre-March): {total_remediated} MT")
         
-        # Calculate total quantity to be remediated across all agencies
-        if 'Quantity to be remediated in MT' in all_agencies_data.columns:
-            total_to_remediate = all_agencies_data['Quantity to be remediated in MT'].sum()
+        except Exception as e:
+            logger.error(f"❌ Error calculating total remediated: {e}")
+            total_remediated = 0
+        
+        try:
+            # ENHANCED: Calculate total to remediate = planned work + pre-March work
+            planned_quantity = 0
+            remediated_before_march = 0
+            
+            if 'Quantity to be remediated in MT' in all_agencies_data.columns:
+                planned_quantity = all_agencies_data['Quantity to be remediated in MT'].fillna(0).sum()
+                logger.info(f"📊 Planned remediation across all agencies: {planned_quantity} MT")
+            
+            if 'remediated_before_march31_2025' in all_agencies_data.columns:
+                remediated_before_march = all_agencies_data['remediated_before_march31_2025'].fillna(0).sum()
+                # Note: This is the same value calculated above, but kept separate for clarity
+            
+            # Total to remediate = planned + pre-March work  
+            total_to_remediate = planned_quantity + remediated_before_march
             total_to_remediate = int(round(total_to_remediate, 0))
+            logger.info(f"📊 Total to remediate (planned + pre-March): {total_to_remediate} MT")
+            
+        except Exception as e:
+            logger.error(f"❌ Error calculating total to remediate: {e}")
+            total_to_remediate = 0
     
     # Calculate completion percentage
     completion_rate = 0
     if total_to_remediate > 0:
         completion_rate = round((total_remediated / total_to_remediate) * 100, 1)
+        logger.info(f"📈 Project completion rate: {completion_rate}% ({total_remediated}/{total_to_remediate} MT)")
     
     # Format numbers in Indian format (XX,XX,XXX)
     def format_indian_number(num):
@@ -1874,117 +1912,16 @@ def create_header_card_1(current_agency_display=None, agency_data=None, all_agen
     return create_dual_metric_card_horizontal_ultra_compact(
         icon="📋",
         title="Project Overview",
-        metric1_label="Remediated (MT)",        # Updated label with units
-        metric1_value=format_indian_number(total_remediated),  # Indian formatted
+        metric1_label="Total Remediated (MT)",        # Updated label to reflect enhanced calculation
+        metric1_value=format_indian_number(total_remediated),  # Now includes pre-March work
         metric1_color="var(--success, #38A169)",  # Green for completed work
-        metric2_label="Total Required (MT)",     # Updated label with units
-        metric2_value=format_indian_number(total_to_remediate),  # Indian formatted
+        metric2_label="Total Required (MT)",     # Updated label to reflect enhanced calculation
+        metric2_value=format_indian_number(total_to_remediate),  # Now includes pre-March work
         metric2_color="var(--info, #3182CE)",    # Blue for total work
-        completion_percentage=completion_rate    # ADD completion percentage
+        completion_percentage=completion_rate    # Completion percentage based on enhanced totals
     )
 
-def create_header_card_2(current_agency_display=None, agency_data=None, all_agencies_data=None):
-    """Create Header Card 2: Active & Inactive Sites Count"""
-    
-    # Calculate active and inactive sites across all agencies
-    active_sites = 0
-    inactive_sites = 0
-    total_sites = 0  # ← ADD THIS
-    
-    # Calculate based on all_agencies_data
-    if all_agencies_data is not None and not all_agencies_data.empty:
-        if 'Active_site' in all_agencies_data.columns:
-            # Count active sites (Active_site == 'yes')
-            active_sites = len(all_agencies_data[all_agencies_data['Active_site'].str.lower() == 'yes'])
-            
-            # Count inactive sites (Active_site == 'no')
-            inactive_sites = len(all_agencies_data[all_agencies_data['Active_site'].str.lower() == 'no'])
-            
-            # Calculate total sites ← ADD THIS
-            total_sites = active_sites + inactive_sites
-    
-    # Create title with count badge ← ADD THIS SECTION
-    title_children = [html.H3("Site Status", className="card-title")]
-    
-    if total_sites > 0:
-        title_children.append(
-            html.Span(
-                f"{total_sites} Sites",
-                style={
-                    "color": "white",
-                    "fontSize": "clamp(0.9rem, 1.8vh, 1.2rem)",
-                    "fontWeight": "700",
-                    "textShadow": "0 1px 2px rgba(0, 0, 0, 0.5)",
-                    "background": "#38A169",  # Blue background
-                    "padding": "0.15rem 0.4rem",
-                    "borderRadius": "10px",
-                    "border": "1px solid #38A169",
-                    "marginLeft": "0.5rem"
-                }
-            )
-        )
-    
-    return html.Div(
-        className="enhanced-metric-card header-card-2",
-        children=[
-            # Card Header with count badge
-            html.Div(
-                className="card-header",
-                children=[
-                    html.Div("📊", className="card-icon"),
-                    html.Div(
-                        style={
-                            "display": "flex",
-                            "alignItems": "center",
-                            "flex": "1"
-                        },
-                        children=title_children  # ← UPDATED: Use title_children instead of single H3
-                    )
-                ]
-            ),
-            
-            # Rest of your existing metrics container code...
-            html.Div(
-                className="metrics-container",
-                children=[
-                    # First metric - Active Sites
-                    html.Div(
-                        className="metric-display primary",
-                        children=[
-                            html.Div(
-                                str(active_sites),
-                                className="metric-number",
-                                style={"color": "var(--success, #38A169)"}
-                            ),
-                            html.Div(
-                                "Active sites",
-                                className="metric-label"
-                            )
-                        ]
-                    ),
-                    
-                    # Visual Separator
-                    html.Div(className="metrics-separator"),
-                    
-                    # Second metric - Inactive Sites
-                    html.Div(
-                        className="metric-display secondary",
-                        children=[
-                            html.Div(
-                                str(inactive_sites),
-                                className="metric-number",
-                                style={"color": "var(--error, #E53E3E)"}
-                            ),
-                            html.Div(
-                                "Inactive sites",
-                                className="metric-label"
-                            )
-                        ]
-                    )
-                ]
-            )
-        ]
-    )
+
 
 
 
@@ -2255,45 +2192,67 @@ def count_machines_from_data(data, only_active=False):
     return total_machines
 
 
-def create_header_card_4(current_agency_display=None, agency_data=None, all_agencies_data=None):
-    """Create Header Card 4: Overall Machine Status - Deployed vs Planned"""
-
-    # Calculate overall machine deployment metrics
-    planned_machines = 0
-    deployed_machines = 0
-
+def create_header_card_2(current_agency_display=None, agency_data=None, all_agencies_data=None):
+    """Create Header Card 2: Active & Inactive Sites Count with valid_site filter"""
+    
+    # Calculate active and inactive sites across all agencies with valid_site filter
+    active_sites = 0
+    inactive_sites = 0
+    total_valid_sites = 0
+    invalid_sites = 0
+    
     # Calculate based on all_agencies_data
     if all_agencies_data is not None and not all_agencies_data.empty:
         try:
-            # Count total planned machines across all agencies (all records)
-            planned_machines = count_machines_from_data(all_agencies_data)
+            # Check if required columns exist
+            required_columns = ['Active_site', 'valid_site']
+            missing_columns = [col for col in required_columns if col not in all_agencies_data.columns]
             
-            # Count deployed machines across all agencies (only active sites)
-            deployed_machines = count_machines_from_data(all_agencies_data, only_active=True)
-            
-            not_deployed_machines = abs(planned_machines - deployed_machines)
+            if missing_columns:
+                logger.warning(f"⚠️ Missing columns for Site Status calculation: {missing_columns}")
+                # Fallback to original logic if valid_site column doesn't exist
+                if 'Active_site' in all_agencies_data.columns:
+                    active_sites = len(all_agencies_data[all_agencies_data['Active_site'].str.lower() == 'yes'])
+                    inactive_sites = len(all_agencies_data[all_agencies_data['Active_site'].str.lower() == 'no'])
+                    total_valid_sites = active_sites + inactive_sites
+                    invalid_sites = 0
+            else:
+                # Enhanced logic with valid_site filter
+                for _, row in all_agencies_data.iterrows():
+                    valid_site = str(row['valid_site']).strip().lower() if pd.notna(row['valid_site']) else ''
+                    active_site = str(row['Active_site']).strip().lower() if pd.notna(row['Active_site']) else ''
+                    
+                    if valid_site == 'yes':
+                        # Only count valid sites in active/inactive categories
+                        if active_site == 'yes':
+                            active_sites += 1
+                        else:
+                            inactive_sites += 1
+                        total_valid_sites += 1
+                    else:
+                        # Sites that are not valid are considered "to be started/in progress"
+                        invalid_sites += 1
                 
-            print(f"🚀 Overall Machine Status: {deployed_machines} deployed out of {planned_machines} planned")
+                logger.info(f"📊 Site Status: {active_sites} active, {inactive_sites} inactive (from {total_valid_sites} valid sites), {invalid_sites} to be started/in progress")
                 
         except Exception as e:
-            print(f"⚠️ Error calculating overall machine status: {e}")
-            planned_machines = 0
-            deployed_machines = 0
-
-    # Calculate deployment percentage ← ADD THIS
-    deployment_percentage = 0
-    if planned_machines > 0:
-        deployment_percentage = round((deployed_machines / planned_machines) * 100, 1)
-
-    # Use the dual metric card format but with machine count badge ← MODIFY THIS
+            logger.error(f"❌ Error calculating site status: {e}")
+            active_sites = 0
+            inactive_sites = 0
+            total_valid_sites = 0
+            invalid_sites = 0
+    
+    # Calculate total sites for badge
+    all_sites = total_valid_sites
+    
     return html.Div(
-        className="enhanced-metric-card header-card-4",
+        className="enhanced-metric-card header-card-2",
         children=[
-            # Card Header with machine count badge ← ADD THIS SECTION
+            # Card Header with count badge
             html.Div(
                 className="card-header",
                 children=[
-                    html.Div("🚀", className="card-icon"),
+                    html.Div("📊", className="card-icon"),
                     html.Div(
                         style={
                             "display": "flex",
@@ -2301,41 +2260,41 @@ def create_header_card_4(current_agency_display=None, agency_data=None, all_agen
                             "flex": "1"
                         },
                         children=[
-                            html.H3("Machine Status", className="card-title"),
+                            html.H3("Site Status", className="card-title"),
                             html.Span(
-                                f"{planned_machines} Machines",
+                                f"{total_valid_sites} Sites",  # Show valid out of total
                                 style={
                                     "color": "white",
                                     "fontSize": "clamp(0.9rem, 1.8vh, 1.2rem)",
                                     "fontWeight": "700",
                                     "textShadow": "0 1px 2px rgba(0, 0, 0, 0.5)",
-                                    "background": "var(--info, #3182CE)",  # Blue for total count
+                                    "background": "#38A169",
                                     "padding": "0.15rem 0.4rem",
                                     "borderRadius": "10px",
-                                    "border": "1px solid var(--info, #3182CE)",
+                                    "border": "1px solid #38A169",
                                     "marginLeft": "0.5rem"
                                 }
-                            ) if planned_machines > 0 else ""
+                            ) if all_sites > 0 else ""
                         ]
                     )
                 ]
             ),
             
-            # Metrics Container ← KEEP EXISTING
+            # Metrics Container (only shows valid sites)
             html.Div(
                 className="metrics-container",
                 children=[
-                    # First metric
+                    # First metric - Active Sites (valid_site=yes AND Active_site=yes)
                     html.Div(
                         className="metric-display primary",
                         children=[
                             html.Div(
-                                str(deployed_machines),
+                                str(active_sites),
                                 className="metric-number",
-                                style={"color": "var(--success, #38A169)"}  # Green for deployed machines
+                                style={"color": "var(--success, #38A169)"}
                             ),
                             html.Div(
-                                "Deployed",
+                                "Active Sites",
                                 className="metric-label"
                             )
                         ]
@@ -2344,17 +2303,17 @@ def create_header_card_4(current_agency_display=None, agency_data=None, all_agen
                     # Visual Separator
                     html.Div(className="metrics-separator"),
                     
-                    # Second metric
+                    # Second metric - Inactive Sites (valid_site=yes AND Active_site!=yes)
                     html.Div(
                         className="metric-display secondary",
                         children=[
                             html.Div(
-                                str(not_deployed_machines),
+                                str(inactive_sites),
                                 className="metric-number",
-                                style={"color": "var(--info, #3182CE)"}     # Blue for planned machines
+                                style={"color": "var(--error, #E53E3E)"}
                             ),
                             html.Div(
-                                "Not deployed",
+                                "Inactive Sites",
                                 className="metric-label"
                             )
                         ]
@@ -2364,6 +2323,155 @@ def create_header_card_4(current_agency_display=None, agency_data=None, all_agen
         ]
     )
 
+
+def create_header_card_4(current_agency_display=None, agency_data=None, all_agencies_data=None):
+    """Create Header Card 4: Reclamation Status - Reclaimed vs In Progress Sites with valid_site filter"""
+
+    # Calculate reclamation status metrics with valid_site filter
+    reclaimed_sites = 0
+    in_progress_sites = 0
+    total_valid_sites = 0
+    invalid_sites = 0
+
+    # Calculate based on all_agencies_data (project-wide scope)
+    if all_agencies_data is not None and not all_agencies_data.empty:
+        try:
+            # Check if required columns exist
+            required_columns = ['reclaimed_sites', 'valid_site']
+            missing_columns = [col for col in required_columns if col not in all_agencies_data.columns]
+            
+            if missing_columns:
+                logger.warning(f"⚠️ Missing columns for Reclamation Status calculation: {missing_columns}")
+                # Fallback to original logic if valid_site column doesn't exist
+                if 'reclaimed_sites' in all_agencies_data.columns:
+                    for _, row in all_agencies_data.iterrows():
+                        reclaimed_percentage = row['reclaimed_sites']
+                        if pd.isna(reclaimed_percentage):
+                            continue
+                        try:
+                            reclaimed_percentage = float(reclaimed_percentage)
+                            if reclaimed_percentage == 100.0:
+                                reclaimed_sites += 1
+                            else:
+                                in_progress_sites += 1
+                        except (ValueError, TypeError):
+                            continue
+                    total_valid_sites = reclaimed_sites
+                    invalid_sites = 0
+            else:
+                # Enhanced logic with valid_site filter
+                for _, row in all_agencies_data.iterrows():
+                    valid_site = str(row['valid_site']).strip().lower() if pd.notna(row['valid_site']) else ''
+                    reclaimed_percentage = row['reclaimed_sites']
+                    
+                    if valid_site == 'yes':
+                        # Only process valid sites for reclamation status
+                        if pd.isna(reclaimed_percentage):
+                            in_progress_sites += 1  # Treat null as in progress
+                        else:
+                            try:
+                                reclaimed_percentage = float(reclaimed_percentage)
+                                if reclaimed_percentage == 100.0:
+                                    reclaimed_sites += 1
+                                else:
+                                    in_progress_sites += 1
+                            except (ValueError, TypeError):
+                                in_progress_sites += 1  # Treat invalid values as in progress
+                        total_valid_sites += 1
+                    else:
+                        # Sites that are not valid are considered "to be started"
+                        invalid_sites += 1
+                
+                logger.info(f"🏗️ Reclamation Status: {reclaimed_sites} fully reclaimed, {in_progress_sites} in progress (from {total_valid_sites} valid sites), {invalid_sites} to be started")
+                
+        except Exception as e:
+            logger.error(f"❌ Error calculating reclamation status: {e}")
+            reclaimed_sites = 0
+            in_progress_sites = 0
+            total_valid_sites = 0
+            invalid_sites = 0
+
+    # Calculate total sites for badge
+    all_sites = total_valid_sites
+
+    # Use enhanced card format with total sites badge
+    return html.Div(
+        className="enhanced-metric-card header-card-4",
+        children=[
+            # Card Header with total sites count badge
+            html.Div(
+                className="card-header",
+                children=[
+                    html.Div("🏗️", className="card-icon"),
+                    html.Div(
+                        style={
+                            "display": "flex",
+                            "alignItems": "center",
+                            "flex": "1"
+                        },
+                        children=[
+                            html.H3("Reclamation Status", className="card-title"),
+                            html.Span(
+                                f"{total_valid_sites} Sites",  # Show valid out of total
+                                style={
+                                    "color": "white",
+                                    "fontSize": "clamp(0.9rem, 1.8vh, 1.2rem)",
+                                    "fontWeight": "700",
+                                    "textShadow": "0 1px 2px rgba(0, 0, 0, 0.5)",
+                                    "background": "var(--info, #3182CE)",
+                                    "padding": "0.15rem 0.4rem",
+                                    "borderRadius": "10px",
+                                    "border": "1px solid var(--info, #3182CE)",
+                                    "marginLeft": "0.5rem"
+                                }
+                            ) if all_sites > 0 else ""
+                        ]
+                    )
+                ]
+            ),
+            
+            # Metrics Container (only shows valid sites)
+            html.Div(
+                className="metrics-container",
+                children=[
+                    # First metric - Reclaimed Sites (valid_site=yes AND reclaimed_sites=100)
+                    html.Div(
+                        className="metric-display primary",
+                        children=[
+                            html.Div(
+                                str(reclaimed_sites),
+                                className="metric-number",
+                                style={"color": "var(--success, #38A169)"}  # Green for completed reclamation
+                            ),
+                            html.Div(
+                                "Reclaimed Sites",
+                                className="metric-label"
+                            )
+                        ]
+                    ),
+                    
+                    # Visual Separator
+                    html.Div(className="metrics-separator"),
+                    
+                    # Second metric - In Progress Sites (valid_site=yes AND reclaimed_sites!=100)
+                    html.Div(
+                        className="metric-display secondary",
+                        children=[
+                            html.Div(
+                                str(in_progress_sites),
+                                className="metric-number",
+                                style={"color": "var(--warning, #DD6B20)"}  # Orange for in-progress
+                            ),
+                            html.Div(
+                                "In Progress Sites",
+                                className="metric-label"
+                            )
+                        ]
+                    )
+                ]
+            )
+        ]
+    )
 
 def create_agency_completion_card(agency_data=None):
     """Create Card 4: Agency Machine Status - Deployed vs Planned (agency-specific)"""

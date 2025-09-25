@@ -1,13 +1,11 @@
-# layouts/login_layout.py - ENHANCED Magic View with 3 Options
+# layouts/login_layout.py - ENHANCED with Real-time PDF Generation
 """
-Enhanced Magic View with 3 Options:
-1. Magic View - Site selection for dashboard
-2. Login Portal - Traditional username/password for /legacy/report
-3. Quick Summary - Download PDF summary
+Enhanced Magic View with Real-time PDF Summary Generation
 """
 
 from dash import html, dcc
 import requests
+from datetime import datetime
 
 def get_sites_from_api():
     """Get sites from API with fallback"""
@@ -63,88 +61,81 @@ def create_magic_view_section(sites, dropdown_options):
                         html.H3(
                             "Magic View", 
                             style={
-                                "background": "linear-gradient(135deg, #eb9534 0%, #f6ad37 50%, #eb9534 100%)",
-                                "WebkitBackgroundClip": "text",
-                                "WebkitTextFillColor": "transparent",
-                                "backgroundClip": "text",
+                                "color": "#eb9534", 
                                 "fontSize": "1.8rem", 
                                 "fontWeight": "800", 
-                                "marginBottom": "0.5rem",
-                                "textAlign": "center"
+                                "marginBottom": "0.8rem",
+                                "textShadow": "0 2px 4px rgba(0, 0, 0, 0.3)"
                             }
                         ),
                         html.P(
-                            "Select a site to view its real-time dashboard",
+                            "Choose your destination to explore the future",
                             style={
                                 "color": "#E2E8F0", 
                                 "fontSize": "1rem", 
                                 "marginBottom": "2rem",
-                                "textAlign": "center",
                                 "fontWeight": "400"
                             }
                         )
-                    ]),
+                    ], style={"textAlign": "center"}),
                     
-                    # Site Selector
+                    # Site Selection Dropdown
                     html.Div([
                         html.Label(
-                            "🏢 Choose Site Location:",
+                            "Select Your Site:",
                             style={
-                                "color": "#F7FAFC", 
+                                "color": "#FFFFFF", 
                                 "fontSize": "1rem", 
                                 "fontWeight": "600", 
                                 "display": "block", 
-                                "marginBottom": "1rem",
-                                "textShadow": "0 1px 3px rgba(0, 0, 0, 0.3)"
+                                "marginBottom": "0.8rem",
+                                "textAlign": "left"
                             }
                         ),
                         dcc.Dropdown(
-                            id="site-selector-dropdown",
+                            id="site-selection-dropdown",
                             options=dropdown_options,
-                            placeholder="🔍 Select a site...",
+                            placeholder="Choose a site to explore...",
                             style={
                                 "marginBottom": "2rem",
-                                "fontSize": "1rem"
-                            }
+                                "fontSize": "1.1rem"
+                            },
+                            className="custom-dropdown"
                         )
                     ]),
                     
-                    # Go Button with mobile optimization
+                    # Magic Button
                     html.Button(
-                        ["🚀 Go to Dashboard"],
-                        id="magic-view-go-btn",
+                        ["🚀 Enter Magic Dashboard"],
+                        id="magic-view-btn",
+                        disabled=True,
                         style={
                             "width": "100%", 
-                            "padding": "14px 24px", 
-                            "background": "linear-gradient(135deg, #eb9534 0%, #f6ad37 50%, #eb9534 100%)",
+                            "padding": "16px 20px", 
+                            "backgroundColor": "#eb9534",
                             "color": "white", 
                             "border": "none", 
                             "borderRadius": "12px",
                             "fontSize": "1.1rem", 
                             "fontWeight": "700", 
                             "cursor": "pointer",
-                            "transition": "all 0.3s ease",
+                            "transition": "all 0.3s ease", 
+                            "minHeight": "56px",
                             "textTransform": "uppercase",
-                            "letterSpacing": "0.5px",
-                            "boxShadow": "0 4px 15px rgba(235, 149, 52, 0.4)",
-                            "position": "relative",
-                            "minHeight": "48px"  # Touch-friendly
+                            "letterSpacing": "1px",
+                            "boxShadow": "0 8px 20px rgba(235, 149, 52, 0.4)"
                         }
                     ),
                     
-                    # Info with enhanced styling
+                    # Status
                     html.P(
-                        f"📍 {len(sites)} sites available • Live data",
+                        f"🌟 {len(sites)} magical destinations available",
                         style={
-                            "color": "#9CA3AF", 
+                            "color": "#A0AEC0", 
                             "fontSize": "0.85rem", 
                             "marginTop": "1.5rem", 
                             "textAlign": "center",
-                            "fontWeight": "500",
-                            "padding": "0.5rem",
-                            "backgroundColor": "rgba(235, 149, 52, 0.1)",
-                            "borderRadius": "6px",
-                            "border": "1px solid rgba(235, 149, 52, 0.2)"
+                            "fontStyle": "italic"
                         }
                     )
                 ]
@@ -153,7 +144,7 @@ def create_magic_view_section(sites, dropdown_options):
     )
 
 def create_login_portal_section():
-    """Create Login Portal section for traditional authentication - Mobile Optimized"""
+    """Create Login Portal section for traditional login - Mobile Optimized"""
     return html.Div(
         className="option-card",
         style={
@@ -237,7 +228,7 @@ def create_login_portal_section():
     )
 
 def create_quick_summary_section():
-    """Create Quick Summary section for PDF download - Mobile Optimized"""
+    """Create Quick Summary section for Real-time PDF download - Mobile Optimized"""
     return html.Div(
         className="option-card",
         style={
@@ -257,7 +248,7 @@ def create_quick_summary_section():
                     style={"color": "#DD6B20", "fontSize": "1.5rem", "fontWeight": "700", "marginBottom": "0.5rem"}
                 ),
                 html.P(
-                    "Download instant PDF summary report",
+                    "Download real-time PDF summary report",
                     style={"color": "#A0AEC0", "fontSize": "0.9rem", "marginBottom": "1.5rem"}
                 )
             ], style={"textAlign": "center"}),
@@ -265,21 +256,22 @@ def create_quick_summary_section():
             # Description
             html.Div([
                 html.P(
-                    "Get a comprehensive summary of all operations across sites with real-time data up to the last computed point in the cloud.",
+                    "Get a comprehensive summary of all operations across sites with real-time data from the weighbridge API.",
                     style={"color": "#A0AEC0", "fontSize": "0.85rem", "lineHeight": "1.4", "marginBottom": "1.5rem", "textAlign": "left"}
                 ),
                 
                 html.Ul([
                     html.Li("✅ All sites data aggregated", style={"color": "#A0AEC0", "fontSize": "0.8rem", "marginBottom": "0.3rem"}),
-                    html.Li("✅ Real-time statistics", style={"color": "#A0AEC0", "fontSize": "0.8rem", "marginBottom": "0.3rem"}),
-                    html.Li("✅ Performance metrics", style={"color": "#A0AEC0", "fontSize": "0.8rem", "marginBottom": "1rem"}),
+                    html.Li("✅ Real-time weighbridge statistics", style={"color": "#A0AEC0", "fontSize": "0.8rem", "marginBottom": "0.3rem"}),
+                    html.Li("✅ Performance metrics & alerts", style={"color": "#A0AEC0", "fontSize": "0.8rem", "marginBottom": "1rem"}),
                 ], style={"paddingLeft": "1rem"})
             ]),
             
-            # Download Button
+            # Real-time Download Button
             html.A(
                 html.Button(
-                    ["📥 Download Summary"],
+                    ["📥 Generate Live Report"],
+                    id="realtime-summary-btn",
                     style={
                         "width": "100%", "padding": "14px 20px", "backgroundColor": "#DD6B20",
                         "color": "white", "border": "none", "borderRadius": "8px",
@@ -287,109 +279,103 @@ def create_quick_summary_section():
                         "transition": "all 0.3s ease", "minHeight": "48px"
                     }
                 ),
-                href="/assets/dummy_summary.pdf",  # This will be your dummy PDF path
-                download="Summary_Report.pdf",
+                href="/api/legacy-project/download",  # NEW: Real-time PDF endpoint
                 style={"textDecoration": "none"}
-            ),
+            ),  
             
-            # Status
+            # Status with live timestamp
             html.P(
-                "📈 Last updated: Just now",
+                f"🔄 Real-time data • Generated: {datetime.now().strftime('%H:%M:%S')}",
                 style={"color": "#68748D", "fontSize": "0.8rem", "marginTop": "1rem", "textAlign": "center"}
             )
         ]
     )
 
 def build_login_layout(theme_name="dark", error_message=""):
-    """Enhanced Magic View with 3 options"""
+    """Enhanced Magic View with 3 options including real-time PDF"""
     
-    # Get sites data at the top level (like the working version)
+    # Get sites from API
     sites = get_sites_from_api()
-    dropdown_options = [{"label": site, "value": site} for site in sites]
+    
+    # Create dropdown options
+    dropdown_options = [{"label": site.title(), "value": site} for site in sites]
     
     return html.Div(
-        className="portal-container",
         style={
             "minHeight": "100vh",
-            "backgroundColor": "#0A0E1A",
-            "fontFamily": "'Inter', sans-serif",
-            "padding": "2rem 1rem"
+            "background": "linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%)",
+            "padding": "1rem",
+            "fontFamily": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
         },
         children=[
             # Header
             html.Div(
-                className="portal-header",
-                style={"textAlign": "center", "marginBottom": "3rem"},
+                style={
+                    "textAlign": "center",
+                    "marginBottom": "3rem",
+                    "paddingTop": "2rem"
+                },
                 children=[
                     html.H1(
-                        "Swachha Andhra Corporation Login portal",
-                        className="portal-title",
+                        "🌟 Swachh Andhra Pradesh",
                         style={
-                            "color": "#FFFFFF", 
-                            "fontSize": "2.5rem", 
-                            "fontWeight": "800", 
+                            "color": "#FFFFFF",
+                            "fontSize": "clamp(2rem, 5vw, 3.5rem)",
+                            "fontWeight": "800",
                             "marginBottom": "0.5rem",
-                            # Mobile responsive
-                            "@media (max-width: 768px)": {
-                                "fontSize": "2rem"
-                            }
+                            "textShadow": "0 4px 8px rgba(0, 0, 0, 0.3)"
                         }
                     ),
                     html.P(
-                        "Choose your access method to continue",
-                        className="portal-subtitle", 
-                        style={"color": "#A0AEC0", "fontSize": "1.1rem"}
+                        "Choose your path to data excellence",
+                        style={
+                            "color": "#94A3B8",
+                            "fontSize": "1.2rem",
+                            "fontWeight": "400"
+                        }
                     )
                 ]
             ),
             
-            # Error Message (if any)
+            # Error Message
             html.Div(
-                id="error-message-display",
+                id="error-message",
                 children=[
                     html.Div(
-                        f"⚠️ {error_message}",
+                        "⚠️ " + error_message,
                         style={
-                            "backgroundColor": "#FED7D7", "color": "#9B2C2C", "padding": "1rem",
-                            "borderRadius": "8px", "marginBottom": "2rem", "textAlign": "center",
-                            "border": "2px solid #FC8181"
-                        }
-                    ) if error_message else None
-                ]
-            ),
-            
-            # Main Content - 3 Options Grid
-            html.Div(
-                className="main-grid",
-                style={
-                    "maxWidth": "1200px",
-                    "margin": "0 auto",
-                    "display": "grid",
-                    "gridTemplateColumns": "repeat(auto-fit, minmax(320px, 1fr))",
-                    "gap": "2rem",
-                    "marginBottom": "2rem"
-                },
-                children=[
-                    create_magic_view_section(sites, dropdown_options),  # Pass the data
-                    create_login_portal_section(),
-                    create_quick_summary_section()
-                ]
-            ),
-            
-            # Footer
-            html.Div(
-                style={"textAlign": "center", "marginTop": "3rem"},
-                children=[
-                    html.A(
-                        "← Back to Home",
-                        href="/",
-                        style={
-                            "color": "#A0AEC0", "fontSize": "1rem", "textDecoration": "none",
-                            "padding": "0.8rem 1.5rem", "border": "2px solid #2D3748",
-                            "borderRadius": "8px", "transition": "all 0.3s ease",
-                            "display": "inline-block"
+                            "backgroundColor": "#FEE2E2",
+                            "color": "#DC2626",
+                            "padding": "1rem",
+                            "borderRadius": "8px",
+                            "marginBottom": "2rem",
+                            "textAlign": "center"
                         }
                     )
+                ] if error_message else [],
+                style={"maxWidth": "600px", "margin": "0 auto"}
+            ),
+            
+            # Three Options Grid
+            html.Div(
+                className="options-grid",
+                style={
+                    "display": "grid",
+                    "gridTemplateColumns": "repeat(auto-fit, minmax(350px, 1fr))",
+                    "gap": "2rem",
+                    "maxWidth": "1400px",
+                    "margin": "0 auto",
+                    "padding": "0 1rem"
+                },
+                children=[
+                    # Option 1: Magic View
+                    create_magic_view_section(sites, dropdown_options),
+                    
+                    # Option 2: Login Portal
+                    create_login_portal_section(),
+                    
+                    # Option 3: Quick Summary (ENHANCED)
+                    create_quick_summary_section()
                 ]
             )
         ]
