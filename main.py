@@ -3021,7 +3021,9 @@ def create_demo_session(user_id, name, role):
 
 # FIXED: Register routes WITH custom dashboard routes (no conflicts)
 register_custom_dashboard_routes(server)  # Custom routes for dashboard functionality
-
+setup_legacy_report(server)
+setup_site_dashboard(server)
+register_pdf_routes(server)
 # KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
 # This handles the /dashboard route without conflicts
 # upload_dir = Path('/tmp/uploads')
@@ -3034,12 +3036,11 @@ if __name__ == '__main__':
         print("Starting Enhanced Flask Application...")
         
         # Setup legacy report (ADD THIS LINE)
-        setup_legacy_report(server)
-        setup_site_dashboard(server)
+
         # Register existing callbacks
         logger.info("Unified callbacks registered successfully")
         logger.info("Simple Legacy report integrated")
-        register_pdf_routes(server)
+        
         print("     Application URLs:")
         print("   - Main App: http://localhost:8050")
         print("   - Login: http://localhost:8050/login")

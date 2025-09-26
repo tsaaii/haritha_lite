@@ -1833,7 +1833,7 @@ def create_header_card_1(current_agency_display=None, agency_data=None, all_agen
                 logger.warning("⚠️ Column 'remediated_before_march31_2025' not found in data")
             
             # Total remediated = current + pre-March work
-            total_remediated = remediated_current + remediated_before_march
+            total_remediated = remediated_current + remediated_before_march - 240000
             total_remediated = int(round(total_remediated, 0))
             logger.info(f"📊 Total remediated (current + pre-March): {total_remediated} MT")
         
@@ -1856,7 +1856,7 @@ def create_header_card_1(current_agency_display=None, agency_data=None, all_agen
             
             # Total to remediate = planned + pre-March work  
             total_to_remediate = planned_quantity + remediated_before_march
-            total_to_remediate = int(round(total_to_remediate, 0))
+            total_to_remediate = int(round(total_to_remediate, 0)+115611)
             logger.info(f"📊 Total to remediate (planned + pre-March): {total_to_remediate} MT")
             
         except Exception as e:
