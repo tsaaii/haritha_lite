@@ -36,8 +36,16 @@ from services.auth_service import auth_service
 # ONLY IMPORT: The consolidated callbacks
 #from callbacks.consolidated_filter_callbacks import register_all_callbacks
 from layouts.public_layout_uniform import build_public_layout
-
+from enhanced_site_processor import get_enhanced_site_data
 from pathlib import Path
+from enhanced_site_processor import get_enhanced_site_data
+import re
+from flask import make_response
+from endpoints.about_page import register_about_routes
+
+from endpoints.drap_routes_drap import register_drap_routes
+from layouts.drap_layout_drap import build_drap_login_layout, build_drap_dashboard_layout
+from callbacks.drap_callbacks_drap import register_drap_callbacks
 
 # app = dash.Dash(__name__)
 # app.layout = html.Div([
@@ -211,7 +219,10 @@ app.index_string = f'''
                     if (loading) loading.classList.add('hidden');
                 }}, 1500);
             }});
-            
+            if (window.location.pathname.startsWith('/DRAP')) {{
+                const loading = document.getElementById('pwa-loading');
+                if (loading) loading.classList.add('hidden');
+            }}            
             // RELIABLE EVENT DELEGATION APPROACH - FIXED with clean navigation
             document.addEventListener('click', function(e) {{
                 console.log('Click detected on:', e.target.id, e.target.className);
@@ -910,7 +921,9 @@ app.layout = html.Div([
     dcc.Store(id='auth-error-message', data=''),
     dcc.Location(id='url', refresh=False),
     dcc.Interval(id='session-check-interval', interval=30*1000, n_intervals=0),
-    
+    dcc.Interval(id='drap-loader-timer', interval=2000, n_intervals=0, max_intervals=1, disabled=True),
+    dcc.Store(id='drap-authenticated', data=False),
+    dcc.Store(id='drap-user-data', data={}),
     # Main layout container
     html.Div(id="main-layout"),
     dcc.Download(id="download-link"),
@@ -990,6 +1003,9 @@ app.layout = html.Div([
         ]
     )
 ])
+
+
+
 
 # Replace your existing site route handler in main.py with this improved version
 
@@ -1105,811 +1121,14 @@ def handle_site_list():
         print(f"ERROR in site list: {e}")
         return f"<html><body><h1>Error loading sites</h1><p>{str(e)}</p></body></html>", 500
 
-@server.route('/site/<site_name>')
-def handle_individual_site(site_name):
-    """Handle individual site dashboard - using your exact HTML template"""
-    print(f"SITE DASHBOARD REQUESTED: {site_name}")
-    
-    try:
-        # Import your site processing function
-        from site_dashboard import process_site_data, get_sites_from_api
-        
-        # Validate site exists
-        available_sites = get_sites_from_api()
-        if site_name not in available_sites:
-            return f"<html><body><h1>Site Not Found</h1><p>Site '{site_name}' not found. Available: {', '.join(available_sites)}</p></body></html>", 404
-        
-        # Get REAL site data
-        target_date = datetime.now().strftime('%Y-%m-%d')
-        site_data = process_site_data(site_name, target_date)
-        
-        print(f"LOADED SITE DATA FOR {site_name}: {site_data.get('total_trips', 0)} trips")
-        
-        # Your exact HTML template
-        html_template = '''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site_name }} Dashboard - Haritha Weighbridge</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #eb9534 0%, #DD6B20 100%);
-            --secondary-gradient: linear-gradient(135deg, #38A169 0%, #2D7D32 100%);
-            --success-gradient: linear-gradient(135deg, #38A169 0%, #2F855A 100%);
-            --warning-gradient: linear-gradient(135deg, #DD6B20 0%, #C05621 100%);
-            --info-gradient: linear-gradient(135deg, #3182CE 0%, #2C5282 100%);
-            --purple-gradient: linear-gradient(135deg, #805AD5 0%, #6B46C1 100%);
-            
-            --primary-bg: #F8F9FA;
-            --secondary-bg: #FFFFFF;
-            --card-bg: #FFFFFF;
-            --card-hover: #F1F5F9;
-            --border-color: #E2E8F0;
-            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
-            --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.16);
-            
-            --text-primary: #1A202C;
-            --text-secondary: #4A5568;
-            --text-muted: #718096;
-            --text-on-color: #FFFFFF;
-            
-            --accent-orange: #eb9534;
-            --accent-green: #38A169;
-            --accent-blue: #3182CE;
-            --accent-purple: #805AD5;
-            --accent-red: #E53E3E;
-            --accent-teal: #319795;
-            --accent-pink: #D53F8C;
-            --accent-indigo: #5A67D8;
-        }
-        
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: var(--primary-bg);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .dashboard-header {
-            background: var(--primary-gradient);
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-medium);
-        }
-        
-        .dashboard-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path d="M0,100 C50,150 100,50 200,100 C300,150 400,50 500,100 C600,150 700,50 800,100 C900,150 950,50 1000,100 L1000,200 L0,200 Z" fill="rgba(255,255,255,0.2)"/></svg>') repeat-x;
-            background-size: 1000px 200px;
-            opacity: 0.4;
-        }
-        
-        .site-header-content {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .status-indicator {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 500;
-            font-size: 0.875rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-        
-        .status-active {
-            background: var(--success-gradient);
-            border-color: var(--accent-green);
-        }
-        
-        .status-inactive {
-            background: var(--warning-gradient);
-            border-color: var(--accent-orange);
-        }
-        
-        .metric-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-light);
-            height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 16px 16px 0 0;
-        }
-        
-        .metric-card:hover {
-            transform: translateY(-4px);
-            background: var(--card-hover);
-            border-color: var(--accent-orange);
-            box-shadow: var(--shadow-heavy);
-        }
-        
-        .metric-card:hover::before {
-            opacity: 1;
-        }
-        
-        .metric-card:nth-child(1) { border-left: 4px solid var(--accent-orange); }
-        .metric-card:nth-child(2) { border-left: 4px solid var(--accent-green); }
-        .metric-card:nth-child(3) { border-left: 4px solid var(--accent-blue); }
-        .metric-card:nth-child(4) { border-left: 4px solid var(--accent-purple); }
-        
-        .metric-value {
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .metric-card:nth-child(1) .metric-value { color: var(--accent-orange); }
-        .metric-card:nth-child(2) .metric-value { color: var(--accent-green); }
-        .metric-card:nth-child(3) .metric-value { color: var(--accent-blue); }
-        .metric-card:nth-child(4) .metric-value { color: var(--accent-purple); }
-        
-        .metric-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .metric-sublabel {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-        
-        .progress-circle {
-            width: 80px;
-            height: 80px;
-            position: relative;
-            margin: 0 auto 0.5rem auto;
-        }
-        
-        .progress-ring {
-            transform: rotate(-90deg);
-            width: 100%;
-            height: 100%;
-        }
-        
-        .progress-ring-bg {
-            fill: none;
-            stroke: var(--border-color);
-            stroke-width: 8;
-        }
-        
-        .progress-ring-fill {
-            fill: none;
-            stroke: url(#gradient);
-            stroke-width: 8;
-            stroke-linecap: round;
-            stroke-dasharray: 283;
-            stroke-dashoffset: 283;
-            transition: stroke-dashoffset 0.5s ease-in-out;
-        }
-        
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-orange);
-        }
-        .chart-container {
-            height: 300px;
-            position: relative;
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .material-item {
-            background: linear-gradient(135deg, rgba(235, 149, 52, 0.05) 0%, rgba(235, 149, 52, 0.02) 100%);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            border-left: 4px solid var(--accent-orange);
-            transition: all 0.2s ease;
-            border: 1px solid rgba(235, 149, 52, 0.1);
-        }
-        
-        .material-item:hover {
-            background: linear-gradient(135deg, rgba(235, 149, 52, 0.08) 0%, rgba(235, 149, 52, 0.05) 100%);
-            transform: translateX(4px);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .material-item:nth-child(odd) {
-            border-left-color: var(--accent-green);
-            background: linear-gradient(135deg, rgba(56, 161, 105, 0.05) 0%, rgba(56, 161, 105, 0.02) 100%);
-            border: 1px solid rgba(56, 161, 105, 0.1);
-        }
-        
-        .material-item:nth-child(odd):hover {
-            background: linear-gradient(135deg, rgba(56, 161, 105, 0.08) 0%, rgba(56, 161, 105, 0.05) 100%);
-        }
-        
-        .vehicle-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-light);
-        }
-        
-        .vehicle-card:hover {
-            background: var(--card-hover);
-            border-color: var(--accent-blue);
-            box-shadow: var(--shadow-medium);
-            transform: translateY(-2px);
-        }
-        
-        .vehicle-card:nth-child(odd) {
-            border-left: 4px solid var(--accent-teal);
-        }
-        
-        .vehicle-card:nth-child(even) {
-            border-left: 4px solid var(--accent-purple);
-        }
-        
-        .alert-card {
-            background: linear-gradient(135deg, rgba(235, 149, 52, 0.08) 0%, rgba(221, 107, 32, 0.05) 100%);
-            border: 2px solid rgba(235, 149, 52, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            box-shadow: var(--shadow-light);
-        }
-        
-        .back-btn {
-            background: var(--secondary-gradient);
-            border: 2px solid var(--accent-green);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-light);
-            font-weight: 500;
-        }
-        
-        .back-btn:hover {
-            background: var(--warning-gradient);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--accent-orange);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .section-title {
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .section-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-        }
-        
-        .section-title:nth-of-type(1) .section-icon { background: var(--primary-gradient); }
-        .section-title:nth-of-type(2) .section-icon { background: var(--info-gradient); }
-        .section-title:nth-of-type(3) .section-icon { background: var(--purple-gradient); }
-        .section-title:nth-of-type(4) .section-icon { background: var(--secondary-gradient); }
-        
-        .info-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.4rem 1rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-        }
-        
-        .info-badge:nth-child(3) {
-            background: linear-gradient(135deg, rgba(56, 161, 105, 0.2) 0%, rgba(56, 161, 105, 0.1) 100%);
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-        }
-        
-        .info-badge:nth-child(4) {
-            background: linear-gradient(135deg, rgba(49, 151, 149, 0.2) 0%, rgba(49, 151, 149, 0.1) 100%);
-            border-color: var(--accent-teal);
-            color: var(--accent-teal);
-        }
-        
-        @media (max-width: 768px) {
-            .dashboard-header {
-                padding: 1.5rem 0;
-            }
-            
-            .metric-value {
-                font-size: 1.875rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .metric-card {
-                padding: 1.25rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <div class="dashboard-header">
-        <div class="container">
-            <div class="site-header-content">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h1 class="display-5 fw-bold mb-2">{{ site_name }} Dashboard</h1>
-                        <div class="info-badge mb-2">
-                            <i class="fas fa-building me-2"></i>
-                            Contractor: {{ contractor }}
-                        </div>
-                        <div class="info-badge">
-                            <i class="fas fa-layer-group me-2"></i>
-                            Cluster: {{ cluster }}
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <div class="mb-3">
-                            <span class="status-indicator status-{{ status_class }}">
-                                <i class="fas fa-circle me-2" style="font-size: 0.5rem;"></i>
-                                {{ status }}
-                            </span>
-                        </div>
-                        <a href="/site/" class="back-btn">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Sites
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Project Progress Section -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="section-title">
-                    <div class="section-icon">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    Project Progress
-                </h2>
-            </div>
-        </div>
-        
-        <div class="row mb-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="metric-card">
-                    <div class="metric-value">{{ total_quantity_given }}</div>
-                    <div class="metric-label">Total Quantity Given</div>
-                    <div class="metric-sublabel">MT allocated for remediation</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="metric-card">
-                    <div class="metric-value">{{ total_remediated }}</div>
-                    <div class="metric-label">Total Remediated</div>
-                    <div class="metric-sublabel">MT processed to date</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="metric-card text-center">
-                    <div class="progress-circle mx-auto mb-3">
-                        <svg class="progress-ring" viewBox="0 0 100 100">
-                            <defs>
-                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#eb9534;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#DD6B20;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <circle class="progress-ring-bg" cx="50" cy="50" r="45"></circle>
-                            <circle class="progress-ring-fill" cx="50" cy="50" r="45" 
-                                    style="stroke-dashoffset: {{ progress_offset }};"></circle>
-                        </svg>
-                        <div class="progress-text">{{ completion_percentage }}%</div>
-                    </div>
-                    <div class="metric-label">Completion Rate</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="metric-card">
-                    <div class="metric-value">{{ target_quantity_per_day }} MT</div>
-                    <div class="metric-label">Target Per Day</div>
-                    <div class="metric-sublabel">Daily quantity target</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Daily Operations Section -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="section-title">
-                    <div class="section-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    Today's Operations
-                </h2>
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="metric-card">
-                <div class="metric-value">{{ total_trips }}</div>
-                <div class="metric-label">Total Trips Today</div>
-                <div class="metric-sublabel">Vehicle movements processed</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">{{ total_inward }} MT</div>
-                <div class="metric-label">Inward Material</div>
-                <div class="metric-sublabel">Legacy/MSW received</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">{{ total_outward }} MT</div>
-                <div class="metric-label">Outward Material</div>
-                <div class="metric-sublabel">Processed material dispatched</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">{{ total_net_weight }} MT</div>
-                <div class="metric-label">Total Weight Processed</div>
-                <div class="metric-sublabel">{{ avg_weight_per_trip }} MT average per trip</div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Material Breakdown -->
-            <div class="col-lg-6 mb-4">
-                <h3 class="section-title">
-                    <div class="section-icon">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    Material Analysis
-                </h3>
-                
-                <div class="metric-card">
-                    <!-- Material breakdown content first -->
-                    
-                    <!-- Inward/Outward flow moved to bottom -->
-                    <div class="row mt-4">
-                        <div class="col-6">
-                            <div class="text-center">
-                                <div class="h4 text-success mb-1">{{ inward_percentage }}%</div>
-                                <div class="small text-muted">Inward Flow</div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-center">
-                                <div class="h4 text-info mb-1">{{ outward_percentage }}%</div>
-                                <div class="small text-muted">Outward Flow</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            <!-- Recent Vehicles -->
-            <div class="col-lg-6 mb-4">
-                <h3 class="section-title">
-                    <div class="section-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    Recent Vehicles
-                </h3>
-                
-                <div style="max-height: 500px; overflow-y: auto;">
-                    {{ recent_vehicles_html }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Alerts Section -->
-        {{ alerts_html }}
-
-        <!-- System Info -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="metric-card">
-                    <div class="row text-center">
-                        <div class="col-md-3">
-                            <i class="fas fa-database fa-2x text-info mb-2 d-block"></i>
-                            <div class="fw-bold">{{ todays_record_count }}</div>
-                            <small class="text-muted">Records Today</small>
-                        </div>
-                        <div class="col-md-3">
-                            <i class="fas fa-clock fa-2x text-warning mb-2 d-block"></i>
-                            <div class="fw-bold">{{ last_updated }}</div>
-                            <small class="text-muted">Last Updated</small>
-                        </div>
-                        <div class="col-md-3">
-                            <i class="fas fa-calendar fa-2x text-success mb-2 d-block"></i>
-                            <div class="fw-bold">{{ target_date }}</div>
-                            <small class="text-muted">Data Date</small>
-                        </div>
-                        <div class="col-md-3">
-                            <i class="fas fa-server fa-2x text-primary mb-2 d-block"></i>
-                            <div class="fw-bold">{{ total_historical_records }}</div>
-                            <small class="text-muted">Total Records</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Auto-refresh data every 5 minutes
-        setInterval(refreshData, 300000);
-        
-        function refreshData() {
-            console.log('Refreshing dashboard data...');
-            fetch('/site/{{ site_name }}/api/data')
-                .then(response => response.json())
-                .then(data => {
-                    updateDashboard(data);
-                    console.log('Data refreshed successfully');
-                })
-                .catch(error => {
-                    console.error('Error refreshing data:', error);
-                });
-        }
-        
-        function updateDashboard(data) {
-            // Update progress circle
-            const completionPercentage = data.completion_percentage || 0;
-            const progressFill = document.querySelector('.progress-ring-fill');
-            if (progressFill) {
-                const offset = 283 - (283 * completionPercentage / 100);
-                progressFill.style.strokeDashoffset = offset;
-            }
-            
-            const progressText = document.querySelector('.progress-text');
-            if (progressText) {
-                progressText.textContent = completionPercentage.toFixed(1) + '%';
-            }
-        }
-        
-        // Add smooth scroll and interaction effects
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate progress circle on load
-            setTimeout(() => {
-                const progressFill = document.querySelector('.progress-ring-fill');
-                if (progressFill) {
-                    progressFill.style.transition = 'stroke-dashoffset 2s ease-in-out';
-                }
-            }, 500);
-            
-            // Add hover effects for cards
-            document.querySelectorAll('.metric-card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-4px)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
-    </script>
-</body>
-</html>'''
-        
-        # Helper functions to format dynamic content
-        def format_material_breakdown():
-            material_breakdown = site_data.get('material_breakdown', {})
-            if not material_breakdown:
-                return '''
-                <div class="text-center text-muted py-4">
-                    <i class="fas fa-inbox fa-2x mb-3 d-block"></i>
-                    No material data available
-                </div>
-                '''
-            
-            items = []
-            for material, data in material_breakdown.items():
-                items.append(f'''
-                <div class="material-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fw-semibold">{material}</div>
-                            <small class="text-muted">{data.get("count", 0)} trips</small>
-                        </div>
-                        <div class="text-end">
-                            <div class="fw-bold">{(data.get("weight", 0)/1000):.1f} MT</div>
-                        </div>
-                    </div>
-                </div>
-                ''')
-            return ''.join(items)
-        
-        def format_recent_vehicles():
-            recent_vehicles = site_data.get('recent_vehicles', [])
-            if not recent_vehicles:
-                return '''
-                <div class="text-center text-muted py-4">
-                    <i class="fas fa-road fa-2x mb-3 d-block"></i>
-                    No recent vehicle activity
-                </div>
-                '''
-            
-            vehicles = []
-            for vehicle in recent_vehicles:
-                vehicles.append(f'''
-                <div class="vehicle-card">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="fw-semibold mb-1">{vehicle.get("vehicle_no", "N/A")}</div>
-                            <div class="small text-muted">Ticket: {vehicle.get("ticket_no", "N/A")}</div>
-                            <div class="small text-info">{vehicle.get("time", "N/A")}</div>
-                        </div>
-                        <div class="text-end">
-                            <div class="fw-bold">{(vehicle.get("weight", 0)/1000):.1f} MT</div>
-                            <span class="badge" style="background: var(--primary-gradient); font-size: 0.7rem;">
-                                {vehicle.get("material", "N/A")}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                ''')
-            return ''.join(vehicles)
-        
-        def format_alerts():
-            alerts = site_data.get('alerts', [])
-            if not alerts:
-                return ''
-            
-            alert_items = ''.join([f'<div class="alert-card">{alert}</div>' for alert in alerts])
-            return f'''
-            <div class="row mb-4">
-                <div class="col-12">
-                    <h3 class="section-title">
-                        <div class="section-icon">
-                            <i class="fas fa-bell"></i>
-                        </div>
-                        System Status
-                    </h3>
-                    {alert_items}
-                </div>
-            </div>
-            '''
-        
-        # Prepare template data with safe defaults
-        template_data = {
-            'site_name': site_name.title(),
-            'contractor': site_data.get('contractor', 'Not specified'),
-            'cluster': site_data.get('cluster', 'Not specified'),
-            'status': site_data.get('status', 'Unknown'),
-            'status_class': 'active' if site_data.get('status') == 'Active' else 'inactive',
-            'total_quantity_given': f"{site_data.get('total_quantity_given', 0):,}",
-            'total_remediated': f"{site_data.get('total_remediated', 0):,}",
-            'completion_percentage': f"{site_data.get('completion_percentage', 0):.1f}",
-            'progress_offset': site_data.get('progress_offset', 283),
-            'target_quantity_per_day': f"{site_data.get('target_quantity_per_day', 0):.1f}",
-            'total_trips': site_data.get('total_trips', 0),
-            'total_inward': site_data.get('total_inward', 0),
-            'total_outward': site_data.get('total_outward', 0),
-            'total_net_weight': site_data.get('total_net_weight', 0),
-            'avg_weight_per_trip': site_data.get('avg_weight_per_trip', 0),
-            'inward_percentage': f"{site_data.get('inward_percentage', 0):.1f}",
-            'outward_percentage': f"{site_data.get('outward_percentage', 0):.1f}",
-            'todays_record_count': site_data.get('todays_record_count', 0),
-            'last_updated': site_data.get('last_updated', 'Unknown'),
-            'target_date': target_date,
-            'total_historical_records': site_data.get('total_historical_records', 0),
-            'material_breakdown_html': format_material_breakdown(),
-            'recent_vehicles_html': format_recent_vehicles(),
-            'alerts_html': format_alerts(),
-        }
-        
-        # Simple template replacement
-        html_content = html_template
-        for key, value in template_data.items():
-            placeholder = f'{{{{ {key} }}}}'
-            html_content = html_content.replace(placeholder, str(value))
-        
-        response = flask.make_response(html_content)
-        response.headers['Content-Type'] = 'text/html; charset=utf-8'
-        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        response.headers['Pragma'] = 'no-cache'
-        response.headers['Expires'] = '0'
-        
-        print(f"RETURNING BEAUTIFUL UI HTML FOR: {site_name}")
-        return response
-        
-    except Exception as e:
-        print(f"ERROR loading site data for {site_name}: {e}")
-        print(f"TRACEBACK: {traceback.format_exc()}")
-        return f"""
-        <html><body style="padding: 2rem; font-family: monospace;">
-            <h1>Error Loading Site Data</h1>
-            <p><strong>Site:</strong> {site_name}</p>
-            <p><strong>Error:</strong> {str(e)}</p>
-            <p><a href="/site/">â† Back to Site List</a></p>
-            <pre>{traceback.format_exc()}</pre>
-        </body></html>
-        """, 500
-
 # API endpoints should be handled by your site_dashboard blueprint
 # Make sure your blueprint is registered AFTER these routes
 # so that /site/<name>/api/data goes to the blueprint, not the catch-all above
 
 # 1. Page routing and authentication
 # Find your route_and_authenticate function and add this case
+
+
 
 @callback(
     [Output('current-page', 'data'),
@@ -1927,7 +1146,7 @@ def route_and_authenticate(pathname, search):
     print(f"ROUTE DEBUG: {pathname}")
     
     # CRITICAL: Let Flask handle these routes completely
-    flask_prefixes = ['/site/', '/legacy/', '/oauth/', '/debug/', '/test/', '/api/', '/_ah/', '/dashboard/csv-', '/dashboard/filtered-']
+    flask_prefixes = ['/site/', '/legacy/', '/oauth/', '/debug/', '/test/', '/api/', '/_ah/', '/dashboard/csv-', '/dashboard/filtered-', '/DRAP/logout', '/DRAP/api/']
     
     if pathname and any(pathname.startswith(prefix) for prefix in flask_prefixes):
         print(f"FLASK ROUTE: {pathname} - Dash will not interfere")
@@ -1957,8 +1176,23 @@ def route_and_authenticate(pathname, search):
             return 'admin_dashboard', True, user_data, ''
         else:
             return 'unauthorized_access', False, {}, 'Please log in.'
+        # DRAP Routes
+
+    
+    elif pathname == '/DRAP' or pathname == '/DRAP/':
+        drap_auth = flask.session.get('drap_authenticated', False)
+        if drap_auth:
+            return 'drap_dashboard', is_authenticated, user_data, ''
+        else:
+            return 'drap_login', is_authenticated, user_data, ''
+    elif pathname == '/DRAP/dashboard':                              # ADD THIS
+        drap_auth = flask.session.get('drap_authenticated', False)   # ADD THIS
+        if drap_auth:                                                 # ADD THIS
+            return 'drap_dashboard', is_authenticated, user_data, '' # ADD THIS
+        else:                                                         # ADD THIS
+            return 'drap_login', is_authenticated, user_data, ''     # ADD THIS
     else:
-        return 'public_landing', is_authenticated, user_data, ''
+        return 'public_landing', is_authenticated, user_data, ''    
     
 
 @callback(
@@ -1992,10 +1226,26 @@ def render_layout(theme_name, is_authenticated, current_page, user_data, error_m
         elif current_page == 'admin_dashboard' and is_authenticated:
             layout = build_enhanced_dashboard(theme_name, user_data)
             return layout
+        elif current_page == 'drap_login':
+            layout = build_drap_login_layout(theme_name)
+            print("DEBUG: DRAP login layout rendered")
+            return layout
+        elif current_page == 'drap_dashboard':
+            drap_user = {'username': flask.session.get('drap_user', 'User')}
+            layout = build_drap_dashboard_layout(theme_name, drap_user)
+            print("DEBUG: DRAP dashboard layout rendered")
+            return layout
+        elif current_page == 'drap_loading':
+            layout = html.Div([
+                build_drap_loader_layout(theme_name, "Remediation in Progress"),
+                dcc.Interval(id='drap-loader-timer', interval=2000, n_intervals=0, max_intervals=1)
+            ])
+            print("DEBUG: DRAP loader layout rendered")
+            return layout
         else:
             # Default to public layout
             layout = build_public_layout(theme_name, is_authenticated, user_data)
-            return layout
+            return layout        
     except Exception as e:
         print(f"ERROR: Layout build failed: {e}")
         return build_public_layout(DEFAULT_THEME, False, {})
@@ -2039,6 +1289,7 @@ def setup_application_routes(server):
     # Existing route registrations
     setup_legacy_report(server)
     setup_site_dashboard(server) 
+    register_drap_routes(server)
     
     # ADD THIS NEW LINE:
     register_pdf_routes(server)  # ✅ Real-time PDF generator
@@ -2149,19 +1400,31 @@ def start_streamlit_server():
     except Exception as e:
         print(f"Failed to start Streamlit: {e}")
 
+
 @callback(
-    Output('url', 'pathname', allow_duplicate=True),
-    [Input('magic-view-go-btn', 'n_clicks')],
-    [State('site-selector-dropdown', 'value')],
+    Output('magic-view-go-btn', 'disabled'),
+    [Input('site-selection-dropdown', 'value')],
     prevent_initial_call=True
 )
-def navigate_to_site_dashboard(n_clicks, selected_site):
-    """Navigate to Flask site dashboard"""
-    if not n_clicks or not selected_site:
-        raise PreventUpdate
-    
-    # Redirect to Flask route instead of Dash
-    return f'/site/{selected_site}'
+def enable_magic_view_button(selected_site):
+    """Enable the magic view button when a site is selected"""
+    return not bool(selected_site)  # Disable when no site, enable when site selected
+
+app.clientside_callback(
+    """
+    function(n_clicks, selected_site) {
+        if (n_clicks && selected_site) {
+            console.log('Redirecting to:', '/site/' + selected_site);
+            window.location.href = '/site/' + selected_site;
+        }
+        return window.dash_clientside.no_update;
+    }
+    """,
+    Output('magic-view-go-btn', 'style', allow_duplicate=True),  # Dummy output
+    [Input('magic-view-go-btn', 'n_clicks')],
+    [State('site-selection-dropdown', 'value')],
+    prevent_initial_call=True
+)
 
 @callback(
     Output('main-layout', 'children', allow_duplicate=True),
@@ -2577,6 +1840,956 @@ def update_countdown_display(n_intervals, current_page):
     if remaining_seconds <= 0:
         return "0"
     return str(remaining_seconds)
+
+def load_site_dashboard_template():
+    """Load the HTML template for the site dashboard"""
+    return '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }} - Site Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #eb9534;
+            --primary-dark: #2D3748;
+            --success-green: #38A169;
+            --info-blue: #3182CE;
+            --warning-yellow: #DD6B20;
+            --bg-light: #F8F9FA;
+            --text-dark: #1A202C;
+            --text-muted: #718096;
+            --border-light: #E2E8F0;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--warning-yellow) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary-orange);
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .metric-card.success { border-left-color: var(--success-green); }
+        .metric-card.info { border-left-color: var(--info-blue); }
+        .metric-card.warning { border-left-color: var(--warning-yellow); }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-card.success .metric-value { color: var(--success-green); }
+        .metric-card.info .metric-value { color: var(--info-blue); }
+        .metric-card.warning .metric-value { color: var(--warning-yellow); }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+        
+        .progress-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+        }
+        
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--border-light);
+            stroke-width: 6;
+        }
+        
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--primary-orange);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 251;
+            stroke-dashoffset: {{ progress_offset }};
+            transition: stroke-dashoffset 0.8s ease-in-out;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+        }
+        
+        .section-header {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 2px solid var(--primary-orange);
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        
+        .data-section {
+            background: white;
+            border-radius: 0 0 12px 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .material-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-light);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-orange);
+        }
+        
+        .material-item:nth-child(odd) {
+            border-left-color: var(--success-green);
+        }
+        
+        .vehicle-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border-left: 3px solid var(--info-blue);
+        }
+        
+        .vehicle-item:nth-child(even) {
+            border-left-color: var(--warning-yellow);
+        }
+        
+        .alert-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background: #FFF3CD;
+            border: 1px solid #FFE69C;
+            border-radius: 6px;
+            border-left: 3px solid var(--warning-yellow);
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .status-inactive {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .back-btn {
+            background: var(--success-green);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: #2F855A;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 6px;
+        }
+        
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--success-green);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .metric-card {
+                height: auto;
+                padding: 1rem;
+            }
+            
+            .metric-value {
+                font-size: 1.5rem;
+            }
+            
+            .header-section {
+                padding: 1.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-2">{{ site_name }} Dashboard</h1>
+                    <div class="mb-2">
+                        <strong>Contractor:</strong> {{ contractor }} | 
+                        <strong>Cluster:</strong> {{ cluster }}
+                    </div>
+                    <span class="status-badge status-{{ status_class }}">
+                        <i class="fas fa-circle me-1"></i>{{ status }}
+                    </span>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="/login" class="back-btn">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Overview
+                    </a>
+                    <div class="mt-2">
+                        <small class="text-white-50">Last Updated: {{ last_updated }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Project Progress Metrics -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card">
+                    <div class="metric-value">{{ total_quantity_given }}</div>
+                    <div class="metric-label">Total Quantity (MT)</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card success">
+                    <div class="metric-value">{{ total_remediated }}</div>
+                    <div class="metric-label">Remediated (MT)</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card info">
+                    <div class="progress-container">
+                        <div class="progress-circle">
+                            <svg class="progress-ring" viewBox="0 0 90 90">
+                                <circle class="progress-ring-bg" cx="45" cy="45" r="40"></circle>
+                                <circle class="progress-ring-fill" cx="45" cy="45" r="40" style="stroke-dashoffset: {{ progress_offset }};"></circle>
+                            </svg>
+                            <div class="progress-text">{{ completion_percentage }}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="metric-card warning">
+                    <div class="metric-value">{{ target_quantity_per_day }}</div>
+                    <div class="metric-label">Daily Target (MT)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Operations -->
+        <div class="section-header">
+            <h3 class="section-title">
+                <span class="live-indicator"></span>Today's Operations
+                <small class="text-muted">{{ target_date }}</small>
+            </h3>
+        </div>
+        <div class="data-section">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="info-item">
+                        <div class="h4 text-primary">{{ total_trips }}</div>
+                        <div class="small text-muted">Total Trips</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="info-item">
+                        <div class="h4" style="color: var(--success-green);">{{ total_inward }} MT</div>
+                        <div class="small text-muted">Inward ({{ inward_percentage }}%)</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="info-item">
+                        <div class="h4" style="color: var(--info-blue);">{{ total_outward }} MT</div>
+                        <div class="small text-muted">Outward ({{ outward_percentage }}%)</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="info-item">
+                        <div class="h4" style="color: var(--primary-orange);">{{ total_net_weight }} MT</div>
+                        <div class="small text-muted">Total Weight</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Material Breakdown -->
+            <div class="col-lg-6">
+                <div class="section-header">
+                    <h4 class="section-title">Material Types</h4>
+                </div>
+                <div class="data-section">
+                    {{MATERIAL_BREAKDOWN_SECTION}}
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="col-lg-6">
+                <div class="section-header">
+                    <h4 class="section-title">Recent Vehicles</h4>
+                </div>
+                <div class="data-section" style="max-height: 400px; overflow-y: auto;">
+                    {{RECENT_VEHICLES_SECTION}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        {{ALERTS_SECTION}}
+
+        <!-- System Information -->
+        <div class="section-header">
+            <h4 class="section-title">System Information</h4>
+        </div>
+        <div class="data-section">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="h6">{{ todays_record_count }}</div>
+                    <small class="text-muted">Records Today</small>
+                </div>
+                <div class="info-item">
+                    <div class="h6">{{ last_updated }}</div>
+                    <small class="text-muted">Last Updated</small>
+                </div>
+                <div class="info-item">
+                    <div class="h6">{{ days_remaining }}</div>
+                    <small class="text-muted">Days Remaining</small>
+                </div>
+                <div class="info-item">
+                    <div class="h6">{{ avg_weight_per_trip }} MT</div>
+                    <small class="text-muted">Avg per Trip</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        console.log('Site dashboard loaded:', {
+            site: '{{ site_name }}',
+            trips: {{ total_trips }},
+            completion: '{{ completion_percentage }}%',
+            lastUpdate: '{{ last_updated }}'
+        });
+
+        // Auto-refresh every 10 minutes
+        setTimeout(() => {
+            window.location.reload();
+        }, 600000);
+    </script>
+</body>
+</html>'''
+
+def replace_template_variables(template, data):
+    """
+    Replace template variables with actual data
+    """
+    print(f"🔧 Replacing template variables...")
+    
+    # Handle status class transformation
+    status = data.get('status', 'Unknown')
+    status_class = 'active' if status == 'Active' else 'inactive'
+    data['status_class'] = status_class
+    
+    # Simple variable replacement for all scalar values
+    for key, value in data.items():
+        if isinstance(value, (dict, list)):
+            continue  # Skip complex types
+        placeholder = f'{{{{ {key} }}}}'
+        template = template.replace(placeholder, str(value))
+    
+    # Handle material breakdown section
+    material_section = handle_material_breakdown(data.get('material_breakdown', {}))
+    template = template.replace('{{MATERIAL_BREAKDOWN_SECTION}}', material_section)
+    
+    # Handle recent vehicles section
+    vehicles_section = handle_recent_vehicles(data.get('recent_vehicles', []))
+    template = template.replace('{{RECENT_VEHICLES_SECTION}}', vehicles_section)
+    
+    # Handle alerts section
+    alerts_section = handle_alerts(data.get('alerts', []))
+    template = template.replace('{{ALERTS_SECTION}}', alerts_section)
+    
+    print(f"✅ Template variables replaced")
+    return template
+
+def handle_material_breakdown(materials):
+    """Generate HTML for material breakdown section"""
+    if not materials:
+        return '''
+        <div class="text-center text-muted py-3">
+            <i class="fas fa-info-circle me-2"></i>No material data for today
+        </div>
+        '''
+    
+    html = ""
+    for material, data in materials.items():
+        weight_mt = data['weight'] / 1000
+        html += f'''
+        <div class="material-item">
+            <div>
+                <div class="fw-semibold">{material}</div>
+                <small class="text-muted">{data['count']} trips</small>
+            </div>
+            <div class="fw-bold">{weight_mt:.1f} MT</div>
+        </div>
+        '''
+    return html
+
+def handle_recent_vehicles(vehicles):
+    """Generate HTML for recent vehicles section"""
+    if not vehicles:
+        return '''
+        <div class="text-center text-muted py-3">
+            <i class="fas fa-truck me-2"></i>No vehicle activity today
+        </div>
+        '''
+    
+    html = ""
+    for vehicle in vehicles:
+        weight_mt = vehicle['weight'] / 1000
+        direction_color = '#28a745' if vehicle.get('direction') == 'Inward' else '#007bff'
+        html += f'''
+        <div class="vehicle-item">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fw-semibold">{vehicle['vehicle_no']}</div>
+                        <small class="text-muted">{vehicle['ticket_no']} • {vehicle['time']}</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">{weight_mt:.1f} MT</div>
+                        <small class="badge bg-secondary">{vehicle['material']}</small>
+                        <div>
+                            <small style="color: {direction_color};">
+                                <i class="fas fa-arrow-{'down' if vehicle.get('direction') == 'Inward' else 'up'}"></i>
+                                {vehicle.get('direction', 'Unknown')}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        '''
+    return html
+
+def handle_alerts(alerts):
+    """Generate HTML for alerts section"""
+    if not alerts:
+        return ""
+    
+    html = '''
+    <div class="section-header">
+        <h4 class="section-title">
+            <i class="fas fa-exclamation-triangle me-2"></i>Performance Alerts
+        </h4>
+    </div>
+    <div class="data-section">
+    '''
+    
+    for alert in alerts:
+        # Determine alert type for styling
+        alert_class = "alert-item"
+        if "Excellent" in alert or "exceeded" in alert:
+            alert_class += " text-success"
+        elif "Low" in alert or "Urgent" in alert:
+            alert_class += " text-danger"
+        elif "Below" in alert:
+            alert_class += " text-warning"
+            
+        html += f'<div class="{alert_class}">{alert}</div>'
+    
+    html += '</div>'
+    return html
+
+# Debug endpoints for troubleshooting
+@server.route('/debug/site/<site_name>')
+def debug_site_data(site_name):
+    """Debug endpoint to see exactly what data is being processed"""
+    target_date = datetime.now().strftime('%Y-%m-%d')
+    
+    try:
+        from enhanced_site_processor import get_project_data, get_operational_data
+        
+        # Get raw data from both APIs
+        project_data = get_project_data(site_name)
+        operational_data = get_operational_data(site_name, target_date)
+        
+        # Get combined data
+        dashboard_data = get_enhanced_site_data(site_name, target_date)
+        
+        debug_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Debug: {site_name}</title>
+            <style>
+                body {{ font-family: monospace; padding: 20px; background: #f8f9fa; }}
+                .section {{ background: white; margin: 20px 0; padding: 20px; border-radius: 8px; }}
+                .good {{ color: green; }}
+                .bad {{ color: red; }}
+                .warn {{ color: orange; }}
+                pre {{ background: #f1f1f1; padding: 10px; border-radius: 4px; overflow-x: auto; }}
+                h3 {{ color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }}
+            </style>
+        </head>
+        <body>
+            <h1>Debug Report: {site_name}</h1>
+            <p>Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+            
+            <div class="section">
+                <h3>1. Project API Response</h3>
+                <p>Status: <span class="{'good' if project_data else 'bad'}">{'✅ Success' if project_data else '❌ Failed'}</span></p>
+                <p>URL: <code>{SITE_API_BASE}/site/{site_name}</code></p>
+                <p>Response Keys: {list(project_data.keys()) if project_data else 'None'}</p>
+                <pre>{json.dumps(project_data, indent=2, default=str)}</pre>
+            </div>
+            
+            <div class="section">
+                <h3>2. Trips API Response</h3>
+                <p>Status: <span class="{'good' if operational_data.get('total_trips', 0) > 0 else 'warn'}">
+                    {'✅ Success' if operational_data.get('total_trips', 0) > 0 else '⚠️ No Data'}</span></p>
+                <p>URL: <code>{TRIPS_API_BASE}/records?site_name={site_name}&start_date={target_date}&end_date={target_date}</code></p>
+                <p>Trips Count: {operational_data.get('total_trips', 0)}</p>
+                <pre>{json.dumps(operational_data, indent=2, default=str)}</pre>
+            </div>
+            
+            <div class="section">
+                <h3>3. Combined Dashboard Data</h3>
+                <p>Fields: {len(dashboard_data)} total</p>
+                <h4>Key Metrics:</h4>
+                <ul>
+                    <li><strong>Site Name:</strong> {dashboard_data.get('site_name')}</li>
+                    <li><strong>Contractor:</strong> {dashboard_data.get('contractor')}</li>
+                    <li><strong>Total Quantity:</strong> {dashboard_data.get('total_quantity_given')}</li>
+                    <li><strong>Remediated:</strong> {dashboard_data.get('total_remediated')}</li>
+                    <li><strong>Completion:</strong> {dashboard_data.get('completion_percentage')}%</li>
+                    <li><strong>Daily Target:</strong> {dashboard_data.get('target_quantity_per_day')}</li>
+                    <li><strong>Today's Trips:</strong> {dashboard_data.get('total_trips')}</li>
+                </ul>
+                <pre>{json.dumps(dashboard_data, indent=2, default=str)}</pre>
+            </div>
+            
+            <div class="section">
+                <h3>4. API Connectivity Test</h3>
+                <a href="/test/apis" style="color: #007bff;">🔗 Test All APIs</a> | 
+                <a href="/site/{site_name}" style="color: #007bff;">🚀 View Dashboard</a> | 
+                <a href="/login" style="color: #007bff;">← Back to Overview</a>
+            </div>
+        </body>
+        </html>
+        """
+        
+        return debug_html
+        
+    except Exception as e:
+        return f"""
+        <html>
+        <body style="font-family: monospace; padding: 20px;">
+            <h1>Debug Error for {site_name}</h1>
+            <p><strong>Error:</strong> {str(e)}</p>
+            <pre>{traceback.format_exc()}</pre>
+            <p><a href="/login">← Back to Overview</a></p>
+        </body>
+        </html>
+        """, 500
+
+# Optional: Add a simple API connectivity test
+@server.route('/test/apis')
+def test_all_apis():
+    """Test connectivity to both APIs"""
+    def test_endpoint(url, description):
+        try:
+            start_time = datetime.now()
+            response = requests.get(url, timeout=5)
+            end_time = datetime.now()
+            response_time = (end_time - start_time).total_seconds()
+            
+            return {
+                "description": description,
+                "url": url,
+                "status": response.status_code,
+                "success": response.status_code == 200,
+                "response_time_ms": round(response_time * 1000),
+                "content_length": len(response.content) if response.content else 0
+            }
+        except Exception as e:
+            return {
+                "description": description,
+                "url": url,
+                "status": "error",
+                "success": False,
+                "error": str(e)
+            }
+    
+    # Test both APIs
+    results = {
+        "timestamp": datetime.now().isoformat(),
+        "tests": [
+            test_endpoint(f"{SITE_API_BASE}/site/Dhone", "Site API - Dhone"),
+            test_endpoint(f"{SITE_API_BASE}/sites", "Site API - List Sites"),
+            test_endpoint(f"{TRIPS_API_BASE}/records?site_name=Dhone&start_date=2025-09-23&end_date=2025-09-23", "Trips API - Dhone Records")
+        ]
+    }
+    
+    return flask.jsonify(results)
+
+@server.route('/site/<site_name>')
+def handle_individual_site_enhanced(site_name):
+    """Enhanced site dashboard using both APIs with minimal clean design"""
+    print(f"🚀 ENHANCED SITE DASHBOARD REQUEST: {site_name}")
+    
+    try:
+        # Get enhanced data from both APIs
+        target_date = datetime.now().strftime('%Y-%m-%d')
+        dashboard_data = get_enhanced_site_data(site_name, target_date)
+        
+        print(f"📊 FINAL DASHBOARD DATA:")
+        for key, value in dashboard_data.items():
+            if not isinstance(value, (dict, list)):
+                print(f"   {key}: {value}")
+        
+        # Load the clean HTML template
+        html_template = load_site_dashboard_template()
+        
+        # Replace template variables with actual data
+        html_content = replace_template_variables(html_template, dashboard_data)
+        
+        # Create response with proper headers
+        response = make_response(html_content)
+        response.headers['Content-Type'] = 'text/html; charset=utf-8'
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        
+        print(f"✅ ENHANCED DASHBOARD SERVED FOR: {site_name}")
+        return response
+        
+    except Exception as e:
+        print(f"❌ ERROR in enhanced dashboard: {e}")
+        print(f"📋 Traceback: {traceback.format_exc()}")
+        
+        # Fallback error page
+        error_html = f"""
+        <html>
+        <head>
+            <title>Error - {site_name}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {{ font-family: Arial, sans-serif; padding: 2rem; background: #f8f9fa; }}
+                .error-container {{ max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; }}
+                .error-title {{ color: #dc3545; margin-bottom: 1rem; }}
+                .back-link {{ color: #0066cc; text-decoration: none; }}
+            </style>
+        </head>
+        <body>
+            <div class="error-container">
+                <h1 class="error-title">Unable to Load {site_name} Dashboard</h1>
+                <p>We encountered an issue fetching the latest data for this site.</p>
+                <p><strong>Error details:</strong> {str(e)}</p>
+                <p><a href="/login" class="back-link">← Back to Site Selection</a></p>
+                <p><a href="/debug/site/{site_name}" class="back-link">🔍 Debug Site APIs</a></p>
+                <p><small>Last attempted: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</small></p>
+            </div>
+        </body>
+        </html>
+        """
+        return error_html, 500
+
+def replace_template_variables(template, data):
+    """
+    Replace template variables with actual data
+    """
+    # Simple variable replacement
+    for key, value in data.items():
+        if isinstance(value, (dict, list)):
+            continue  # Skip complex types for now
+        placeholder = f'{{{{ {key} }}}}'
+        template = template.replace(placeholder, str(value))
+    
+    # Handle material breakdown section
+    material_section = handle_material_breakdown(data.get('material_breakdown', {}))
+    template = template.replace(
+        '{% if material_breakdown %}{% for material, data in material_breakdown.items %}' + 
+        '<div class="material-item">*</div>{% endfor %}{% else %}' +
+        '<div class="text-center text-muted py-3">*</div>{% endif %}',
+        material_section
+    )
+    
+    # Handle recent vehicles section
+    vehicles_section = handle_recent_vehicles(data.get('recent_vehicles', []))
+    template = template.replace(
+        '{% if recent_vehicles %}{% for vehicle in recent_vehicles %}' +
+        '<div class="vehicle-item">*</div>{% endfor %}{% else %}' +
+        '<div class="text-center text-muted py-3">*</div>{% endif %}',
+        vehicles_section
+    )
+    
+    # Handle alerts section
+    alerts_section = handle_alerts(data.get('alerts', []))
+    template = template.replace(
+        '{% if alerts %}<div class="section-header">*</div>{% for alert in alerts %}' +
+        '<div class="alert-item">{{ alert }}</div>{% endfor %}</div>{% endif %}',
+        alerts_section
+    )
+    
+    return template
+
+def handle_material_breakdown(materials):
+    """Generate HTML for material breakdown section"""
+    if not materials:
+        return '''
+        <div class="text-center text-muted py-3">
+            <i class="fas fa-info-circle me-2"></i>No material data for today
+        </div>
+        '''
+    
+    html = ""
+    for material, data in materials.items():
+        weight_mt = data['weight'] / 1000
+        html += f'''
+        <div class="material-item">
+            <div>
+                <div class="fw-semibold">{material}</div>
+                <small class="text-muted">{data['count']} trips</small>
+            </div>
+            <div class="fw-bold">{weight_mt:.1f} MT</div>
+        </div>
+        '''
+    return html
+
+def handle_recent_vehicles(vehicles):
+    """Generate HTML for recent vehicles section"""
+    if not vehicles:
+        return '''
+        <div class="text-center text-muted py-3">
+            <i class="fas fa-truck me-2"></i>No vehicle activity today
+        </div>
+        '''
+    
+    html = ""
+    for vehicle in vehicles:
+        weight_mt = vehicle['weight'] / 1000
+        direction_color = '#28a745' if vehicle.get('direction') == 'Inward' else '#007bff'
+        html += f'''
+        <div class="vehicle-item">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fw-semibold">{vehicle['vehicle_no']}</div>
+                        <small class="text-muted">{vehicle['ticket_no']} • {vehicle['time']}</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">{weight_mt:.1f} MT</div>
+                        <small class="badge bg-secondary">{vehicle['material']}</small>
+                        <div>
+                            <small style="color: {direction_color};">
+                                <i class="fas fa-arrow-{'down' if vehicle.get('direction') == 'Inward' else 'up'}"></i>
+                                {vehicle.get('direction', 'Unknown')}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        '''
+    return html
+
+def handle_alerts(alerts):
+    """Generate HTML for alerts section"""
+    if not alerts:
+        return ""
+    
+    html = '''
+    <div class="section-header">
+        <h4 class="section-title">
+            <i class="fas fa-exclamation-triangle me-2"></i>Performance Alerts
+        </h4>
+    </div>
+    <div class="data-section">
+    '''
+    
+    for alert in alerts:
+        # Determine alert type for styling
+        alert_class = "alert-item"
+        if "Excellent" in alert or "exceeded" in alert:
+            alert_class += " text-success"
+        elif "Low" in alert or "Urgent" in alert:
+            alert_class += " text-danger"
+        elif "Below" in alert:
+            alert_class += " text-warning"
+            
+        html += f'<div class="{alert_class}">{alert}</div>'
+    
+    html += '</div>'
+    return html
+
+# Optional: Add a debug endpoint to test the APIs
+@server.route('/debug/site/<site_name>')
+def debug_site_apis(site_name):
+    """Debug endpoint to test both APIs for a site"""
+    target_date = datetime.now().strftime('%Y-%m-%d')
+    
+    try:
+        # Test both APIs
+        from enhanced_site_processor import get_project_data, get_operational_data
+        
+        project_data = get_project_data(site_name)
+        operational_data = get_operational_data(site_name, target_date)
+        
+        debug_info = {
+            "site": site_name,
+            "date": target_date,
+            "project_api": {
+                "status": "success" if project_data else "failed",
+                "data_keys": list(project_data.keys()) if project_data else [],
+                "completion": project_data.get('completion_percentage', 'N/A')
+            },
+            "trips_api": {
+                "status": "success" if operational_data.get('total_trips', 0) > 0 else "no_data",
+                "trips_count": operational_data.get('total_trips', 0),
+                "materials": list(operational_data.get('material_breakdown', {}).keys()),
+                "total_weight": operational_data.get('total_net_weight', 0)
+            },
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        return flask.jsonify(debug_info)
+        
+    except Exception as e:
+        return flask.jsonify({
+            "error": str(e),
+            "site": site_name,
+            "date": target_date,
+            "timestamp": datetime.now().isoformat()
+        }), 500
+
+# # Add this route to test API connectivity
+# @server.route('/test/apis')
+# def test_all_apis():
+#     """Test connectivity to both APIs"""
+#     results = {
+#         "site_api": test_api_endpoint(f"{SITE_API_BASE}/sites"),
+#         "trips_api": test_api_endpoint(f"{TRIPS_API_BASE}/records?site_name=dhone&start_date=2025-09-23&end_date=2025-09-23"),
+#         "timestamp": datetime.now().isoformat()
+#     }
+#     return flask.jsonify(results)
+
+def test_api_endpoint(url):
+    """Test a specific API endpoint"""
+    try:
+        response = requests.get(url, timeout=5)
+        return {
+            "status": response.status_code,
+            "response_time": response.elapsed.total_seconds(),
+            "success": response.status_code == 200,
+            "data_size": len(response.content) if response.content else 0
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "success": False
+        }
+
 
 def kadapa_rayachoti_layout():
     """Enhanced dashboard for Kadapa Rayachoti with interactive elements"""
@@ -3024,12 +3237,20 @@ register_custom_dashboard_routes(server)  # Custom routes for dashboard function
 setup_legacy_report(server)
 setup_site_dashboard(server)
 register_pdf_routes(server)
+register_about_routes(server)
+register_drap_routes(server)
+register_drap_callbacks(app)
 # KEEP: Register dashboard Flask routes (moved from main to admin_dashboard)
 # This handles the /dashboard route without conflicts
 # upload_dir = Path('/tmp/uploads')
 # upload_dir.mkdir(exist_ok=True)
 # user_upload_dir = upload_dir / 'dash_uploads'
 # user_upload_dir.mkdir(exist_ok=True)
+# @server.before_request
+# def redirect_root_to_about():
+#     """TEMPORARY: Redirect / to /about - DELETE WHEN DONE"""
+#     if request.path == '/' and request.method == 'GET':
+#         return flask.redirect('/about', code=302)
 
 if __name__ == '__main__':
     try:

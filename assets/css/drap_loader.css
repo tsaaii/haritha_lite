@@ -1,0 +1,185 @@
+/* assets/css/drap_loader.css */
+/* Excavator Loading Animation for DRAP Portal */
+/* Excavator moves forward representing waste remediation */
+
+/* Main excavator - moves across screen */
+#drap-excavator-icon {
+    animation: excavatorDrive 3s ease-in-out infinite;
+    position: relative;
+    transform: scaleX(-1); /* Flip emoji to face right */
+}
+
+@keyframes excavatorDrive {
+    0% {
+        transform: scaleX(-1) translateX(100px) translateY(0);
+    }
+    10% {
+        transform: scaleX(-1) translateX(80px) translateY(-3px);
+    }
+    20% {
+        transform: scaleX(-1) translateX(60px) translateY(0);
+    }
+    30% {
+        transform: scaleX(-1) translateX(40px) translateY(-3px);
+    }
+    40% {
+        transform: scaleX(-1) translateX(20px) translateY(0);
+    }
+    50% {
+        transform: scaleX(-1) translateX(0px) translateY(-3px);
+    }
+    60% {
+        transform: scaleX(-1) translateX(-20px) translateY(0);
+    }
+    70% {
+        transform: scaleX(-1) translateX(-40px) translateY(-3px);
+    }
+    80% {
+        transform: scaleX(-1) translateX(-60px) translateY(0);
+    }
+    90% {
+        transform: scaleX(-1) translateX(-80px) translateY(-3px);
+    }
+    100% {
+        transform: scaleX(-1) translateX(-100px) translateY(0);
+    }
+}
+
+/* Track/ground that excavator drives on */
+#drap-track-line {
+    position: relative;
+    overflow: hidden;
+}
+
+#drap-track-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: repeating-linear-gradient(
+        90deg,
+        #555 0px,
+        #555 10px,
+        transparent 10px,
+        transparent 20px
+    );
+    animation: trackScroll 0.5s linear infinite;
+}
+
+@keyframes trackScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-20px);
+    }
+}
+
+/* Dust particles behind excavator */
+#drap-dust-particles span {
+    animation: dustFloat 1s ease-out infinite;
+    opacity: 0;
+}
+
+#drap-dust-particles span:nth-child(1) {
+    animation-delay: 0s;
+}
+#drap-dust-particles span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+#drap-dust-particles span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes dustFloat {
+    0% {
+        opacity: 0.8;
+        transform: translateX(0) translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-30px) translateY(-20px) scale(0.5);
+    }
+}
+
+/* Progress bar animation */
+#drap-progress-bar {
+    animation: progressMove 1.5s ease-in-out infinite;
+}
+
+@keyframes progressMove {
+    0% {
+        width: 0%;
+        margin-left: 0%;
+    }
+    50% {
+        width: 60%;
+        margin-left: 20%;
+    }
+    100% {
+        width: 0%;
+        margin-left: 100%;
+    }
+}
+
+/* Waste pile shrinking animation */
+#drap-waste-pile {
+    animation: wasteShrink 3s ease-in-out infinite;
+}
+
+@keyframes wasteShrink {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.7);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Clean land appearing */
+#drap-clean-land {
+    animation: landAppear 3s ease-in-out infinite;
+}
+
+@keyframes landAppear {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5);
+        opacity: 0.3;
+    }
+}
+
+/* Loading screen fade transition */
+#drap-loading-screen {
+    transition: opacity 0.8s ease;
+}
+
+/* Pulsing text */
+#drap-loading-screen h2,
+#drap-loading-screen .loading-text {
+    animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
